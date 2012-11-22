@@ -69,6 +69,7 @@
 		9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */; };
 		9BF8133E15E1AB0700AC9B3F /* PictureListMainTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */; };
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
+		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -201,6 +202,7 @@
 		9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListMainTable.m; sourceTree = "<group>"; };
 		9BF8134015E1B13500AC9B3F /* PictureListDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureListDetail.h; sourceTree = "<group>"; };
 		9BF8134115E1B13500AC9B3F /* PictureListDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListDetail.m; sourceTree = "<group>"; };
+		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +220,7 @@
 				9B6BF0BB15E19ACD002834C5 /* Foundation.framework in Frameworks */,
 				9B6BF0BD15E19ACD002834C5 /* CoreGraphics.framework in Frameworks */,
 				9B6BF0BF15E19ACD002834C5 /* CoreData.framework in Frameworks */,
+				ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,6 +377,7 @@
 		9B6BF0B715E19ACD002834C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ACD63EA5165DDDC200EDC898 /* opencv2.framework */,
 				9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */,
 				9B13455515E28E14009863DF /* ImageIO.framework */,
 				9B9109C315E1FDA90067BB8D /* CoreVideo.framework */,
@@ -392,6 +396,7 @@
 		9B6BF0C015E19ACD002834C5 /* CellScope */ = {
 			isa = PBXGroup;
 			children = (
+				ACD63EA1165DDB6A00EDC898 /* matlab */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.m */,
 				9B6BF10015E19F2A002834C5 /* LoginViewController.h */,
@@ -465,6 +470,29 @@
 			);
 			name = Images;
 			path = CellScope/Images;
+			sourceTree = "<group>";
+		};
+		ACD63EA1165DDB6A00EDC898 /* matlab */ = {
+			isa = PBXGroup;
+			children = (
+				ACD63EA4165DDB9000EDC898 /* other */,
+				ACD63EA3165DDB8400EDC898 /* objlevel */,
+			);
+			name = matlab;
+			sourceTree = "<group>";
+		};
+		ACD63EA3165DDB8400EDC898 /* objlevel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = objlevel;
+			sourceTree = "<group>";
+		};
+		ACD63EA4165DDB9000EDC898 /* other */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -716,6 +744,10 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Fletch2 Lab (4G3LRZJ5QU)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
@@ -731,6 +763,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Fletch2 Lab (4G3LRZJ5QU)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
