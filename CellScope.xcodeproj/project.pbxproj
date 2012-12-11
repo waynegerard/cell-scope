@@ -72,6 +72,7 @@
 		AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */ = {isa = PBXBuildFile; fileRef = AC0D80A11669A5B60055B9E1 /* RunAll.c */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		ACB2657C1676CE6000764B57 /* Train_Algorithm.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657B1676CE6000764B57 /* Train_Algorithm.mm */; };
+		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 		ACD63EA8165DE1E300EDC898 /* FilterGauss.c in Sources */ = {isa = PBXBuildFile; fileRef = ACD63EA7165DE1E300EDC898 /* FilterGauss.c */; };
 /* End PBXBuildFile section */
@@ -211,6 +212,8 @@
 		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = matlab/run/ImageRunner.mm; sourceTree = "<group>"; };
 		ACB2657A1676CE6000764B57 /* Train_Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Train_Algorithm.h; path = matlab/run/Train_Algorithm.h; sourceTree = "<group>"; };
 		ACB2657B1676CE6000764B57 /* Train_Algorithm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Train_Algorithm.mm; path = matlab/run/Train_Algorithm.mm; sourceTree = "<group>"; };
+		ACB2657D1676D07500764B57 /* FeatureCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureCalculator.h; path = matlab/objlevel/FeatureCalculator.h; sourceTree = "<group>"; };
+		ACB2657E1676D07500764B57 /* FeatureCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureCalculator.m; path = matlab/objlevel/FeatureCalculator.m; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		ACD63EA7165DE1E300EDC898 /* FilterGauss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FilterGauss.c; path = matlab/other/FilterGauss.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -507,6 +510,8 @@
 		ACD63EA3165DDB8400EDC898 /* objlevel */ = {
 			isa = PBXGroup;
 			children = (
+				ACB2657D1676D07500764B57 /* FeatureCalculator.h */,
+				ACB2657E1676D07500764B57 /* FeatureCalculator.m */,
 			);
 			name = objlevel;
 			sourceTree = "<group>";
@@ -674,6 +679,7 @@
 				AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */,
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
 				ACB2657C1676CE6000764B57 /* Train_Algorithm.mm in Sources */,
+				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
