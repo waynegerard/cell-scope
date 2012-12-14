@@ -71,8 +71,8 @@
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
 		AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */ = {isa = PBXBuildFile; fileRef = AC0D80A11669A5B60055B9E1 /* RunAll.c */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
-		ACB2657C1676CE6000764B57 /* Train_Algorithm.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657B1676CE6000764B57 /* Train_Algorithm.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
+		ACC52E2D167AC1A30053AC6E /* HuMomentCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC52E2C167AC1A30053AC6E /* HuMomentCalculator.m */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 		ACD63EA8165DE1E300EDC898 /* FilterGauss.c in Sources */ = {isa = PBXBuildFile; fileRef = ACD63EA7165DE1E300EDC898 /* FilterGauss.c */; };
 /* End PBXBuildFile section */
@@ -210,10 +210,10 @@
 		AC0D80A11669A5B60055B9E1 /* RunAll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = RunAll.c; path = matlab/run/RunAll.c; sourceTree = "<group>"; };
 		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = matlab/run/ImageRunner.h; sourceTree = "<group>"; };
 		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = matlab/run/ImageRunner.mm; sourceTree = "<group>"; };
-		ACB2657A1676CE6000764B57 /* Train_Algorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Train_Algorithm.h; path = matlab/run/Train_Algorithm.h; sourceTree = "<group>"; };
-		ACB2657B1676CE6000764B57 /* Train_Algorithm.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Train_Algorithm.mm; path = matlab/run/Train_Algorithm.mm; sourceTree = "<group>"; };
 		ACB2657D1676D07500764B57 /* FeatureCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureCalculator.h; path = matlab/objlevel/FeatureCalculator.h; sourceTree = "<group>"; };
 		ACB2657E1676D07500764B57 /* FeatureCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureCalculator.m; path = matlab/objlevel/FeatureCalculator.m; sourceTree = "<group>"; };
+		ACC52E2B167AC1A30053AC6E /* HuMomentCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HuMomentCalculator.h; path = matlab/objlevel/HuMomentCalculator.h; sourceTree = "<group>"; };
+		ACC52E2C167AC1A30053AC6E /* HuMomentCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HuMomentCalculator.m; path = matlab/objlevel/HuMomentCalculator.m; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		ACD63EA7165DE1E300EDC898 /* FilterGauss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FilterGauss.c; path = matlab/other/FilterGauss.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -491,8 +491,6 @@
 				AC0D80A11669A5B60055B9E1 /* RunAll.c */,
 				AC5704581674252F0071225E /* ImageRunner.h */,
 				AC5704591674252F0071225E /* ImageRunner.mm */,
-				ACB2657A1676CE6000764B57 /* Train_Algorithm.h */,
-				ACB2657B1676CE6000764B57 /* Train_Algorithm.mm */,
 			);
 			name = Run;
 			sourceTree = "<group>";
@@ -512,6 +510,8 @@
 			children = (
 				ACB2657D1676D07500764B57 /* FeatureCalculator.h */,
 				ACB2657E1676D07500764B57 /* FeatureCalculator.m */,
+				ACC52E2B167AC1A30053AC6E /* HuMomentCalculator.h */,
+				ACC52E2C167AC1A30053AC6E /* HuMomentCalculator.m */,
 			);
 			name = objlevel;
 			sourceTree = "<group>";
@@ -678,8 +678,8 @@
 				ACD63EA8165DE1E300EDC898 /* FilterGauss.c in Sources */,
 				AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */,
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
-				ACB2657C1676CE6000764B57 /* Train_Algorithm.mm in Sources */,
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
+				ACC52E2D167AC1A30053AC6E /* HuMomentCalculator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
