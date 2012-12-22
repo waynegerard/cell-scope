@@ -8,6 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ImageTools : NSObject
+/**
+ A variety of small helper functions
+ @author Wayne Gerard
+ */
+@interface ImageTools : NSObject 
 
 @end

@@ -73,8 +73,8 @@
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACB641DD16842434006B7B41 /* ImageTools.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.m */; };
+		ACB641F816861F09006B7B41 /* MatlabFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB641F716861F09006B7B41 /* MatlabFunctions.c */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
-		ACD63EA8165DE1E300EDC898 /* FilterGauss.c in Sources */ = {isa = PBXBuildFile; fileRef = ACD63EA7165DE1E300EDC898 /* FilterGauss.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -214,8 +214,9 @@
 		ACB2657E1676D07500764B57 /* FeatureCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureCalculator.m; path = matlab/objlevel/FeatureCalculator.m; sourceTree = "<group>"; };
 		ACB641DB16842434006B7B41 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = matlab/objlevel/ImageTools.h; sourceTree = "<group>"; };
 		ACB641DC16842434006B7B41 /* ImageTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ImageTools.m; path = matlab/objlevel/ImageTools.m; sourceTree = "<group>"; };
+		ACB641F6168617F1006B7B41 /* MatlabFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MatlabFunctions.h; path = matlab/other/MatlabFunctions.h; sourceTree = "<group>"; };
+		ACB641F716861F09006B7B41 /* MatlabFunctions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MatlabFunctions.c; path = matlab/other/MatlabFunctions.c; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		ACD63EA7165DE1E300EDC898 /* FilterGauss.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FilterGauss.c; path = matlab/other/FilterGauss.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,7 +520,8 @@
 		ACD63EA4165DDB9000EDC898 /* other */ = {
 			isa = PBXGroup;
 			children = (
-				ACD63EA7165DE1E300EDC898 /* FilterGauss.c */,
+				ACB641F6168617F1006B7B41 /* MatlabFunctions.h */,
+				ACB641F716861F09006B7B41 /* MatlabFunctions.c */,
 			);
 			name = other;
 			sourceTree = "<group>";
@@ -675,11 +677,11 @@
 				9B5632CD15FAADD90035AEBC /* UIImage+Alpha.m in Sources */,
 				9B5632CE15FAADD90035AEBC /* UIImage+Resize.m in Sources */,
 				9B5632CF15FAADD90035AEBC /* UIImage+RoundedCorner.m in Sources */,
-				ACD63EA8165DE1E300EDC898 /* FilterGauss.c in Sources */,
 				AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */,
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 				ACB641DD16842434006B7B41 /* ImageTools.m in Sources */,
+				ACB641F816861F09006B7B41 /* MatlabFunctions.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
