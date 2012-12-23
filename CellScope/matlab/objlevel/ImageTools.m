@@ -7,6 +7,7 @@
 //
 
 #import "ImageTools.h"
+#import "MatlabFunctions.h"
 
 @implementation ImageTools
 
@@ -29,8 +30,8 @@
     @param yc The yc constant
  */
 - (float) momentpq(im,p,q,xc,yc) {
-    xc_mat = repmat(xc, size(im));
-    yc_mat = repmat(yc, size(im));
+    float[][] xc_mat = repmat(xc, size(im));
+    float[][] yc_mat = repmat(yc, size(im));
 
     [ygrid, xgrid] = meshgrid([1:size(im,2)],[1:size(im,1)]);
 
@@ -38,5 +39,28 @@
     mu = sum(newmat(:));
 }
 
+
++ (cv::Mat)cvMatWithImage:(UIImage *)image
+{
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+    CGFloat cols = image.size.width;
+    CGFloat rows = image.size.height;
+    
+    cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
+                                                    cols,                       // Width of bitmap
+                                                    rows,                       // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNoneSkipLast |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
+    CGContextRelease(contextRef);
+    
+    return cvMat;
+}
 
 @end

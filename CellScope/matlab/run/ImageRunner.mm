@@ -10,6 +10,9 @@
 //
 
 #import "ImageRunner.h"
+#import "ImageTools.h"
+#import "Globals.h"
+#import <opencv2/core/core_c.h>
 
 @implementation ImageRunner
 
@@ -19,8 +22,13 @@
  */
 - (void) runWithHoG: (BOOL) hogFeatures viewPatches:(BOOL) viewPatches patchSize:(int) patchSize
 {
-    // Handle undefined parameters
-    viewPatches = (viewPatches == -1) ? 1 : viewPatches;
+    //METHODS:
+    // blobid
+    // bwconncomp
+    // regionprops
+    // compute_gradient
+    
+    // Handle incorrect parameters
     patchSize  = (patchSize %% 2 != 0) ? 24 : patchSize;
     
     // TODO: Return CSV instead of void
@@ -38,67 +46,43 @@
     // TODO: Let user choose images
     NSMutableArray* images = [NSMutableArray arrayWithCapacity:1];
     int count = [images count];
-    
 
-    // TODO: This was commented out. Leave it out?
-    /*
-    % % % Randomly select images
-    % pname = mydir;
-    % fpattern = fullfile(pname,'*1944x2592_Fluor*.tif');
-    % D = dir(fpattern);
-    %
-    % % for n = 1:length(D)
-        % %     fnames{n,1} = D(n).name;
-    % % end
-    % %
-    % % Ikeep = rand(length(D),1)<0.25;%0.01;
-    % % fnames_keep = fnames(Ikeep);
-    %
-    % len = length(fnames_keep);
-    */
     
     // Start timing
     // TODO: Define CSLog
     for (int i =0; i < count; i++) {
         CSLog(@"Processing image %d of %d", i, count);
-        NSObject* img = [images objectAtIndex:i];
+        UIImage* ui_img = [images objectAtIndex:i];
+        
+        // Convert the image to an OpenCV matrix
+        Mat image = [ImageTools cvMatWithImage:ui_img];
+        if(!image.data) // Check for basic errors
+        {
+            CSLog(@"Could not load image with filename");
+            return;
+        }
+
+        /*
+         orig = im2double(orig(:,:,1));         
+         */
+     
+        /*
+         %% Perform object identification
+         imbw = blobid(orig,0); % Use Gaussian kernel method
+         */
+        
+        /*
+         imbwCC = bwconncomp(imbw);
+         imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
+         */
+    
+        // Computer gradient image for HoG features
+        if (hogfeatures) {
+            // gradim = compute_gradient(orig,8);
+        }
     }
     
-    
-    /*
-     %% Read image and ensure is in 8-bit form (for easy display)
-     orig = imread(fullfile(pname,fname));
-     isuint8 = isa(orig,'uint8'); % Make sure image is 8-bit uint (I think CellScope default is 16-uint)
-     if (~isuint8) % Convert to uint8 if isn't already
-     orig = cast(orig,'uint8');
-     end
-     orig = im2double(orig(:,:,1));
-     
-     */
-        
-    
-    /*
-     %% Perform object identification
-     imbw = blobid(orig,0); % Use Gaussian kernel method
-     
-     */
-    
-    /*
-     % figure('Name',fname); imshow(orig); title('Original image');
-     imbwCC = bwconncomp(imbw);
-     imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
-     
-     
-     */
-    
-    /*
-     %% Compute gradient image for HoG features
-     if dohog
-     gradim = compute_gradient(orig,8);
-     end
-     
-     */
-    
+
     /*
      %% Exclude partial patches/do non-max suppression, store centroid/patch content
      q = 0;
@@ -261,27 +245,12 @@
      */
     
     /*
-     figure; imdisp(patches_srt(1:numpats),[0 1],'Border',0.05);
-     title('Sorted Grayscale Patches')
-     
-     %         figure('Name',fname); imdisp(binpatches_srt(1:numpats),[0 1],'Border',0.05)
-     %         title('Sorted Binarized Patches')
-     
      end
      toc
      
-     %     runtime(f) = toc;
-     %     numobjs(f) = data.NumObjects;
      
      csvwrite(['./out_',fname(1:end-4),'.csv'],[ctrs_sort scrs_sort]);
      end
-     
-     % profile viewer
-     % p = profile('info');
-     % save myprofiledata p
-     % profile off
-     
-     % save testruntime.mat runtime numobjs fnames_keep
      */
 
     
