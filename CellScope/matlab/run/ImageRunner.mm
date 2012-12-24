@@ -24,7 +24,7 @@
 {
     //METHODS:
     // blobid
-    // bwconncomp
+    // bwconncomp - possible replacement cvFindContours
     // regionprops
     // compute_gradient
     
@@ -80,48 +80,48 @@
         if (hogfeatures) {
             // gradim = compute_gradient(orig,8);
         }
+        
+        // Exclude partial patches, do non-max suppression, store centroid/patch content
+        int q = 0;
+        
+        // update vector of centroid values
+        //centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); % col idx in col 1, row idx in col 2
+
+        for (int s = 0; s < imbwCC.numObjects; s++) {
+            int partial = -1;
+            int col = centroids[s][0];
+            int row = centroids[s][2];
+            
+            // Check that patch is complete (not partial)
+            bool complete_1 = col - patchSize / 2 > 0 && row - patchSize /  > 0;
+            bool complete_2 = col + (sz / 2 -1) <= size(orig, 2);
+            bool complete_3 = row + (sz/2 - 1) <= size(orig,1));
+            if (complete_1 && complete_2 && complete_3) { // ensure the patch is complete (doesn't run off edge of image)
+                partial = 0;
+            } else { // partial patch, so discard
+                partial = 1;
+            }
+            
+            // Store good centroiss
+            if (partial == 0) {
+                q++;
+                data.stats[q].col = col;
+                data.stats[q].row = row;
+                
+                 //data.stats(q).patch = orig(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1)); % Store patch for viewing later
+                 //[data.stats(q).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
+                
+                if (hogFeatures) {
+                    //gradpatch = gradim(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1),:);
+                    //data.stats(q).gradpatch = gradpatch;
+                }
+            
+            }
+        }
+        data.numObjects = q;
     }
     
 
-    /*
-     %% Exclude partial patches/do non-max suppression, store centroid/patch content
-     q = 0;
-     % update vector of centroid values
-     centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); % col idx in col 1, row idx in col 2
-     for s = 1:imbwCC.NumObjects
-     partial = -1; % reset partial flag
-     col = centroids(s,1); row = centroids(s,2);
-     
-     
-     */
-    
-    /*
-     % Check that patch is complete (not partial)
-     if(col-sz/2>0 && row-sz/2>0 && col+(sz/2-1)<=size(orig,2) && row+(sz/2-1)<=size(orig,1))
-     % ensure that patch is complete (doesn't run off edge of image)
-     partial = 0; % partial patch, so discard
-     else partial = 1;
-     end
-     
-     */
-    
-    /*
-     % Store good patches/centroids
-     if(partial==0)
-     q = q+1;
-     data.stats(q).col = col; % col idx/x-coor
-     data.stats(q).row = row; % row idx/y-coor
-     data.stats(q).patch = orig(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1)); % Store patch for viewing later
-     [data.stats(q).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
-     if dohog
-     gradpatch = gradim(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1),:);
-     data.stats(q).gradpatch = gradpatch;
-     end
-     end
-     end
-     data.NumObjects = q; % data contains with only complete patches
-     
-     */
     /*
      %% Calculate features
      data = calcfeats(data,sz,dohog);
