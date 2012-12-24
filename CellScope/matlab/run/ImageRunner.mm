@@ -27,6 +27,7 @@
     // bwconncomp - possible replacement cvFindContours
     // regionprops
     // compute_gradient
+    // mybinarize
     
     // Handle incorrect parameters
     patchSize  = (patchSize %% 2 != 0) ? 24 : patchSize;
@@ -107,8 +108,11 @@
                 q++;
                 data.stats[q].col = col;
                 data.stats[q].row = row;
-                
-                 //data.stats(q).patch = orig(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1)); % Store patch for viewing later
+                int index_1 = (row - patchSize / 2) - 1;
+                int index_2 = row + (patchSize/2 - 1) - 1;
+                int index_3 = col - patchSize/2 - 1;
+                int index_4 = col + (patchSize / 2 - 1) - 1;
+                data.stats[q].patch = orig(index_1:index_2, index_3:index_4); // Store patch for viewing later
                  //[data.stats(q).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
                 
                 if (hogFeatures) {
