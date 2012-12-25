@@ -28,6 +28,7 @@
     // regionprops
     // compute_gradient
     // mybinarize
+    // calcfeats
     
     // Handle incorrect parameters
     patchSize  = (patchSize %% 2 != 0) ? 24 : patchSize;
@@ -108,6 +109,7 @@
                 q++;
                 data.stats[q].col = col;
                 data.stats[q].row = row;
+                // Indices in matlab are 1 based
                 int index_1 = (row - patchSize / 2) - 1;
                 int index_2 = row + (patchSize/2 - 1) - 1;
                 int index_3 = col - patchSize/2 - 1;
@@ -123,34 +125,37 @@
             }
         }
         data.numObjects = q;
+        // Calculate features
+        // data = calcfeats(data, patchSize, hogFeatures);
+        
+        
+        NSMutableArray* patches = [NSMutableArray array];
+        NSMutableArray* binPatches = [NSMutableArray array];
+        float[][] ctrs;
+        for (int j = 0; j < data.numObjects; j++) {
+            
+            // ctrs will be a [data.numObjects, 2] matrix
+            // containing the stats row and col
+            
+            // feats will be a [data.numObjects, 2/3] matrix
+            // containing the phi, geom, and possibly the hog
+            
+            /*
+            ctrs(t,:) = [data.stats(t).row data.stats(t).col];
+            
+            if dohog
+                feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
+            else
+                feats(t,:) = [data.stats(t).phi data.stats(t).geom];
+            end
+            binpatches{1,t} = data.stats(t).binpatch;
+            patches{1,t} = data.stats(t).patch; 
+             */
+        }
+
     }
     
-
-    /*
-     %% Calculate features
-     data = calcfeats(data,sz,dohog);
-     */
     
-    /*
-     clear feats ctrs
-     patches = cell(1,data.NumObjects);
-     binpatches = cell(1,data.NumObjects);
-     */
-    
-    /*
-     for t = 1:data.NumObjects
-     ctrs(t,:) = [data.stats(t).row data.stats(t).col];
-     
-     if dohog
-     feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
-     else
-     feats(t,:) = [data.stats(t).phi data.stats(t).geom];
-     end
-     binpatches{1,t} = data.stats(t).binpatch;
-     patches{1,t} = data.stats(t).patch;
-     end
-     
-     */
     
     /*
      
@@ -216,37 +221,6 @@
      
      */
     
-    /*
-     %% View results
-     if(viewpats)
-     thresh = 0.2; % threshold for visualization (objects with scores about this value will be marked red)
-     
-     % View classified objects on the image
-     figure('Name',fname); imshow(orig); hold on
-     title('Image with Classified Objects (R = Higher Scores, G = Lower Scores)');
-     for v = 1:length(scrs_sort)
-     row = ctrs_sort(v,1); col = ctrs_sort(v,2);
-     if scrs_sort(v)>thresh
-     rectangle('Position',[col-sz/2 row-sz/2 sz sz],'EdgeColor','r')
-     else
-     rectangle('Position',[col-sz/2 row-sz/2 sz sz],'EdgeColor','g')
-     end
-     end
-     hold off;
-     fprintf('Number of candidate TB-objects in this image: %4.0f\n',length(scrs_sort));
-     */
-    
-    /*
-     % View sorted grayscale patches
-     patches_srt = patches(Isort);
-     patches_srt = patches_srt(Ikeep);
-     patches_srt = patches_srt(~Isupp);
-     binpatches_srt = binpatches(Isort);
-     binpatches_srt = binpatches_srt(Ikeep);
-     binpatches_srt = binpatches_srt(~Isupp);
-     numpats = min(360,length(patches_srt)); % display sorted patches (up to 360)
-     
-     */
     
     /*
      end
