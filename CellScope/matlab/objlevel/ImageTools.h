@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <opencv2/core/core_c.h>
+#import <opencv2/core/core.hpp>
+
+using namespace cv;
 
 /**
  A variety of small helper functions
@@ -21,6 +23,6 @@
     @param image The UIImage to be converted
     @return Returns the cv::mat from the converted UIImage
  */
-+ (cv::Mat)cvMatWithImage:(UIImage *)image;
++ (Mat)cvMatWithImage:(UIImage *)image;
 
 @end

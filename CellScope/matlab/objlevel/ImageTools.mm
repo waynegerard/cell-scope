@@ -40,13 +40,13 @@
 }
 
 
-+ (cv::Mat)cvMatWithImage:(UIImage *)image
++ (Mat)cvMatWithImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
     
-    cv::Mat cvMat(rows, cols, CV_8UC4); // 8 bits per component, 4 channels
+    Mat cvMat(rows, cols, CV_8UC3); // 8 bits per component, 3 channels (RGB)
     
     CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
                                                     cols,                       // Width of bitmap

@@ -33,6 +33,7 @@
     
     // MATLAB methods:
     // repmat
+    // im2double
     // bwconncomp - possible replacement cvFindContours
     
     // GENERAL methods:
@@ -72,9 +73,25 @@
             return; // IM
         }
 
-        // TODO orig = im2double(orig(:,:,1));
+        // ASK: Is this right?
+        // Use only red channel for image
         
-        //Perform object identification
+        // WN: I have no idea if this is the right thing to be doing
+        // This seems to suggest so: http://www.cs.bc.edu/~hjiang/c335/notes/lec3/lec3.pdf
+        Mat red(image.rows, image.cols, CV_8UC1); // IM
+        Mat green(image.rows, image.cols, CV_8UC1); // IM
+        Mat blue(image.rows, image.cols, CV_8UC1); // IM
+        cvSplit(&image, &red, &green, &blue, 0); // IM
+        
+        // ASK: Normalize to values between [0, 1] ?
+        // Normalize the image to values between 0..1
+        Mat orig(image.rows, image.cols, CV_32F);
+        Mat red_32F(image.rows, image.cols, CV_32F);
+        convertScaleAbs(red, red_32F);
+        cvNormalize(&orig, &red_32F);
+        normalize(red_32F, orig, 0, NORM_MINMAX);
+        
+        // Perform object identification
         // TODO imbw = blobid(orig,0); % Use Gaussian kernel method
         
         // TODO imbwCC = bwconncomp(imbw);
@@ -92,7 +109,7 @@
         // TODO centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
 
         // TODO int numObjects = imbwCC.numObjects;
-        for (int j = 0; j < numObjects; j++) {
+        for (int j = 0; j < numObjects; j++) { // IM
             bool partial = NO; // IM
             int col = centroids[s][0];
             int row = centroids[s][2];
@@ -208,6 +225,7 @@
         /////////////////////////////////////////
         // Non-max Suppression Based on Scores //
         /////////////////////////////////////////
+        
         maxdist = sqrt(size(orig,1)^2 + size(orig,2)^2);
         cp_ctrs_sort = ctrs_sort;
         Isupp = zeros(length(scrs_sort),1);
