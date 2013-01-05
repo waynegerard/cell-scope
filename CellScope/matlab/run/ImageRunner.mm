@@ -34,7 +34,6 @@
     // MATLAB methods:
     // repmat
     // bwconncomp - possible replacement cvFindContours
-    // Zeros
     
     // GENERAL methods:
     // 1. Some kind of matrix cloning method
