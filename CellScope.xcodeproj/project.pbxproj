@@ -69,13 +69,13 @@
 		9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */; };
 		9BF8133E15E1AB0700AC9B3F /* PictureListMainTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */; };
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
-		AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */ = {isa = PBXBuildFile; fileRef = AC0D80A11669A5B60055B9E1 /* RunAll.c */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
 		ACB641FB1686D760006B7B41 /* Blobid.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blobid.m */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 		ACEF530F169557AF00348916 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.cpp */; };
+		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,7 +208,6 @@
 		9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListMainTable.m; sourceTree = "<group>"; };
 		9BF8134015E1B13500AC9B3F /* PictureListDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureListDetail.h; sourceTree = "<group>"; };
 		9BF8134115E1B13500AC9B3F /* PictureListDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListDetail.m; sourceTree = "<group>"; };
-		AC0D80A11669A5B60055B9E1 /* RunAll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = RunAll.c; path = matlab/run/RunAll.c; sourceTree = "<group>"; };
 		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = matlab/run/ImageRunner.h; sourceTree = "<group>"; };
 		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = matlab/run/ImageRunner.mm; sourceTree = "<group>"; };
 		ACB2657D1676D07500764B57 /* FeatureCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureCalculator.h; path = matlab/objlevel/FeatureCalculator.h; sourceTree = "<group>"; };
@@ -221,6 +220,8 @@
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		ACEF530D169557AF00348916 /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatrixOperations.cpp; path = matlab/other/MatrixOperations.cpp; sourceTree = "<group>"; };
 		ACEF530E169557AF00348916 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = matlab/other/MatrixOperations.h; sourceTree = "<group>"; };
+		ACFC05AD1698D13500411641 /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = matlab/run/Runner.h; sourceTree = "<group>"; };
+		ACFC05AE1698D13500411641 /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = matlab/run/Runner.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -493,9 +494,10 @@
 		AC0D809F1669A5980055B9E1 /* Run */ = {
 			isa = PBXGroup;
 			children = (
-				AC0D80A11669A5B60055B9E1 /* RunAll.c */,
 				AC5704581674252F0071225E /* ImageRunner.h */,
 				AC5704591674252F0071225E /* ImageRunner.mm */,
+				ACFC05AD1698D13500411641 /* Runner.h */,
+				ACFC05AE1698D13500411641 /* Runner.mm */,
 			);
 			name = Run;
 			sourceTree = "<group>";
@@ -684,12 +686,12 @@
 				9B5632CD15FAADD90035AEBC /* UIImage+Alpha.m in Sources */,
 				9B5632CE15FAADD90035AEBC /* UIImage+Resize.m in Sources */,
 				9B5632CF15FAADD90035AEBC /* UIImage+RoundedCorner.m in Sources */,
-				AC0D80A21669A5B60055B9E1 /* RunAll.c in Sources */,
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 				ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */,
 				ACB641FB1686D760006B7B41 /* Blobid.m in Sources */,
 				ACEF530F169557AF00348916 /* MatrixOperations.cpp in Sources */,
+				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

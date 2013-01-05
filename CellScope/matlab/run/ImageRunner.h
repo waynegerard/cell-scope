@@ -16,18 +16,29 @@ using namespace cv;
     /**
         The red-channel only, normalized image
      */
-    Mat orig;
+    Mat _orig;
     
     /**
         The patch size. Assumed to be divisible by 2, otherwise defaults to 24.
      */
-    int patchSize;
+    int _patchSize;
     
     /**
         Whether to do HoG features
      */
-    BOOL hogFeatures;
+    BOOL _hogFeatures;
     
 }
+
+@property (nonatomic, assign) Mat orig;
+@property (nonatomic, assign) int patchSize;
+@property (nonatomic, assign) BOOL hogFeatures;
+
+/**
+    Runs the image. Stores scores and centroids that pass the low-confidence filter, and returns
+    them as a CSV.
+    @param img The image to run
+ */
+- (void) runWithImage: (UIImage*) img;
 
 @end

@@ -16,6 +16,8 @@
 
 @implementation ImageRunner
 
+@synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
+
 // CELLSCOPE methods:
 // blobid
 // regionprops
@@ -33,34 +35,6 @@
 // GENERAL methods:
 // 1. Some kind of matrix cloning method
 
-
-- (void) mainWithHogFeatures: (BOOL) hog wthPatchSize: (int) patchSz {
-
-    // Handle incorrect parameters
-    patchSize  = (patchSize % 2 != 0) ? 24 : patchSz;
-    hogFeatures = hog;
-
-    if (hogFeatures) {
-        // TODO: Load the model without HoG features
-    } else {
-        // TODO: Load model with HoG features
-    }
-    
-    // Start timing
-    // TODO: Timing
-
-    // TODO: Let user choose images
-    NSMutableArray* images = [NSMutableArray arrayWithCapacity:1];
-    int count = [images count];
-    
-    for (int i = 0; i < count; i++) {
-        CSLog(@"Processing image %d of %d", i, count);
-        UIImage* ui_img = [images objectAtIndex:i];
-        [self runWithImage:ui_img];
-    }
-    
-    // TODO: Stop timing
-}
 
 /**
     Converts an image (as a Mat) to a red-channel only normalized image, with pixel intensities between 0..1
@@ -80,23 +54,32 @@
     
     // ASK: Normalize to values between [0, 1] ?
     // Normalize the image to values between 0..1
-    orig = Mat(image.rows, image.cols, CV_32F);
+    Mat orig = Mat(image.rows, image.cols, CV_32F);
     Mat red_32F(image.rows, image.cols, CV_32F);
     convertScaleAbs(red, red_32F);
     cvNormalize(&orig, &red_32F);
     normalize(red_32F, orig, 0, NORM_MINMAX);
+    return orig;
 }
 
 /**
     Checks patches for completness, and if patches are complete then returns a dictionary containing the following
     information:
     
-    1) The column 
-    2) The row
-    3) The patch
-    4) Possibly the gradient patch, if HoG features are enabled
+    1) The column [col: NSNumber]
+    2) The row [row: NSNumber]
+    3) The patch [patch: Mat]
+    4) The binary patch
+    5) Possibly the gradient patch, if HoG features are enabled [gradPatch: Mat]
+ 
+    @param row The row for this centroid
+    @param col The column for this centroid
+    @return    Returns a NSMutableDictionary containing the above 4 values with the key-value pairs in parantheses.
+               Will return NULL if this is a partial patch
  */
-- (void) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
+- (NSMutableDictionary*) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
+    
+    NSMutableDictionary* stats = [NSMutableDictionary dictionary];
     
     /////////////////////////////////
     // Patch Completeness Checking //
@@ -104,46 +87,55 @@
     bool partial = NO;
     
     // Lower bounds checking
-    int lowerC = col - patchSize / 2;
-    int lowerR = row - patchSize / 2;
+    int lowerC = col - self.patchSize / 2;
+    int lowerR = row - self.patchSize / 2;
     if (lowerC <= 0 || lowerR <= 0) {
         partial = YES;
     }
     
     // Higher bounds checking
-    int higherC = (col + (patchSize / 2 - 1));
-    int higherR = (row + (patchSize / 2 - 1));
+    int higherC = (col + (self.patchSize / 2 - 1));
+    int higherR = (row + (self.patchSize / 2 - 1));
     
-    if ((higherC > orig.cols) || (higherR  > orig.rows)) {
+    if ((higherC > self.orig.cols) || (higherR  > self.orig.rows)) {
         partial = YES;
     }
-    
+
+    if (partial) {
+        return NULL;
+    }
+
     //////////////////////////
     // Store good centroids //
     //////////////////////////
     
-    if (partial) {
-        return;
-    }
-    
-    patchCount++;
-    
-    data.stats[patchCount].col = col;
-    data.stats[patchCount].row = row;
+    [stats setValue:[NSNumber numberWithInt:col] forKey:@"col"];
+    [stats setValue:[NSNumber numberWithInt:row] forKey:@"row"];
     
     // Indices in matlab are 1 based
-    int row_start = (row - patchSize / 2) - 1; // IM
-    int row_end = row + (patchSize / 2 - 1) - 1; // IM
-    int col_start = col - patchSize / 2 - 1; // IM
-    int col_end = col + (patchSize / 2 - 1) - 1; // IM
-    data.stats[patchCount].patch = orig(row_start:row_end, col_start:col_end); // Store patch for viewing later
+    int row_start = (row - self.patchSize / 2) - 1;
+    int row_end = row + (self.patchSize / 2 - 1) - 1;
+    int col_start = col - self.patchSize / 2 - 1;
+    int col_end = col + (self.patchSize / 2 - 1) - 1;
+    Range rows = Range(row_start, row_end);
+    Range cols = Range(col_start, col_end);
+    
+    /**
+     TODO: Wrap this into a function somewhere, I suspect we'll be doing this a lot
+     */
+    Mat _patch = self.orig.operator()(rows, cols);
+    Mat* patchPointer = (Mat*)&_patch;
+    id patch = [NSValue valueWithPointer:patchPointer];
+    [stats setValue:patch forKey: @"patch"];
+    
     [data.stats(patchCount).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
     
     if (hogFeatures) { // IM
         gradpatch = gradim(row-patchSize/2:row+(patchSize/2-1),col-patchSize/2:col+(patchSize/2-1),:);
         data.stats(patchCount).gradpatch = gradpatch;
     }
-
+    
+    return stats;
 }
 
 /**
@@ -169,7 +161,8 @@
         return;
     }
     
-    orig = [self getRedImageNormalizedImage:image];
+    self.orig = [self getRedImageNormalizedImage:image];
+    NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
     // TODO imbw = blobid(orig,0); % Use Gaussian kernel method
@@ -193,7 +186,12 @@
         int col = centroids[j][0];
         int row = centroids[j][2];
         
-        
+        NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
+        if (stats != NULL) { // If not a partial patch
+            patchCount++;
+            [data addObject:stats];
+            
+        }
     }
     data.numObjects = patchCount;
     
