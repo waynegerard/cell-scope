@@ -123,10 +123,10 @@
                 continue; // IM
             } // IM
                         
-            patchCount++;
+            patchCount++; // IM
 
-            data.stats[q].col = col;
-            data.stats[q].row = row;
+            data.stats[patchCount].col = col;
+            data.stats[patchCount].row = row;
             
             // Indices in matlab are 1 based
             int row_start = (row - patchSize / 2) - 1; // IM
@@ -142,7 +142,7 @@
             }
             
         }
-        data.numObjects = q;
+        data.numObjects = patchCount;
         
         // Calculate features
         data = calcfeats(data, patchSize, hogFeatures);
@@ -150,30 +150,32 @@
         
         NSMutableArray* patches = [NSMutableArray array];
         NSMutableArray* binPatches = [NSMutableArray array];
-        float[][] ctrs;
-        for (int j = 0; j < data.numObjects; j++) {
-            
-            // ctrs will be a [data.numObjects, 2] matrix
-            // containing the stats row and col
-            
-            // feats will be a [data.numObjects, 2/3] matrix
-            // containing the phi, geom, and possibly the hog
-            
+        Mat* ctrs; // IM
+        Mat* feats; // IM
+
+        ctrs = Mat(patchCount, 2, CV_8UC1); // IM
+        if (hogFeatures) { // IM
+            feats = Mat(patchCount, 3, CV_8UC1); // IM
+        } else { // IM
+            feats = Mat(patchCount, 2, CV_8UC1); // IM
+        } // IM
+        
+        for (int j = 0; j < patchCount; j++) { // IM
             
             ctrs(t,:) = [data.stats(t).row data.stats(t).col];
             
-            if dohog
+            if (hogFeatures) { // IM
                 feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
-            else
+            } else { // IM
                 feats(t,:) = [data.stats(t).phi data.stats(t).geom];
-            end
+            }
             binpatches{1,t} = data.stats(t).binpatch;
             patches{1,t} = data.stats(t).patch;
         }
         
         // Prepare features and run object-level classifier
         Xtest = feats;
-        ytest_dummy = zeros(size(Xtest,1),1);
+        ytest_dummy = zeros(size(Xtest,1),1); // WN: Pretty sure this is equivalent to patchCount, 1
         
         // Minmax normalization of features
         maxmat = repmat(train_max,size(ytest_dummy));
@@ -194,18 +196,22 @@
         [scrs_sort, Isort] = sort(dvtest,'descend');
         ctrs_sort = ctrs(Isort,:);
         
-        //Drop extremely low-confidence patches
-        lowlim = 1e-6;
+        /////////////////////////////////
+        // Drop Low-confidence Patches //
+        /////////////////////////////////
+        float lowlim = 1e-6; // IM
+        
         Ikeep = scrs_sort>lowlim;
         scrs_sort = scrs_sort(Ikeep);
         ctrs_sort = ctrs_sort(Ikeep,:);
         
-        
-        // Non-max suppression based on scores
+        /////////////////////////////////////////
+        // Non-max Suppression Based on Scores //
+        /////////////////////////////////////////
         maxdist = sqrt(size(orig,1)^2 + size(orig,2)^2);
         cp_ctrs_sort = ctrs_sort;
         Isupp = zeros(length(scrs_sort),1);
-        for u = 1:length(scrs_sort) % starting from highest-scoring patch
+        for u = 1:length(scrs_sort) // starting from highest-scoring patch
             row = cp_ctrs_sort(u,1); col = cp_ctrs_sort(u,2);
             dist = sqrt((row-cp_ctrs_sort(:,1)).^2 + (col-cp_ctrs_sort(:,2)).^2);
          
