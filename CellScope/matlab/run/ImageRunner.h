@@ -11,6 +11,23 @@
 
 using namespace cv;
 
-@interface ImageRunner : NSObject
+@interface ImageRunner : NSObject {
+    
+    /**
+        The red-channel only, normalized image
+     */
+    Mat orig;
+    
+    /**
+        The patch size. Assumed to be divisible by 2, otherwise defaults to 24.
+     */
+    int patchSize;
+    
+    /**
+        Whether to do HoG features
+     */
+    BOOL hogFeatures;
+    
+}
 
 @end
