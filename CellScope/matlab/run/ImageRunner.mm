@@ -39,7 +39,7 @@
     // 1. Some kind of matrix cloning method
     
     // Handle incorrect parameters
-    patchSize  = (patchSize %% 2 != 0) ? 24 : patchSize;
+    patchSize  = (patchSize % 2 != 0) ? 24 : patchSize; // IM
     
     // TODO: Return CSV instead of void
     /*% OUTPUT: CSV file(s) with centroids and scores
@@ -60,71 +60,87 @@
     
     // Start timing
     // TODO: Timing
-    for (int i =0; i < count; i++) {
+    for (int i = 0; i < count; i++) {
         CSLog(@"Processing image %d of %d", i, count);
         UIImage* ui_img = [images objectAtIndex:i];
         
         // Convert the image to an OpenCV matrix
-        Mat image = [ImageTools cvMatWithImage:ui_img];
-        if(!image.data) // Check for basic errors
+        Mat image = [ImageTools cvMatWithImage:ui_img]; 
+        if(!image.data) // IM
         {
-            CSLog(@"Could not load image with filename");
-            return;
+            CSLog(@"Could not load image with filename"); // IM
+            return; // IM
         }
 
-        orig = im2double(orig(:,:,1));
+        // TODO orig = im2double(orig(:,:,1));
         
         //Perform object identification
-        imbw = blobid(orig,0); % Use Gaussian kernel method
+        // TODO imbw = blobid(orig,0); % Use Gaussian kernel method
         
-        imbwCC = bwconncomp(imbw);
-        imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
+        // TODO imbwCC = bwconncomp(imbw);
+        // TODO imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
     
         // Computer gradient image for HoG features
-        if (hogfeatures) {
-            gradim = compute_gradient(orig,8);
+        if (hogFeatures) { // IM
+            // TODO gradim = compute_gradient(orig,8);
         }
         
         // Exclude partial patches, do non-max suppression, store centroid/patch content
-        int q = 0;
+        int patchCount = 0; // IM
         
         // update vector of centroid values
-        centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); % col idx in col 1, row idx in col 2
+        // TODO centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
 
-        for (int s = 0; s < imbwCC.numObjects; s++) {
-            int partial = -1;
+        // TODO int numObjects = imbwCC.numObjects;
+        for (int j = 0; j < numObjects; j++) {
+            bool partial = NO; // IM
             int col = centroids[s][0];
             int row = centroids[s][2];
             
-            // Check that patch is complete (not partial)
-            bool complete_1 = col - patchSize / 2 > 0 && row - patchSize /  > 0;
-            bool complete_2 = col + (sz / 2 -1) <= size(orig, 2);
-            bool complete_3 = row + (sz/2 - 1) <= size(orig,1));
-            if (complete_1 && complete_2 && complete_3) { // ensure the patch is complete (doesn't run off edge of image)
-                partial = 0;
-            } else { // partial patch, so discard
-                partial = 1;
+            /////////////////////////////////
+            // Patch Completeness Checking //
+            /////////////////////////////////
+            
+            // Lower bounds checking
+            int lowerC = col - patchSize / 2; // IM
+            int lowerR = row - patchSize / 2; // IM
+            if (lowerC <= 0 || lowerR <= 0) { // IM
+                partial = YES; // IM
             }
             
-            // Store good centroiss
-            if (partial == 0) {
-                q++;
-                data.stats[q].col = col;
-                data.stats[q].row = row;
-                // Indices in matlab are 1 based
-                int index_1 = (row - patchSize / 2) - 1;
-                int index_2 = row + (patchSize/2 - 1) - 1;
-                int index_3 = col - patchSize/2 - 1;
-                int index_4 = col + (patchSize / 2 - 1) - 1;
-                data.stats[q].patch = orig(index_1:index_2, index_3:index_4); // Store patch for viewing later
-                [data.stats(q).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
+            // Higher bounds checking
+            int higherC = (col + (patchSize / 2 - 1)); // IM
+            int higherR = (row + (patchSize / 2 - 1)); // IM
+            if ((higherC > size(orig, 2)) || (higherR  > size(orig,1))) {
+                partial = YES; // IM
+            }
+                        
+            //////////////////////////
+            // Store good centroids //
+            //////////////////////////
+                           
+            if (partial) { // IM
+                continue; // IM
+            } // IM
+                        
+            patchCount++;
+
+            data.stats[q].col = col;
+            data.stats[q].row = row;
+            
+            // Indices in matlab are 1 based
+            int row_start = (row - patchSize / 2) - 1; // IM
+            int row_end = row + (patchSize / 2 - 1) - 1; // IM
+            int col_start = col - patchSize / 2 - 1; // IM
+            int col_end = col + (patchSize / 2 - 1) - 1; // IM
+            data.stats[q].patch = orig(row_start:row_end, col_start:col_end); // Store patch for viewing later
+            [data.stats(q).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
                 
-                if (hogFeatures) {
-                    gradpatch = gradim(row-sz/2:row+(sz/2-1),col-sz/2:col+(sz/2-1),:);
-                    data.stats(q).gradpatch = gradpatch;
-                }
-            
+            if (hogFeatures) { // IM
+                gradpatch = gradim(row-patchSize/2:row+(patchSize/2-1),col-patchSize/2:col+(patchSize/2-1),:);
+                data.stats(q).gradpatch = gradpatch;
             }
+            
         }
         data.numObjects = q;
         
@@ -177,8 +193,6 @@
         // Sort scores and centroids
         [scrs_sort, Isort] = sort(dvtest,'descend');
         ctrs_sort = ctrs(Isort,:);
-        
-        
         
         //Drop extremely low-confidence patches
         lowlim = 1e-6;
