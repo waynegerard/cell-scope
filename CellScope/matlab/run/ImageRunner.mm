@@ -12,6 +12,7 @@
 #import "ImageRunner.h"
 #import "ImageTools.h"
 #import "Globals.h"
+#import "MatrixOperations.h"
 #import <opencv2/core/core_c.h>
 
 @implementation ImageRunner
@@ -120,19 +121,24 @@
     Range rows = Range(row_start, row_end);
     Range cols = Range(col_start, col_end);
     
-    /**
-     TODO: Wrap this into a function somewhere, I suspect we'll be doing this a lot
-     */
     Mat _patch = self.orig.operator()(rows, cols);
-    Mat* patchPointer = (Mat*)&_patch;
-    id patch = [NSValue valueWithPointer:patchPointer];
+    id patch = [MatrixOperations convertMatToObject:_patch];
     [stats setValue:patch forKey: @"patch"];
     
-    [data.stats(patchCount).binpatch, prethresh, nullobj] = mybinarize(data.stats(q).patch);
+    [data.stats(patchCount).binpatch, prethresh, nullobj] = mybinarize(data.stats(patchCount).patch);
     
-    if (hogFeatures) { // IM
-        gradpatch = gradim(row-patchSize/2:row+(patchSize/2-1),col-patchSize/2:col+(patchSize/2-1),:);
-        data.stats(patchCount).gradpatch = gradpatch;
+    if (self.hogFeatures) {
+        int patchCenter = self.patchSize / 2;
+        int row_start = row - patchCenter - 1;
+        int row_end = row + patchCenter - 1;
+        int col_start = col - patchCenter - 1;
+        int col_end = col + patchCenter - 1;
+        
+        Range rows = Range(row_start, row_end);
+        Range cols = Range(col_start, col_end);
+        Mat _gradpatch = gradim(rows, cols);
+        id gradpatch = [MatrixOperations convertMatToObject:_gradpatch];
+        [stats setValue:gradpatch forKey: @"gradpatch"];
     }
     
     return stats;
@@ -171,7 +177,7 @@
     // TODO imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
 
     // Computer gradient image for HoG features
-    if (hogFeatures) { // IM
+    if (self.hogFeatures) { // IM
         // TODO gradim = compute_gradient(orig,8);
     }
     
@@ -193,35 +199,45 @@
             
         }
     }
-    data.numObjects = patchCount;
     
     // Calculate features
     data = calcfeats(data, patchSize, hogFeatures);
     
     
-    NSMutableArray* patches = [NSMutableArray array];
-    NSMutableArray* binPatches = [NSMutableArray array];
-    Mat* ctrs;
-    Mat* feats;
 
-    ctrs = Mat(patchCount, 2, CV_8UC1);
-    if (hogFeatures) {
-        feats = Mat(patchCount, 3, CV_8UC1);
-    } else {
-        feats = Mat(patchCount, 2, CV_8UC1);
-    } 
+    ////////////////////////////////////////////
+    // Store Centroids, Features, and Patches //
+    ////////////////////////////////////////////
+    
+    NSMutableArray* centroids  = [NSMutableArray array];
+    NSMutableArray* features   = [NSMutableArray array];
+    NSMutableArray* binpatches = [NSMutableArray array];
+    NSMutableArray* patches    = [NSMutableArray array];
     
     for (int j = 0; j < patchCount; j++) {
+        NSMutableDictionary* stats = [data objectAtIndex:j];
         
-        ctrs(t,:) = [data.stats(t).row data.stats(t).col];
+        // Centroid
+        NSArray* centroid =  [NSArray arrayWithObjects:
+                              [stats valueForKey:@"row"],
+                              [stats valueForKey:@"col"],
+                              nil];
         
-        if (hogFeatures) { 
-            feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
-        } else { // IM
-            feats(t,:) = [data.stats(t).phi data.stats(t).geom];
+        [centroids addObject: centroid];
+        
+        // Feature
+        NSMutableArray* feature = [NSMutableArray arrayWithObjects:
+                                   [stats valueForKey:@"phi"],
+                                   [stats valueForKey:@"geom"],
+                                   nil];
+        if (hogFeatures) {
+            [feature addObject: [stats valueForKey:@"hog"]];
         }
-        binpatches{1,t} = data.stats(t).binpatch;
-        patches{1,t} = data.stats(t).patch;
+        [features addObject: feature];
+        
+        // Patches
+        [binPatches addObject:[stats valueForKey:@"binpatch"]];
+        [patches addObject:[stats valueForKey:@"patch"]];
     }
     
     // Prepare features and run object-level classifier

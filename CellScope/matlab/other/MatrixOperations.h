@@ -6,18 +6,19 @@
 //  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
 //
 
-#ifndef __CellScope__MatrixOperations__
-#define __CellScope__MatrixOperations__
-
-#include <iostream>
-#include <opencv2/core/core.hpp>
+#import <Foundation/Foundation.h>
+#import <opencv2/core/core.hpp>
 
 using namespace cv;
 
-Mat zeroes(int rows, int cols);
+@interface MatrixOperations : NSObject
 
-Mat ones(int rows, int cols);
++ (Mat) zeroes:(int) rows cols:(int) cols;
 
-Mat repMat(Mat mat);
++ (Mat) ones:(int) rows cols:(int) cols;
 
-#endif /* defined(__CellScope__MatrixOperations__) */
++ (Mat) repMat:(Mat) mat;
+
++ (id) convertMatToObject:(Mat) mat;
+
+@end

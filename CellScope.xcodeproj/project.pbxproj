@@ -74,7 +74,7 @@
 		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
 		ACB641FB1686D760006B7B41 /* Blobid.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blobid.m */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
-		ACEF530F169557AF00348916 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.cpp */; };
+		ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.mm */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
 /* End PBXBuildFile section */
 
@@ -218,7 +218,7 @@
 		ACB641FA1686D760006B7B41 /* Blobid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Blobid.m; path = matlab/objlevel/Blobid.m; sourceTree = "<group>"; };
 		ACB641FC16876AE3006B7B41 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = matlab/Globals.h; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
-		ACEF530D169557AF00348916 /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatrixOperations.cpp; path = matlab/other/MatrixOperations.cpp; sourceTree = "<group>"; };
+		ACEF530D169557AF00348916 /* MatrixOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MatrixOperations.mm; path = matlab/other/MatrixOperations.mm; sourceTree = "<group>"; };
 		ACEF530E169557AF00348916 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = matlab/other/MatrixOperations.h; sourceTree = "<group>"; };
 		ACFC05AD1698D13500411641 /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = matlab/run/Runner.h; sourceTree = "<group>"; };
 		ACFC05AE1698D13500411641 /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = matlab/run/Runner.mm; sourceTree = "<group>"; };
@@ -529,7 +529,7 @@
 		ACD63EA4165DDB9000EDC898 /* other */ = {
 			isa = PBXGroup;
 			children = (
-				ACEF530D169557AF00348916 /* MatrixOperations.cpp */,
+				ACEF530D169557AF00348916 /* MatrixOperations.mm */,
 				ACEF530E169557AF00348916 /* MatrixOperations.h */,
 			);
 			name = other;
@@ -690,7 +690,7 @@
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 				ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */,
 				ACB641FB1686D760006B7B41 /* Blobid.m in Sources */,
-				ACEF530F169557AF00348916 /* MatrixOperations.cpp in Sources */,
+				ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */,
 				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
