@@ -30,11 +30,7 @@
 
 // MATLAB methods:
 // repmat
-// im2double
 // bwconncomp - possible replacement cvFindContours
-
-// GENERAL methods:
-// 1. Some kind of matrix cloning method
 
 
 /**
@@ -125,7 +121,7 @@
     id patch = [MatrixOperations convertMatToObject:_patch];
     [stats setValue:patch forKey: @"patch"];
     
-    [data.stats(patchCount).binpatch, prethresh, nullobj] = mybinarize(data.stats(patchCount).patch);
+    data.stats(patchCount).binpatch = mybinarize(_patch);
     
     if (self.hogFeatures) {
         int patchCenter = self.patchSize / 2;
@@ -205,9 +201,9 @@
     
     
 
-    ////////////////////////////////////////////
-    // Store Centroids, Features, and Patches //
-    ////////////////////////////////////////////
+    /////////////////////////////////////////////////
+    // Store Centroids, Features, and Patches (IM) //
+    /////////////////////////////////////////////////
     
     NSMutableArray* centroids  = [NSMutableArray array];
     NSMutableArray* features   = [NSMutableArray array];
@@ -240,6 +236,10 @@
         [patches addObject:[stats valueForKey:@"patch"]];
     }
     
+    //////////////////////
+    // Prepare Features //
+    //////////////////////
+    
     // Prepare features and run object-level classifier
     Xtest = feats;
     ytest_dummy = zeros(size(Xtest,1),1); // WN: Pretty sure this is equivalent to patchCount, 1
@@ -249,9 +249,9 @@
     minmat = repmat(train_min,size(ytest_dummy));
     Xtest = (Xtest-minmat)./(maxmat-minmat);
     
-    //////////////////////
-    // Classify Objects //
-    //////////////////////
+    ///////////////////////////////
+    // Classify Objects and Sort //
+    ///////////////////////////////
     
     // LibSVM IKSVM classifier
     [pltest, accutest, dvtest] = svmpredict(double(ytest_dummy),double(Xtest),model,'-b 1');
@@ -260,17 +260,26 @@
     // NOTE: We don't need to do logistic regression because it's built into LibSVM
 
     // Sort scores and centroids
+    NSMutableArray* sortedScores = [NSMutableArray array];
     [scrs_sort, Isort] = sort(dvtest,'descend');
     ctrs_sort = ctrs(Isort,:);
     
-    /////////////////////////////////
-    // Drop Low-confidence Patches //
-    /////////////////////////////////
-    float lowlim = 1e-6; // IM
+    //////////////////////////////////////
+    // Drop Low-confidence Patches (IM) //
+    //////////////////////////////////////
+
+    float lowlim = 1e-6;
+    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
+
+    for (int i = 0; i < [sortedScores count]; i++) {
+        float score = [sortedScores objectAtIndex:i];
+        if (i <= lowlim) {
+            [lowConfidencePatches addIndex:i];
+        }
+    }
+    [sortedScores removeObjectsAtIndexes:lowConfidencePatches];
+    [centroids removeObjectsAtIndexes:lowConfidencePatches];
     
-    Ikeep = scrs_sort>lowlim;
-    scrs_sort = scrs_sort(Ikeep);
-    ctrs_sort = ctrs_sort(Ikeep,:);
     
     /////////////////////////////////////////
     // Non-max Suppression Based on Scores //
@@ -278,28 +287,31 @@
     
     maxdist = sqrt(size(orig,1)^2 + size(orig,2)^2);
     cp_ctrs_sort = ctrs_sort;
-    Isupp = zeros(length(scrs_sort),1);
-    for u = 1:length(scrs_sort) // starting from highest-scoring patch
-        row = cp_ctrs_sort(u,1); col = cp_ctrs_sort(u,2);
-        dist = sqrt((row-cp_ctrs_sort(:,1)).^2 + (col-cp_ctrs_sort(:,2)).^2);
-     
-        dist(dist==0) = maxdist; % for current patch, artificially elevate so that won't be counted as min
-        [mindist,idx] = min(dist); % find closest patch to see if too much overlap
-     
-        tooclose = 0.75*sz; % non-max suppression parameter, "too close" distance
-        if(mindist <= tooclose) % if too much overlap
-            cp_ctrs_sort(idx,1) = -size(orig,1); cp_ctrs_sort(idx,2) = -size(orig,2); % prevent triggering non-max again/get rid of lower-score object
-            Isupp(u) = 1; % suppress this patch
-        end
-     end
-     
-     scrs_sort = scrs_sort(~Isupp);
-     ctrs_sort = ctrs_sort(~Isupp,:);
-     
-    csvwrite(['./out_',fname(1:end-4),'.csv'],[ctrs_sort scrs_sort]);
-}
 
+    NSMutableIndexSet* suppressedPatches = [NSMutableIndexSet indexSet];
+    for (int i = 0; i < [sortedScores count]; i++) { // This should start from the highest-scoring patch
+        NSArray* centroid = [centroids objectAtIndex:i];
+        int row = [centroid objectAtIndex:0];
+        int col = [centroid objectAtIndex:1];
+        
+        dist = sqrt((row-cp_ctrs_sort(:,1)).^2 + (col-cp_ctrs_sort(:,2)).^2);
+        
+        dist(dist==0) = maxdist; // for current patch, artificially elevate so that won't be counted as min
+        [mindist,idx] = min(dist); // find closest patch to see if too much overlap
+        float cutoff = 0.75 * self.patchSize; // non-max suppression parameter, "too close" distance
+        if(mindist <= cutoff) { // if too much overlap
+            cp_ctrs_sort(idx,1) = -size(orig,1);
+            cp_ctrs_sort(idx,2) = -size(orig,2); // prevent triggering non-max again/get rid of lower-score object
+        
+            // Suppress this patch
+            [suppressedPatches addIndex:i];
+        }
+    }
+
+    [sortedScores removeObjectsAtIndexes:suppressedPatches];
+    [centroids removeObjectsAtIndexes:suppressedPatches];
     
+    csvwrite(['./out_',fname(1:end-4),'.csv'],[ctrs_sort scrs_sort]);
 }
 
 @end
