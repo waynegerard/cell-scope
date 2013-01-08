@@ -120,9 +120,8 @@
     Mat _patch = self.orig.operator()(rows, cols);
     id patch = [MatrixOperations convertMatToObject:_patch];
     [stats setValue:patch forKey: @"patch"];
-    
-    data.stats(patchCount).binpatch = mybinarize(_patch);
-    
+
+    /* WAYNE NOTE: This isn't being used anywhere - do we need this method?
     if (self.hogFeatures) {
         int patchCenter = self.patchSize / 2;
         int row_start = row - patchCenter - 1;
@@ -136,6 +135,7 @@
         id gradpatch = [MatrixOperations convertMatToObject:_gradpatch];
         [stats setValue:gradpatch forKey: @"gradpatch"];
     }
+     */
     
     return stats;
 }
@@ -199,16 +199,13 @@
     // Calculate features
     data = calcfeats(data, patchSize, hogFeatures);
     
-    
 
-    /////////////////////////////////////////////////
-    // Store Centroids, Features, and Patches (IM) //
-    /////////////////////////////////////////////////
+    ////////////////////////////////////
+    // Store Centroids, Features (IM) //
+    ////////////////////////////////////
     
     NSMutableArray* centroids  = [NSMutableArray array];
     NSMutableArray* features   = [NSMutableArray array];
-    NSMutableArray* binpatches = [NSMutableArray array];
-    NSMutableArray* patches    = [NSMutableArray array];
     
     for (int j = 0; j < patchCount; j++) {
         NSMutableDictionary* stats = [data objectAtIndex:j];
@@ -226,14 +223,10 @@
                                    [stats valueForKey:@"phi"],
                                    [stats valueForKey:@"geom"],
                                    nil];
-        if (hogFeatures) {
+        if (self.hogFeatures) {
             [feature addObject: [stats valueForKey:@"hog"]];
         }
-        [features addObject: feature];
-        
-        // Patches
-        [binPatches addObject:[stats valueForKey:@"binpatch"]];
-        [patches addObject:[stats valueForKey:@"patch"]];
+        [features addObject: feature];        
     }
     
     //////////////////////
@@ -249,9 +242,9 @@
     minmat = repmat(train_min,size(ytest_dummy));
     Xtest = (Xtest-minmat)./(maxmat-minmat);
     
-    ///////////////////////////////
-    // Classify Objects and Sort //
-    ///////////////////////////////
+    //////////////////////
+    // Classify Objects //
+    //////////////////////
     
     // LibSVM IKSVM classifier
     [pltest, accutest, dvtest] = svmpredict(double(ytest_dummy),double(Xtest),model,'-b 1');
@@ -259,7 +252,10 @@
     
     // NOTE: We don't need to do logistic regression because it's built into LibSVM
 
-    // Sort scores and centroids
+    ///////////////////////////////
+    // Sort Scores and Centroids //
+    ///////////////////////////////
+    
     NSMutableArray* sortedScores = [NSMutableArray array];
     [scrs_sort, Isort] = sort(dvtest,'descend');
     ctrs_sort = ctrs(Isort,:);
@@ -287,17 +283,42 @@
     
     maxdist = sqrt(size(orig,1)^2 + size(orig,2)^2);
     cp_ctrs_sort = ctrs_sort;
-
+    
+    // Setup rows and columns for next step
+    NSMutableArray* centroidRows = [NSMutableArray array];
+    NSMutableArray* centroidCols = [NSMutableArray array];
+    for (int i = 0; i < [centroids count]; i++) {
+        NSArray* centroid = [centroids objectAtIndex:i];
+        int row = [centroid objectAtIndex:0];
+        int col = [centroid objectAtIndex:1];
+        [centroidRows addObject:[NSNumber numberWithInt:row]];
+        [centroidCols addObject:[NSNumber numberWithInt:col]];
+    }
+    
     NSMutableIndexSet* suppressedPatches = [NSMutableIndexSet indexSet];
     for (int i = 0; i < [sortedScores count]; i++) { // This should start from the highest-scoring patch
         NSArray* centroid = [centroids objectAtIndex:i];
         int row = [centroid objectAtIndex:0];
         int col = [centroid objectAtIndex:1];
         
-        dist = sqrt((row-cp_ctrs_sort(:,1)).^2 + (col-cp_ctrs_sort(:,2)).^2);
+        NSArray* rowCopy = [NSArray arrayWithArray:centroidRows];
+        NSArray* colCopy = [NSArray arrayWithArray:centroidCols];
+        NSMutableArray* distance = [NSMutableArray array];
+        for (int j = 0; j < [rowCopy count]; j++;) {
+            int newRowVal = row - [rowCopy objectAtIndex: j];
+            int newColVal = col - [colCopy objectAtIndex: j];
+
+            newRowVal = newRowVal ** 2;
+            newColVal = newColVal ** 2;
+            
+            float newVal = newRowVal + newColVal;
+            newVal = newVal ** 0.5;
+            [distance addObject:[NSNumber numberWithFloat:newVal]];
+        }
         
         dist(dist==0) = maxdist; // for current patch, artificially elevate so that won't be counted as min
         [mindist,idx] = min(dist); // find closest patch to see if too much overlap
+        
         float cutoff = 0.75 * self.patchSize; // non-max suppression parameter, "too close" distance
         if(mindist <= cutoff) { // if too much overlap
             cp_ctrs_sort(idx,1) = -size(orig,1);
