@@ -277,12 +277,11 @@
     [centroids removeObjectsAtIndexes:lowConfidencePatches];
     
     
-    /////////////////////////////////////////
-    // Non-max Suppression Based on Scores //
-    /////////////////////////////////////////
+    //////////////////////////////////////////////
+    // Non-max Suppression Based on Scores (IM) //
+    //////////////////////////////////////////////
     
-    maxdist = sqrt(size(orig,1)^2 + size(orig,2)^2);
-    cp_ctrs_sort = ctrs_sort;
+    float maxDistance = ((self.orig.rows ** 2) + (self.orig.cols ** 2)) ** 0.5;
     
     // Setup rows and columns for next step
     NSMutableArray* centroidRows = [NSMutableArray array];
@@ -304,6 +303,10 @@
         NSArray* rowCopy = [NSArray arrayWithArray:centroidRows];
         NSArray* colCopy = [NSArray arrayWithArray:centroidCols];
         NSMutableArray* distance = [NSMutableArray array];
+        
+        float minDistance = 1e99;
+        int minDistanceIndex = -1;
+        
         for (int j = 0; j < [rowCopy count]; j++;) {
             int newRowVal = row - [rowCopy objectAtIndex: j];
             int newColVal = col - [colCopy objectAtIndex: j];
@@ -313,17 +316,27 @@
             
             float newVal = newRowVal + newColVal;
             newVal = newVal ** 0.5;
+            
+            if (newVal < minDistance && newVal != 0) {
+                minDistance = newVal;
+                minDistanceIndex = j;
+            }
+            
+            
             [distance addObject:[NSNumber numberWithFloat:newVal]];
         }
         
-        dist(dist==0) = maxdist; // for current patch, artificially elevate so that won't be counted as min
-        [mindist,idx] = min(dist); // find closest patch to see if too much overlap
+        // Find the patch with the minimum distance (that isn't the current patch, where distance == 0)
         
+        // See if it's too close. If it is, then suppress the patch
         float cutoff = 0.75 * self.patchSize; // non-max suppression parameter, "too close" distance
-        if(mindist <= cutoff) { // if too much overlap
-            cp_ctrs_sort(idx,1) = -size(orig,1);
-            cp_ctrs_sort(idx,2) = -size(orig,2); // prevent triggering non-max again/get rid of lower-score object
-        
+        if(minDistance <= cutoff) { // if too much overlap
+            // WG Note: Why is this necessary again?
+            // prevent triggering non-max again/get rid of lower-score object
+            NSArray* newCentroid = [NSArray arrayWithObjects:
+                                    [NSNumber numberWithInt:(-1 * self.orig.rows)],
+                                    [NSNumber numberWithInt:(-1 * self.orig.cols)],
+                                    nil]        
             // Suppress this patch
             [suppressedPatches addIndex:i];
         }
@@ -331,6 +344,10 @@
 
     [sortedScores removeObjectsAtIndexes:suppressedPatches];
     [centroids removeObjectsAtIndexes:suppressedPatches];
+    
+    //////////////////
+    // Write to CSV //
+    //////////////////
     
     csvwrite(['./out_',fname(1:end-4),'.csv'],[ctrs_sort scrs_sort]);
 }
