@@ -248,17 +248,43 @@
     
     // LibSVM IKSVM classifier
     [pltest, accutest, dvtest] = svmpredict(double(ytest_dummy),double(Xtest),model,'-b 1');
+    NSMutableArray* dvtest = [NSMutableArray array];
     dvtest = dvtest(:,model.Label==1);
+    NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
     
     // NOTE: We don't need to do logistic regression because it's built into LibSVM
 
-    ///////////////////////////////
-    // Sort Scores and Centroids //
-    ///////////////////////////////
+    ////////////////////////////////////
+    // Sort Scores and Centroids (IM) //
+    ////////////////////////////////////
     
+    [sortedDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
+        score1 = [dictOne valueForKey:@"value"];
+        score2 = [dictTwo valueForKey:@"value"];
+        if (score1 < score2)
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+    }];
+    
+    // Now sortedDictionaryArray is sorted in descending order
+    // Sort sortedScores and centroids using the indices attached to the sortedDictionaryArray
+
     NSMutableArray* sortedScores = [NSMutableArray array];
-    [scrs_sort, Isort] = sort(dvtest,'descend');
-    ctrs_sort = ctrs(Isort,:);
+    
+    for (int i = 0; i < [sortedScores count]; i++) {
+        NSMutableDictionary* score = [sortedScores objectAtIndex:i];
+        NSNumber* value = [score valueForKey:@"value"];
+        int index = [[score valueForKey:@"index"] intValue];
+        
+        NSNumber* oldObject = [centroids objectAtIndex:i];
+        NSNumber* sortedObject = [centroids objectAtIndex:index];
+        
+        [centroids replaceObjectAtIndex:index withObject:oldObject];
+        [centroids replaceObjectAtIndex:i withObject:sortedObject];
+        [sortedScores addObject:value];
+
+    }
     
     //////////////////////////////////////
     // Drop Low-confidence Patches (IM) //
