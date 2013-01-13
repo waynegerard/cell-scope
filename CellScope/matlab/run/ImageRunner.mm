@@ -19,20 +19,6 @@
 
 @synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
 
-// CELLSCOPE methods:
-// blobid
-// regionprops
-// compute_gradient
-// mybinarize
-// calcfeats
-// train_max
-// train_min
-
-// MATLAB methods:
-// repmat
-// bwconncomp - possible replacement cvFindContours
-
-
 /**
     Converts an image (as a Mat) to a red-channel only normalized image, with pixel intensities between 0..1
     @param image The image, assumed to be a color image with all 3 channels
@@ -167,23 +153,24 @@
     NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
-    // TODO imbw = blobid(orig,0); % Use Gaussian kernel method
+    imbw = blobid(orig,0); % Use Gaussian kernel method
     
-    // TODO imbwCC = bwconncomp(imbw);
-    // TODO imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
+    imbwCC = bwconncomp(imbw);
+    imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
 
     // Computer gradient image for HoG features
-    if (self.hogFeatures) { // IM
-        // TODO gradim = compute_gradient(orig,8);
+    if (self.hogFeatures) { //
+        // WAYNE NOTE: Pretty sure this isn't being used anywhere. Confirm?
+       // gradim = compute_gradient(orig,8);
     }
     
-    // Exclude partial patches, do non-max suppression, store centroid/patch content
-    int patchCount = 0; // IM
+    int patchCount = 0;
     
     // update vector of centroid values
-    // TODO centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
+    centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
 
-    // TODO int numObjects = imbwCC.numObjects;
+    int numObjects = imbwCC.numObjects;
+    
     for (int j = 0; j < numObjects; j++) { // IM
         int col = centroids[j][0];
         int row = centroids[j][2];
@@ -198,13 +185,22 @@
     
     // Calculate features
     data = calcfeats(data, patchSize, hogFeatures);
+    Mat train_max;
+    Mat train_min;
     
 
     ////////////////////////////////////
-    // Store Centroids, Features (IM) //
+    // Store Centroids, Features  //
     ////////////////////////////////////
     
     NSMutableArray* centroids  = [NSMutableArray array];
+    
+    Mat features;
+    if (self.hogFeatures) {
+        features = Mat(patchCount, 3, CV_8UC1);
+    } else {
+        features = Mat(patchCount, 2, CV_8UC1);
+    }
     NSMutableArray* features   = [NSMutableArray array];
     
     for (int j = 0; j < patchCount; j++) {
@@ -219,14 +215,12 @@
         [centroids addObject: centroid];
         
         // Feature
-        NSMutableArray* feature = [NSMutableArray arrayWithObjects:
-                                   [stats valueForKey:@"phi"],
-                                   [stats valueForKey:@"geom"],
-                                   nil];
+        features.at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
+        features.at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
+        
         if (self.hogFeatures) {
-            [feature addObject: [stats valueForKey:@"hog"]];
+            features.at<float>(j, 2) = [[stats valueForKey:@"hog"] floatValue];
         }
-        [features addObject: feature];        
     }
     
     //////////////////////
@@ -234,13 +228,21 @@
     //////////////////////
     
     // Prepare features and run object-level classifier
-    Xtest = feats;
-    ytest_dummy = zeros(size(Xtest,1),1); // WN: Pretty sure this is equivalent to patchCount, 1
+    Mat xTest;
+    Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
+    //Xtest = features
     
     // Minmax normalization of features
-    maxmat = repmat(train_max,size(ytest_dummy));
-    minmat = repmat(train_min,size(ytest_dummy));
-    Xtest = (Xtest-minmat)./(maxmat-minmat);
+    //ytest is a patchSize x 1 matrix, so repmat(train_max, size(ytest_dummy)) = repmat(train_max, patchSize, 1)
+    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
+    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+
+    Mat FeaturesMinusMin;
+    Mat MaxMinusMin;
+    subtract(maxMatrix, minMatrix, MaxMinusMin);
+    subtract(features, minMatrix, FeaturesMinusMin);
+    
+    Xtest = (Xtest-minmat)./(maxmat-minmat); // ./ means treat it as an array
     
     //////////////////////
     // Classify Objects //

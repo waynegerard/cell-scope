@@ -10,16 +10,20 @@
 
 @implementation MatrixOperations
 
-+ (Mat) zeroes:(int) rows cols:(int) cols {
-    return Mat(rows, cols, CV_8UC1, Scalar::all(0));
-}
-
-+ (Mat) ones:(int) rows cols:(int) cols {
-    return Mat(rows, cols, CV_8UC1, Scalar::all(1));
-}
-
-+ (Mat) repMat:(Mat) mat {
-    return Mat(0,0,CV_8UC1, Scalar::all(0));
++ (Mat) repMat:(Mat) mat withRows:(int) rows withCols:(int) cols{
+    Mat m = Mat(rows, cols, CV_8UC1);
+    
+    // Naive implementation for now, copy row and column individually
+    
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            int row = i % mat.rows;
+            int col = j % mat.cols;
+            float val = mat.at<float>(row, col);
+            m.at<float>(i, j) = val;
+        }
+    }
+    return m;
 }
 
 + (id) convertMatToObject:(Mat) mat{
