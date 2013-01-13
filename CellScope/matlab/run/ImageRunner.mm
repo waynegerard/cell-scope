@@ -223,9 +223,9 @@
         }
     }
     
-    //////////////////////
-    // Prepare Features //
-    //////////////////////
+    ///////////////////////////
+    // Prepare Features (IM) //
+    ///////////////////////////
     
     // Prepare features and run object-level classifier
     Mat xTest;
@@ -242,7 +242,8 @@
     subtract(maxMatrix, minMatrix, MaxMinusMin);
     subtract(features, minMatrix, FeaturesMinusMin);
     
-    Xtest = (Xtest-minmat)./(maxmat-minmat); // ./ means treat it as an array
+    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinsMin.cols, CV_8UC1);
+    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
     
     //////////////////////
     // Classify Objects //
