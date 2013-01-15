@@ -19,174 +19,18 @@
 
 @synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
 
-- (Mat) getRedImageNormalizedImage: (Mat) image {
-    // ASK: Is this right?
-    // Use only red channel for image
-    
-    // WN: I have no idea if this is the right thing to be doing
-    // This seems to suggest so: http://www.cs.bc.edu/~hjiang/c335/notes/lec3/lec3.pdf
-    Mat red(image.rows, image.cols, CV_8UC1);
-    Mat green(image.rows, image.cols, CV_8UC1);
-    Mat blue(image.rows, image.cols, CV_8UC1);
-    cvSplit(&image, &red, &green, &blue, 0);
-    
-    // ASK: Normalize to values between [0, 1] ?
-    // Normalize the image to values between 0..1
-    Mat orig = Mat(image.rows, image.cols, CV_32F);
-    Mat red_32F(image.rows, image.cols, CV_32F);
-    convertScaleAbs(red, red_32F);
-    cvNormalize(&orig, &red_32F);
-    normalize(red_32F, orig, 0, NORM_MINMAX);
-    return orig;
-}
-
-- (NSMutableDictionary*) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
-    
-    NSMutableDictionary* stats = [NSMutableDictionary dictionary];
-    
-    /////////////////////////////////
-    // Patch Completeness Checking //
-    /////////////////////////////////
-    bool partial = NO;
-    
-    // Lower bounds checking
-    int lowerC = col - self.patchSize / 2;
-    int lowerR = row - self.patchSize / 2;
-    if (lowerC <= 0 || lowerR <= 0) {
-        partial = YES;
-    }
-    
-    // Higher bounds checking
-    int higherC = (col + (self.patchSize / 2 - 1));
-    int higherR = (row + (self.patchSize / 2 - 1));
-    
-    if ((higherC > self.orig.cols) || (higherR  > self.orig.rows)) {
-        partial = YES;
-    }
-
-    if (partial) {
-        return NULL;
-    }
-
-    //////////////////////////
-    // Store good centroids //
-    //////////////////////////
-    
-    [stats setValue:[NSNumber numberWithInt:col] forKey:@"col"];
-    [stats setValue:[NSNumber numberWithInt:row] forKey:@"row"];
-    
-    // Indices in matlab are 1 based
-    int row_start = (row - self.patchSize / 2) - 1;
-    int row_end = row + (self.patchSize / 2 - 1) - 1;
-    int col_start = col - self.patchSize / 2 - 1;
-    int col_end = col + (self.patchSize / 2 - 1) - 1;
-    Range rows = Range(row_start, row_end);
-    Range cols = Range(col_start, col_end);
-    
-    Mat _patch = self.orig.operator()(rows, cols);
-    id patch = [MatrixOperations convertMatToObject:_patch];
-    [stats setValue:patch forKey: @"patch"];
-
-    /* WAYNE NOTE: This isn't being used anywhere - do we need this method?
-    if (self.hogFeatures) {
-        int patchCenter = self.patchSize / 2;
-        int row_start = row - patchCenter - 1;
-        int row_end = row + patchCenter - 1;
-        int col_start = col - patchCenter - 1;
-        int col_end = col + patchCenter - 1;
-        
-        Range rows = Range(row_start, row_end);
-        Range cols = Range(col_start, col_end);
-        Mat _gradpatch = gradim(rows, cols);
-        id gradpatch = [MatrixOperations convertMatToObject:_gradpatch];
-        [stats setValue:gradpatch forKey: @"gradpatch"];
-    }
-     */
-    
-    return stats;
-}
-
-- (void) storeCentroidsAndFeaturesWithData:(NSMutableArray*) data
+- (NSMutableIndexSet*) findLowConfidencePatches
 {
- 
-    _centroids  = [NSMutableArray array];
+    float lowlim = 1e-6;
+    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
     
-    Mat feature_mat;
-    if (self.hogFeatures) {
-        feature_mat = Mat(_patchCount, 3, CV_8UC1);
-    } else {
-        feature_mat = Mat(_patchCount, 2, CV_8UC1);
-    }
-    _features = (Mat*) &feature_mat;
-    
-    for (int j = 0; j < _patchCount; j++) {
-        NSMutableDictionary* stats = [data objectAtIndex:j];
-        
-        // Centroid
-        NSArray* centroid =  [NSArray arrayWithObjects:
-                              [stats valueForKey:@"row"],
-                              [stats valueForKey:@"col"],
-                              nil];
-        
-        [_centroids addObject: centroid];
-        
-        // Feature
-        _features->at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
-        _features->at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
-        
-        if (self.hogFeatures) {
-            _features->at<float>(j, 2) = [[stats valueForKey:@"hog"] floatValue];
+    for (int i = 0; i < [_sortedScores count]; i++) {
+        float score = [[_sortedScores objectAtIndex:i] floatValue];
+        if (score <= lowlim) {
+            [lowConfidencePatches addIndex:i];
         }
     }
-    
-}
-
-- (NSMutableArray*) sortScoresWithArray:(NSMutableArray*) scoreDictionaryArray
-{
-    [scoreDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
-        float score1 = [[dictOne valueForKey:@"value"] floatValue];
-        float score2 = [[dictTwo valueForKey:@"value"] floatValue];
-        if (score1 < score2)
-            return NSOrderedAscending;
-        else
-            return NSOrderedDescending;
-    }];
-    
-    // Now sortedDictionaryArray is sorted in descending order
-    // Sort sortedScores and centroids using the indices attached to the sortedDictionaryArray
-    
-    NSMutableArray* sortedScores = [NSMutableArray array];
-    
-    for (int i = 0; i < [sortedScores count]; i++) {
-        NSMutableDictionary* score = [sortedScores objectAtIndex:i];
-        NSNumber* value = [score valueForKey:@"value"];
-        int index = [[score valueForKey:@"index"] intValue];
-        
-        NSNumber* oldObject = [_centroids objectAtIndex:i];
-        NSNumber* sortedObject = [_centroids objectAtIndex:index];
-        
-        [_centroids replaceObjectAtIndex:index withObject:oldObject];
-        [_centroids replaceObjectAtIndex:i withObject:sortedObject];
-        [sortedScores addObject:value];
-        
-    }
-    return sortedScores;
-}
-
-- (Mat) prepareFeatures
-{
-    // Minmax normalization of features
-    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
-    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
-    
-    Mat FeaturesMinusMin;
-    Mat MaxMinusMin;
-    subtract(maxMatrix, minMatrix, MaxMinusMin);
-    subtract(*_features, minMatrix, FeaturesMinusMin);
-    
-    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
-    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
-    return Xtest;
+    return lowConfidencePatches;
 }
 
 - (NSMutableIndexSet*) findSuppressedPatches
@@ -255,29 +99,43 @@
 }
 
 
-- (void) writeToCSV
-{
-    // TODO: Implement
-}
-
-
-- (NSMutableIndexSet*) findLowConfidencePatches
-{
-    float lowlim = 1e-6;
-    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
+- (Mat) getRedImageNormalizedImage: (Mat) image {
+    // ASK: Is this right?
+    // Use only red channel for image
     
-    for (int i = 0; i < [_sortedScores count]; i++) {
-        float score = [[_sortedScores objectAtIndex:i] floatValue];
-        if (score <= lowlim) {
-            [lowConfidencePatches addIndex:i];
-        }
-    }
-    return lowConfidencePatches;
+    // WN: I have no idea if this is the right thing to be doing
+    // This seems to suggest so: http://www.cs.bc.edu/~hjiang/c335/notes/lec3/lec3.pdf
+    Mat red(image.rows, image.cols, CV_8UC1);
+    Mat green(image.rows, image.cols, CV_8UC1);
+    Mat blue(image.rows, image.cols, CV_8UC1);
+    cvSplit(&image, &red, &green, &blue, 0);
+    
+    // ASK: Normalize to values between [0, 1] ?
+    // Normalize the image to values between 0..1
+    Mat orig = Mat(image.rows, image.cols, CV_32F);
+    Mat red_32F(image.rows, image.cols, CV_32F);
+    convertScaleAbs(red, red_32F);
+    cvNormalize(&orig, &red_32F);
+    normalize(red_32F, orig, 0, NORM_MINMAX);
+    return orig;
 }
 
-/**
-    @param img The Image to run on
- */
+- (Mat) prepareFeatures
+{
+    // Minmax normalization of features
+    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
+    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+    
+    Mat FeaturesMinusMin;
+    Mat MaxMinusMin;
+    subtract(maxMatrix, minMatrix, MaxMinusMin);
+    subtract(*_features, minMatrix, FeaturesMinusMin);
+    
+    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
+    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
+    return Xtest;
+}
+
 - (void) runWithImage: (UIImage*) img
 {
 
@@ -384,6 +242,145 @@
     //////////////////
     
     [self writeToCSV];
+}
+
+- (NSMutableArray*) sortScoresWithArray:(NSMutableArray*) scoreDictionaryArray
+{
+    [scoreDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
+        float score1 = [[dictOne valueForKey:@"value"] floatValue];
+        float score2 = [[dictTwo valueForKey:@"value"] floatValue];
+        if (score1 < score2)
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+    }];
+    
+    // Now sortedDictionaryArray is sorted in descending order
+    // Sort sortedScores and centroids using the indices attached to the sortedDictionaryArray
+    
+    NSMutableArray* sortedScores = [NSMutableArray array];
+    
+    for (int i = 0; i < [sortedScores count]; i++) {
+        NSMutableDictionary* score = [sortedScores objectAtIndex:i];
+        NSNumber* value = [score valueForKey:@"value"];
+        int index = [[score valueForKey:@"index"] intValue];
+        
+        NSNumber* oldObject = [_centroids objectAtIndex:i];
+        NSNumber* sortedObject = [_centroids objectAtIndex:index];
+        
+        [_centroids replaceObjectAtIndex:index withObject:oldObject];
+        [_centroids replaceObjectAtIndex:i withObject:sortedObject];
+        [sortedScores addObject:value];
+        
+    }
+    return sortedScores;
+}
+
+- (void) storeCentroidsAndFeaturesWithData:(NSMutableArray*) data
+{
+    
+    _centroids  = [NSMutableArray array];
+    
+    Mat feature_mat;
+    if (self.hogFeatures) {
+        feature_mat = Mat(_patchCount, 3, CV_8UC1);
+    } else {
+        feature_mat = Mat(_patchCount, 2, CV_8UC1);
+    }
+    _features = (Mat*) &feature_mat;
+    
+    for (int j = 0; j < _patchCount; j++) {
+        NSMutableDictionary* stats = [data objectAtIndex:j];
+        
+        // Centroid
+        NSArray* centroid =  [NSArray arrayWithObjects:
+                              [stats valueForKey:@"row"],
+                              [stats valueForKey:@"col"],
+                              nil];
+        
+        [_centroids addObject: centroid];
+        
+        // Feature
+        _features->at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
+        _features->at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
+        
+        if (self.hogFeatures) {
+            _features->at<float>(j, 2) = [[stats valueForKey:@"hog"] floatValue];
+        }
+    }
+    
+}
+
+- (NSMutableDictionary*) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
+    
+    NSMutableDictionary* stats = [NSMutableDictionary dictionary];
+    
+    /////////////////////////////////
+    // Patch Completeness Checking //
+    /////////////////////////////////
+    bool partial = NO;
+    
+    // Lower bounds checking
+    int lowerC = col - self.patchSize / 2;
+    int lowerR = row - self.patchSize / 2;
+    if (lowerC <= 0 || lowerR <= 0) {
+        partial = YES;
+    }
+    
+    // Higher bounds checking
+    int higherC = (col + (self.patchSize / 2 - 1));
+    int higherR = (row + (self.patchSize / 2 - 1));
+    
+    if ((higherC > self.orig.cols) || (higherR  > self.orig.rows)) {
+        partial = YES;
+    }
+    
+    if (partial) {
+        return NULL;
+    }
+    
+    //////////////////////////
+    // Store good centroids //
+    //////////////////////////
+    
+    [stats setValue:[NSNumber numberWithInt:col] forKey:@"col"];
+    [stats setValue:[NSNumber numberWithInt:row] forKey:@"row"];
+    
+    // Indices in matlab are 1 based
+    int row_start = (row - self.patchSize / 2) - 1;
+    int row_end = row + (self.patchSize / 2 - 1) - 1;
+    int col_start = col - self.patchSize / 2 - 1;
+    int col_end = col + (self.patchSize / 2 - 1) - 1;
+    Range rows = Range(row_start, row_end);
+    Range cols = Range(col_start, col_end);
+    
+    Mat _patch = self.orig.operator()(rows, cols);
+    id patch = [MatrixOperations convertMatToObject:_patch];
+    [stats setValue:patch forKey: @"patch"];
+    
+    /* WAYNE NOTE: This isn't being used anywhere - do we need this method?
+     if (self.hogFeatures) {
+     int patchCenter = self.patchSize / 2;
+     int row_start = row - patchCenter - 1;
+     int row_end = row + patchCenter - 1;
+     int col_start = col - patchCenter - 1;
+     int col_end = col + patchCenter - 1;
+     
+     Range rows = Range(row_start, row_end);
+     Range cols = Range(col_start, col_end);
+     Mat _gradpatch = gradim(rows, cols);
+     id gradpatch = [MatrixOperations convertMatToObject:_gradpatch];
+     [stats setValue:gradpatch forKey: @"gradpatch"];
+     }
+     */
+    
+    return stats;
+}
+
+
+- (void) writeToCSV
+{
+    // TODO: Implement
 }
 
 @end
