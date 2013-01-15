@@ -127,6 +127,96 @@
 }
 
 /**
+    Stores centroids and features from the data object
+    @param data The data object
+ */
+- (void) storeCentroidsAndFeaturesWithData:(NSMutableArray*) data
+{
+ 
+    _centroids  = [NSMutableArray array];
+    
+    Mat feature_mat;
+    if (self.hogFeatures) {
+        feature_mat = Mat(_patchCount, 3, CV_8UC1);
+    } else {
+        feature_mat = Mat(_patchCount, 2, CV_8UC1);
+    }
+    _features = (Mat*) &feature_mat;
+    
+    for (int j = 0; j < _patchCount; j++) {
+        NSMutableDictionary* stats = [data objectAtIndex:j];
+        
+        // Centroid
+        NSArray* centroid =  [NSArray arrayWithObjects:
+                              [stats valueForKey:@"row"],
+                              [stats valueForKey:@"col"],
+                              nil];
+        
+        [_centroids addObject: centroid];
+        
+        // Feature
+        _features->at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
+        _features->at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
+        
+        if (self.hogFeatures) {
+            _features->at<float>(j, 2) = [[stats valueForKey:@"hog"] floatValue];
+        }
+    }
+    
+}
+
+- (NSMutableArray*) sortScoresWithArray:(NSMutableArray*) scoreDictionaryArray
+{
+    [scoreDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
+        float score1 = [[dictOne valueForKey:@"value"] floatValue];
+        float score2 = [[dictTwo valueForKey:@"value"] floatValue];
+        if (score1 < score2)
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+    }];
+    
+    // Now sortedDictionaryArray is sorted in descending order
+    // Sort sortedScores and centroids using the indices attached to the sortedDictionaryArray
+    
+    NSMutableArray* sortedScores = [NSMutableArray array];
+    
+    for (int i = 0; i < [sortedScores count]; i++) {
+        NSMutableDictionary* score = [sortedScores objectAtIndex:i];
+        NSNumber* value = [score valueForKey:@"value"];
+        int index = [[score valueForKey:@"index"] intValue];
+        
+        NSNumber* oldObject = [_centroids objectAtIndex:i];
+        NSNumber* sortedObject = [_centroids objectAtIndex:index];
+        
+        [_centroids replaceObjectAtIndex:index withObject:oldObject];
+        [_centroids replaceObjectAtIndex:i withObject:sortedObject];
+        [sortedScores addObject:value];
+        
+    }
+    return sortedScores;
+}
+
+/** 
+    Prepares the features for object classification
+ */
+- (Mat) prepareFeatures
+{
+    // Minmax normalization of features
+    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
+    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+    
+    Mat FeaturesMinusMin;
+    Mat MaxMinusMin;
+    subtract(maxMatrix, minMatrix, MaxMinusMin);
+    subtract(*_features, minMatrix, FeaturesMinusMin);
+    
+    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
+    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
+    return Xtest;
+}
+
+/**
     @param img The Image to run on
     @return Returns a CSV file with centroids and scores
  */
@@ -164,7 +254,7 @@
        // gradim = compute_gradient(orig,8);
     }
     
-    int patchCount = 0;
+    _patchCount = 0;
     
     // update vector of centroid values
     centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
@@ -177,7 +267,7 @@
         
         NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
         if (stats != NULL) { // If not a partial patch
-            patchCount++;
+            _patchCount++;
             [data addObject:stats];
             
         }
@@ -187,107 +277,31 @@
     data = calcfeats(data, patchSize, hogFeatures);
     Mat train_max;
     Mat train_min;
-    
 
-    ////////////////////////////////////
-    // Store Centroids, Features  //
-    ////////////////////////////////////
     
-    NSMutableArray* centroids  = [NSMutableArray array];
+    // Store good centroids
+    [self storeCentroidsAndFeaturesWithData:data];
     
-    Mat features;
-    if (self.hogFeatures) {
-        features = Mat(patchCount, 3, CV_8UC1);
-    } else {
-        features = Mat(patchCount, 2, CV_8UC1);
-    }
-    NSMutableArray* features   = [NSMutableArray array];
-    
-    for (int j = 0; j < patchCount; j++) {
-        NSMutableDictionary* stats = [data objectAtIndex:j];
-        
-        // Centroid
-        NSArray* centroid =  [NSArray arrayWithObjects:
-                              [stats valueForKey:@"row"],
-                              [stats valueForKey:@"col"],
-                              nil];
-        
-        [centroids addObject: centroid];
-        
-        // Feature
-        features.at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
-        features.at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
-        
-        if (self.hogFeatures) {
-            features.at<float>(j, 2) = [[stats valueForKey:@"hog"] floatValue];
-        }
-    }
-    
-    ///////////////////////////
-    // Prepare Features (IM) //
-    ///////////////////////////
-    
-    // Prepare features and run object-level classifier
-    Mat xTest;
+    // Prepare features 
     Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
-    //Xtest = features
-    
-    // Minmax normalization of features
-    //ytest is a patchSize x 1 matrix, so repmat(train_max, size(ytest_dummy)) = repmat(train_max, patchSize, 1)
-    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
-    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+    Mat xTest = [self prepareFeatures];
 
-    Mat FeaturesMinusMin;
-    Mat MaxMinusMin;
-    subtract(maxMatrix, minMatrix, MaxMinusMin);
-    subtract(features, minMatrix, FeaturesMinusMin);
-    
-    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinsMin.cols, CV_8UC1);
-    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
     
     //////////////////////
     // Classify Objects //
     //////////////////////
     
     // LibSVM IKSVM classifier
-    [pltest, accutest, dvtest] = svmpredict(double(ytest_dummy),double(Xtest),model,'-b 1');
+    [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
     dvtest = dvtest(:,model.Label==1);
     NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
     
     // NOTE: We don't need to do logistic regression because it's built into LibSVM
 
-    ////////////////////////////////////
-    // Sort Scores and Centroids (IM) //
-    ////////////////////////////////////
     
-    [sortedDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
-        score1 = [dictOne valueForKey:@"value"];
-        score2 = [dictTwo valueForKey:@"value"];
-        if (score1 < score2)
-            return NSOrderedAscending;
-        else
-            return NSOrderedDescending;
-    }];
-    
-    // Now sortedDictionaryArray is sorted in descending order
-    // Sort sortedScores and centroids using the indices attached to the sortedDictionaryArray
-
-    NSMutableArray* sortedScores = [NSMutableArray array];
-    
-    for (int i = 0; i < [sortedScores count]; i++) {
-        NSMutableDictionary* score = [sortedScores objectAtIndex:i];
-        NSNumber* value = [score valueForKey:@"value"];
-        int index = [[score valueForKey:@"index"] intValue];
-        
-        NSNumber* oldObject = [centroids objectAtIndex:i];
-        NSNumber* sortedObject = [centroids objectAtIndex:index];
-        
-        [centroids replaceObjectAtIndex:index withObject:oldObject];
-        [centroids replaceObjectAtIndex:i withObject:sortedObject];
-        [sortedScores addObject:value];
-
-    }
+    // Sort Scores and Centroids
+    NSMutableArray* sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
     
     //////////////////////////////////////
     // Drop Low-confidence Patches (IM) //
@@ -303,7 +317,7 @@
         }
     }
     [sortedScores removeObjectsAtIndexes:lowConfidencePatches];
-    [centroids removeObjectsAtIndexes:lowConfidencePatches];
+    [_centroids removeObjectsAtIndexes:lowConfidencePatches];
     
     
     //////////////////////////////////////////////

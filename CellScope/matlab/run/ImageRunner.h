@@ -28,6 +28,21 @@ using namespace cv;
      */
     BOOL _hogFeatures;
     
+    /**
+        Centroids for this image
+     */
+    NSMutableArray* _centroids;
+    
+    /**
+        Features for this image
+     */
+    Mat* _features;
+    
+    /**
+        The number of patches found for this image
+     */
+    int _patchCount;
+    
 }
 
 @property (nonatomic, assign) Mat orig;
