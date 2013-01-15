@@ -217,131 +217,29 @@
 }
 
 /**
-    @param img The Image to run on
-    @return Returns a CSV file with centroids and scores
+    Locates patches that should be suppressed, for being too close to each other
+    @return Returns the indices for all patches that should be suppressed
  */
-- (void) runWithImage: (UIImage*) img
+- (NSMutableIndexSet*) findSuppressedPatches
 {
-    
-    // TODO: Return CSV instead of void
-    /*% OUTPUT: CSV file(s) with centroids and scores
-    % - ctrs_sort: array of centroids, sorted by descending patch score. Each
-    %   row contains (row,col) indices.
-    % - scrs_sort: corresponding scores (likelihood of being bacilli)
-    */
-
-
-    // Convert the image to an OpenCV matrix
-    Mat image = [ImageTools cvMatWithImage:img];
-    if(!image.data) // IM
-    {
-        CSLog(@"Could not load image with filename"); 
-        return;
-    }
-    
-    self.orig = [self getRedImageNormalizedImage:image];
-    NSMutableArray* data = [NSMutableArray array];
-    
-    // Perform object identification
-    imbw = blobid(orig,0); % Use Gaussian kernel method
-    
-    imbwCC = bwconncomp(imbw);
-    imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
-
-    // Computer gradient image for HoG features
-    if (self.hogFeatures) { //
-        // WAYNE NOTE: Pretty sure this isn't being used anywhere. Confirm?
-       // gradim = compute_gradient(orig,8);
-    }
-    
-    _patchCount = 0;
-    
-    // update vector of centroid values
-    centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
-
-    int numObjects = imbwCC.numObjects;
-    
-    for (int j = 0; j < numObjects; j++) { // IM
-        int col = centroids[j][0];
-        int row = centroids[j][2];
-        
-        NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
-        if (stats != NULL) { // If not a partial patch
-            _patchCount++;
-            [data addObject:stats];
-            
-        }
-    }
-    
-    // Calculate features
-    data = calcfeats(data, patchSize, hogFeatures);
-    Mat train_max;
-    Mat train_min;
-
-    
-    // Store good centroids
-    [self storeCentroidsAndFeaturesWithData:data];
-    
-    // Prepare features 
-    Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
-    Mat xTest = [self prepareFeatures];
-
-    
-    //////////////////////
-    // Classify Objects //
-    //////////////////////
-    
-    // LibSVM IKSVM classifier
-    [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
-    NSMutableArray* dvtest = [NSMutableArray array];
-    dvtest = dvtest(:,model.Label==1);
-    NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
-    
-    // NOTE: We don't need to do logistic regression because it's built into LibSVM
-
-    
-    // Sort Scores and Centroids
-    NSMutableArray* sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
-    
-    //////////////////////////////////////
-    // Drop Low-confidence Patches (IM) //
-    //////////////////////////////////////
-
-    float lowlim = 1e-6;
-    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
-
-    for (int i = 0; i < [sortedScores count]; i++) {
-        float score = [sortedScores objectAtIndex:i];
-        if (i <= lowlim) {
-            [lowConfidencePatches addIndex:i];
-        }
-    }
-    [sortedScores removeObjectsAtIndexes:lowConfidencePatches];
-    [_centroids removeObjectsAtIndexes:lowConfidencePatches];
-    
-    
-    //////////////////////////////////////////////
-    // Non-max Suppression Based on Scores (IM) //
-    //////////////////////////////////////////////
-    
     float maxDistance = ((self.orig.rows ** 2) + (self.orig.cols ** 2)) ** 0.5;
     
     // Setup rows and columns for next step
     NSMutableArray* centroidRows = [NSMutableArray array];
     NSMutableArray* centroidCols = [NSMutableArray array];
-    for (int i = 0; i < [centroids count]; i++) {
-        NSArray* centroid = [centroids objectAtIndex:i];
-        int row = [centroid objectAtIndex:0];
-        int col = [centroid objectAtIndex:1];
+    for (int i = 0; i < [_centroids count]; i++) {
+        NSArray* centroid = [_centroids objectAtIndex:i];
+        int row = [[centroid objectAtIndex:0] intValue];
+        int col = [[centroid objectAtIndex:1] intValue];
         [centroidRows addObject:[NSNumber numberWithInt:row]];
         [centroidCols addObject:[NSNumber numberWithInt:col]];
     }
     
     NSMutableIndexSet* suppressedPatches = [NSMutableIndexSet indexSet];
-    for (int i = 0; i < [sortedScores count]; i++) { // This should start from the highest-scoring patch
-        NSArray* centroid = [centroids objectAtIndex:i];
-        int row = [centroid objectAtIndex:0];
-        int col = [centroid objectAtIndex:1];
+    for (int i = 0; i < [_sortedScores count]; i++) { // This should start from the highest-scoring patch
+        NSArray* centroid = [_centroids objectAtIndex:i];
+        int row = [[centroid objectAtIndex:0] intValue];
+        int col = [[centroid objectAtIndex:1] intValue];
         
         NSArray* rowCopy = [NSArray arrayWithArray:centroidRows];
         NSArray* colCopy = [NSArray arrayWithArray:centroidCols];
@@ -350,10 +248,10 @@
         float minDistance = 1e99;
         int minDistanceIndex = -1;
         
-        for (int j = 0; j < [rowCopy count]; j++;) {
-            int newRowVal = row - [rowCopy objectAtIndex: j];
-            int newColVal = col - [colCopy objectAtIndex: j];
-
+        for (int j = 0; j < [rowCopy count]; j++) {
+            int newRowVal = row - [[rowCopy objectAtIndex: j] intValue];
+            int newColVal = col - [[colCopy objectAtIndex: j] intValue];
+            
             newRowVal = newRowVal ** 2;
             newColVal = newColVal ** 2;
             
@@ -379,20 +277,161 @@
             NSArray* newCentroid = [NSArray arrayWithObjects:
                                     [NSNumber numberWithInt:(-1 * self.orig.rows)],
                                     [NSNumber numberWithInt:(-1 * self.orig.cols)],
-                                    nil]        
+                                    nil];
             // Suppress this patch
             [suppressedPatches addIndex:i];
         }
     }
+    return suppressedPatches;
+}
 
-    [sortedScores removeObjectsAtIndexes:suppressedPatches];
-    [centroids removeObjectsAtIndexes:suppressedPatches];
+/**
+    Writes to CSV given |_centroids| and a list of sorted scores |_sortedScores|
+    Output looks like:
+        centroids:    array of centroids, sorted by descending patch score. Each
+                      row contains (row,col) indices.
+        sortedScores: corresponding scores (likelihood of being bacilli)
+ 
+ */
+- (void) writeToCSV
+{
+    // TODO: Implement
+}
+
+/**
+    Drops low confidence patches, defined as patches where the score is less 
+    than some designated threshold
+ 
+    @return Returns a list of indices of patches that should be dropped
+ */
+- (NSMutableIndexSet*) findLowConfidencePatches
+{
+    float lowlim = 1e-6;
+    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
+    
+    for (int i = 0; i < [_sortedScores count]; i++) {
+        float score = [[_sortedScores objectAtIndex:i] floatValue];
+        if (score <= lowlim) {
+            [lowConfidencePatches addIndex:i];
+        }
+    }
+    return lowConfidencePatches;
+}
+/**
+    @param img The Image to run on
+    @return Returns a CSV file with centroids and scores
+ */
+- (void) runWithImage: (UIImage*) img
+{
+    
+    // TODO: Return CSV instead of void
+    /*% OUTPUT: CSV file(s) with centroids and scores
+    */
+
+
+    ///////////////////////////////////////////
+    // Convert the image to an OpenCV matrix //
+    ///////////////////////////////////////////
+    Mat image = [ImageTools cvMatWithImage:img];
+    if(!image.data) // IM
+    {
+        CSLog(@"Could not load image with filename"); 
+        return;
+    }
+    
+    ///////////////////////////////////////////////
+    // Convert to a red-channel normalized image //
+    ///////////////////////////////////////////////
+    self.orig = [self getRedImageNormalizedImage:image];
+    NSMutableArray* data = [NSMutableArray array];
+    
+    ///////////////////////////////////
+    // Perform object identification //
+    ///////////////////////////////////
+    imbw = blobid(orig,0); % Use Gaussian kernel method
+    
+    imbwCC = bwconncomp(imbw);
+    imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
+
+    // Computer gradient image for HoG features
+    if (self.hogFeatures) { //
+        // WAYNE NOTE: Pretty sure this isn't being used anywhere. Confirm?
+       // gradim = compute_gradient(orig,8);
+    }
+    
+    _patchCount = 0;
+    
+    //////////////////////////////////////
+    // update vector of centroid values //
+    //////////////////////////////////////
+    centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
+
+    int numObjects = imbwCC.numObjects;
+    
+    for (int j = 0; j < numObjects; j++) { // IM
+        int col = centroids[j][0];
+        int row = centroids[j][2];
+        
+        NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
+        if (stats != NULL) { // If not a partial patch
+            _patchCount++;
+            [data addObject:stats];
+            
+        }
+    }
+    
+    ////////////////////////
+    // Calculate features //
+    ////////////////////////
+    data = calcfeats(data, patchSize, hogFeatures);
+    Mat train_max;
+    Mat train_min;
+
+    //////////////////////////
+    // Store good centroids //
+    //////////////////////////
+    [self storeCentroidsAndFeaturesWithData:data];
+    
+    ///////////////////////
+    // Prepare features  //
+    ///////////////////////
+    Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
+    Mat xTest = [self prepareFeatures];
+    
+    //////////////////////
+    // Classify Objects //
+    //////////////////////
+    
+    // LibSVM IKSVM classifier
+    [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
+    NSMutableArray* dvtest = [NSMutableArray array];
+    dvtest = dvtest(:,model.Label==1);
+    NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
+    
+    ///////////////////////////////
+    // Sort Scores and Centroids //
+    ///////////////////////////////
+    _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
+    
+    /////////////////////////////////
+    // Drop Low-confidence Patches //
+    /////////////////////////////////
+    NSMutableIndexSet* lowConfidencePatches = [self findLowConfidencePatches];
+    [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
+    [_centroids removeObjectsAtIndexes:lowConfidencePatches];
+    
+    //////////////////////////////////////////////
+    // Non-max Suppression Based on Scores (IM) //
+    //////////////////////////////////////////////
+    NSMutableIndexSet* suppressedPatches = [self findSuppressedPatches];
+    [_sortedScores removeObjectsAtIndexes:suppressedPatches];
+    [_centroids removeObjectsAtIndexes:suppressedPatches];
     
     //////////////////
     // Write to CSV //
     //////////////////
     
-    csvwrite(['./out_',fname(1:end-4),'.csv'],[ctrs_sort scrs_sort]);
+    [self writeToCSV];
 }
 
 @end

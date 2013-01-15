@@ -43,6 +43,11 @@ using namespace cv;
      */
     int _patchCount;
     
+    /**
+        A list of sorted scores
+     */
+    NSMutableArray* _sortedScores;
+    
 }
 
 @property (nonatomic, assign) Mat orig;
