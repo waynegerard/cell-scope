@@ -19,11 +19,6 @@
 
 @synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
 
-/**
-    Converts an image (as a Mat) to a red-channel only normalized image, with pixel intensities between 0..1
-    @param image The image, assumed to be a color image with all 3 channels
-    @return Returns an the red-channel normalized image
- */
 - (Mat) getRedImageNormalizedImage: (Mat) image {
     // ASK: Is this right?
     // Use only red channel for image
@@ -45,21 +40,6 @@
     return orig;
 }
 
-/**
-    Checks patches for completness, and if patches are complete then returns a dictionary containing the following
-    information:
-    
-    1) The column [col: NSNumber]
-    2) The row [row: NSNumber]
-    3) The patch [patch: Mat]
-    4) The binary patch
-    5) Possibly the gradient patch, if HoG features are enabled [gradPatch: Mat]
- 
-    @param row The row for this centroid
-    @param col The column for this centroid
-    @return    Returns a NSMutableDictionary containing the above 4 values with the key-value pairs in parantheses.
-               Will return NULL if this is a partial patch
- */
 - (NSMutableDictionary*) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
     
     NSMutableDictionary* stats = [NSMutableDictionary dictionary];
@@ -126,10 +106,6 @@
     return stats;
 }
 
-/**
-    Stores centroids and features from the data object
-    @param data The data object
- */
 - (void) storeCentroidsAndFeaturesWithData:(NSMutableArray*) data
 {
  
@@ -197,9 +173,6 @@
     return sortedScores;
 }
 
-/** 
-    Prepares the features for object classification
- */
 - (Mat) prepareFeatures
 {
     // Minmax normalization of features
@@ -216,10 +189,6 @@
     return Xtest;
 }
 
-/**
-    Locates patches that should be suppressed, for being too close to each other
-    @return Returns the indices for all patches that should be suppressed
- */
 - (NSMutableIndexSet*) findSuppressedPatches
 {
     float maxDistance = ((self.orig.rows ** 2) + (self.orig.cols ** 2)) ** 0.5;
@@ -285,25 +254,13 @@
     return suppressedPatches;
 }
 
-/**
-    Writes to CSV given |_centroids| and a list of sorted scores |_sortedScores|
-    Output looks like:
-        centroids:    array of centroids, sorted by descending patch score. Each
-                      row contains (row,col) indices.
-        sortedScores: corresponding scores (likelihood of being bacilli)
- 
- */
+
 - (void) writeToCSV
 {
     // TODO: Implement
 }
 
-/**
-    Drops low confidence patches, defined as patches where the score is less 
-    than some designated threshold
- 
-    @return Returns a list of indices of patches that should be dropped
- */
+
 - (NSMutableIndexSet*) findLowConfidencePatches
 {
     float lowlim = 1e-6;
@@ -317,17 +274,12 @@
     }
     return lowConfidencePatches;
 }
+
 /**
     @param img The Image to run on
-    @return Returns a CSV file with centroids and scores
  */
 - (void) runWithImage: (UIImage*) img
 {
-    
-    // TODO: Return CSV instead of void
-    /*% OUTPUT: CSV file(s) with centroids and scores
-    */
-
 
     ///////////////////////////////////////////
     // Convert the image to an OpenCV matrix //
@@ -362,7 +314,7 @@
     _patchCount = 0;
     
     //////////////////////////////////////
-    // update vector of centroid values //
+    // Update vector of centroid values //
     //////////////////////////////////////
     centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
 
