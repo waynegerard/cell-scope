@@ -35,7 +35,7 @@
 
 - (NSMutableIndexSet*) findSuppressedPatches
 {
-    float maxDistance = ((self.orig.rows ** 2) + (self.orig.cols ** 2)) ** 0.5;
+    float maxDistance = pow((pow(self.orig.rows, 2) + pow(self.orig.cols, 2)), 0.5);
     
     // Setup rows and columns for next step
     NSMutableArray* centroidRows = [NSMutableArray array];
@@ -65,11 +65,11 @@
             int newRowVal = row - [[rowCopy objectAtIndex: j] intValue];
             int newColVal = col - [[colCopy objectAtIndex: j] intValue];
             
-            newRowVal = newRowVal ** 2;
-            newColVal = newColVal ** 2;
+            newRowVal = pow(newRowVal, 2.0);
+            newColVal = pow(newColVal, 2.0);
             
             float newVal = newRowVal + newColVal;
-            newVal = newVal ** 0.5;
+            newVal = pow(newVal, 0.5);
             
             if (newVal < minDistance && newVal != 0) {
                 minDistance = newVal;
@@ -138,10 +138,7 @@
 
 - (void) runWithImage: (UIImage*) img
 {
-
-    ///////////////////////////////////////////
-    // Convert the image to an OpenCV matrix //
-    ///////////////////////////////////////////
+    // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
     if(!image.data) // IM
     {
@@ -149,15 +146,11 @@
         return;
     }
     
-    ///////////////////////////////////////////////
-    // Convert to a red-channel normalized image //
-    ///////////////////////////////////////////////
+    // Convert to a red-channel normalized image
     self.orig = [self getRedImageNormalizedImage:image];
     NSMutableArray* data = [NSMutableArray array];
     
-    ///////////////////////////////////
-    // Perform object identification //
-    ///////////////////////////////////
+    // Perform object identification
     imbw = blobid(orig,0); % Use Gaussian kernel method
     
     imbwCC = bwconncomp(imbw);
@@ -171,9 +164,7 @@
     
     _patchCount = 0;
     
-    //////////////////////////////////////
-    // Update vector of centroid values //
-    //////////////////////////////////////
+    // Update vector of centroid values
     centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
 
     int numObjects = imbwCC.numObjects;
@@ -190,57 +181,38 @@
         }
     }
     
-    ////////////////////////
-    // Calculate features //
-    ////////////////////////
+    // Calculate features
     data = calcfeats(data, patchSize, hogFeatures);
     Mat train_max;
     Mat train_min;
 
-    //////////////////////////
-    // Store good centroids //
-    //////////////////////////
+    // Store good centroids
     [self storeCentroidsAndFeaturesWithData:data];
     
-    ///////////////////////
-    // Prepare features  //
-    ///////////////////////
+    // Prepare features
     Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
     Mat xTest = [self prepareFeatures];
     
-    //////////////////////
-    // Classify Objects //
-    //////////////////////
-    
-    // LibSVM IKSVM classifier
+    // Classify Objects with LibSVM IKSVM classifier
     [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
     dvtest = dvtest(:,model.Label==1);
     NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
     
-    ///////////////////////////////
-    // Sort Scores and Centroids //
-    ///////////////////////////////
+    // Sort Scores and Centroids
     _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
     
-    /////////////////////////////////
-    // Drop Low-confidence Patches //
-    /////////////////////////////////
+    // Drop Low-confidence Patches
     NSMutableIndexSet* lowConfidencePatches = [self findLowConfidencePatches];
     [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
     [_centroids removeObjectsAtIndexes:lowConfidencePatches];
     
-    //////////////////////////////////////////////
-    // Non-max Suppression Based on Scores (IM) //
-    //////////////////////////////////////////////
+    // Non-max Suppression Based on Scores
     NSMutableIndexSet* suppressedPatches = [self findSuppressedPatches];
     [_sortedScores removeObjectsAtIndexes:suppressedPatches];
     [_centroids removeObjectsAtIndexes:suppressedPatches];
     
-    //////////////////
-    // Write to CSV //
-    //////////////////
-    
+    // Output
     [self writeToCSV];
 }
 
@@ -292,7 +264,6 @@
     for (int j = 0; j < _patchCount; j++) {
         NSMutableDictionary* stats = [data objectAtIndex:j];
         
-        // Centroid
         NSArray* centroid =  [NSArray arrayWithObjects:
                               [stats valueForKey:@"row"],
                               [stats valueForKey:@"col"],
@@ -300,7 +271,7 @@
         
         [_centroids addObject: centroid];
         
-        // Feature
+        
         _features->at<float>(j, 0) = [[stats valueForKey:@"phi"] floatValue];
         _features->at<float>(j, 1) = [[stats valueForKey:@"geom"] floatValue];
         
