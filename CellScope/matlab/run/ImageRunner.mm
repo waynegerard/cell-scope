@@ -17,6 +17,36 @@
 
 @implementation ImageRunner
 
+// TODO:
+
+// So I've completed the main image running loop for the most part. Some of the functions its calling still need
+// to be defined, things like finding connected components and blob identification. Besides 6-7 lines which are
+// calling out to uncompleted functions, though, it should be ready for testing.
+
+// That being said, I still need to do the iOS part of it - making a settings screen, and allowing users to select
+// images to run through. That's the easy part though, and those are standard iOS workflows that really involve
+// a Saturday at most, possibly even this Saturday if I need a break from porting some of the imaging.
+
+// Finding connected components looks like it's no big deal, so that shouldn't be a big problem.
+// Blob Identification might be a little more trouble, but it actually looks like there's a very nice OpenCV
+// framework plugin for doing blob identification that should work fine
+
+// There's an svmpredict method that's being called, and is pretty important presumably, but I don't see any reference
+// to it anywhere. I'm assuming it's what's in the mexw64 file, which I gather is a matlab file compiled - I'll either
+// need the source or something.
+
+// The HoG features are only being displayed on a graph. Is it something that needs to be output as a CSV somehow?
+
+// train_max, train_min
+// blobid
+// bwconncomp
+// regionprops
+// svmpredict
+// humoment
+
+// svmpredict
+
+
 @synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
 
 - (NSMutableIndexSet*) findLowConfidencePatches
@@ -110,7 +140,7 @@
     Mat blue(image.rows, image.cols, CV_8UC1);
     cvSplit(&image, &red, &green, &blue, 0);
     
-    // ASK: Normalize to values between [0, 1] ?
+    // TODO: Converting to red channel right now, is that correct? Check back with Mike and Arunan
     // Normalize the image to values between 0..1
     Mat orig = Mat(image.rows, image.cols, CV_32F);
     Mat red_32F(image.rows, image.cols, CV_32F);
@@ -151,7 +181,7 @@
     NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
-    imbw = blobid(orig,0); % Use Gaussian kernel method
+    imbw = blobid(self.orig,0); // Use Gaussian kernel method
     
     imbwCC = bwconncomp(imbw);
     imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');

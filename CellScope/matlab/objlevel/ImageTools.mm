@@ -7,37 +7,9 @@
 //
 
 #import "ImageTools.h"
-#import "MatlabFunctions.h"
+#import <opencv2/imgproc/imgproc.hpp>
 
 @implementation ImageTools
-
-/** Calculates the euclidean distance between two points
-    @param p1 The first point
-    @param p2 The second point
-    @return Returns the Euclidean distance between the two points
- */
-- (float) euclideanDistance(CGPoint p1, CGPoint p2) {
-    float dx = p1.x - p2.x;
-    float dy = p1.y - p2.y;
-    return pow(pow(dx, 2) + pow(dy, 2), 0.5);
-}
-
-/** Calculates the central p,q moment of a grayscale input image
-    @param im The grayscale image
-    @param p  The p factor
-    @param q  The q factor
-    @param xc The xc constant
-    @param yc The yc constant
- */
-- (float) momentpq(im,p,q,xc,yc) {
-    float[][] xc_mat = repmat(xc, size(im));
-    float[][] yc_mat = repmat(yc, size(im));
-
-    [ygrid, xgrid] = meshgrid([1:size(im,2)],[1:size(im,1)]);
-
-    newmat = ((xgrid-xc_mat).^p).*((ygrid-yc_mat).^q).*im;
-    mu = sum(newmat(:));
-}
 
 
 + (Mat)cvMatWithImage:(UIImage *)image
@@ -61,6 +33,44 @@
     CGContextRelease(contextRef);
     
     return cvMat;
+}
+
+cv::vector <cv::vector<cv::Point> > findBlobs(const cv::Mat &img)
+{
+    cv::vector <cv::vector<cv::Point> > blobs;
+    blobs.clear();
+    
+    // Using labels from 2+ for each blob
+    cv::Mat label_image;
+    img.convertTo(label_image, CV_32FC1);
+    
+    int label_count = 2; // starts at 2 because 0,1 are used already
+    
+    for(int row = 0; row < img.rows; row++) {
+        for(int col = 0; col < img.cols; col++) {
+            
+            if( (int)label_image.at<int>(row,col) != 1) {
+                continue;
+            }
+            
+            cv::Rect rect;
+            cv::floodFill(label_image, cv::Point(row,col), cv::Scalar(label_count), &rect, cv::Scalar(0), cv::Scalar(0), 4);
+            
+            cv::vector<cv::Point> blob;
+            
+            for(int i=rect.y; i < (rect.y+rect.height); i++) {
+                for(int j=rect.x; j < (rect.x+rect.width); j++) {
+                    if((int)label_image.at<int>(i,j) != label_count) {
+                        continue;
+                    }
+                    blob.push_back(cv::Point(j,i));
+                }
+            }
+            blobs.push_back(blob);
+            label_count++;
+        }
+    }
+    return blobs;
 }
 
 @end

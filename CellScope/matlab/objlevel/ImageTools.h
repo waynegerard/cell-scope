@@ -25,4 +25,11 @@ using namespace cv;
  */
 + (Mat)cvMatWithImage:(UIImage *)image;
 
+/**
+ Returns a list of blobs for the given image.
+ @param img The image to search for connected components on
+ @return    Returns a vector of Point vectors, containing blob information
+ */
+cv::vector <cv::vector<cv::Point> > findConnectedComponents(const cv::Mat &img);
+
 @end
