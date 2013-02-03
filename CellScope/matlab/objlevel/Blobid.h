@@ -18,6 +18,6 @@
 /**
  Simple function that finds blobs in a grayscale image
  */
-- (cv::Mat) blobIDWithImage: (cv::Mat&) img {
+- (cv::Mat) blobIDWithImage: (cv::Mat&) img;
 
 @end
