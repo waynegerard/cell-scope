@@ -72,7 +72,7 @@
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
-		ACB641FB1686D760006B7B41 /* Blobid.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blobid.m */; };
+		ACB641FB1686D760006B7B41 /* Blobid.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blobid.mm */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 		ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.mm */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
@@ -215,7 +215,7 @@
 		ACB641DB16842434006B7B41 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = matlab/objlevel/ImageTools.h; sourceTree = "<group>"; };
 		ACB641DC16842434006B7B41 /* ImageTools.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageTools.mm; path = matlab/objlevel/ImageTools.mm; sourceTree = "<group>"; };
 		ACB641F91686D75F006B7B41 /* Blobid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blobid.h; path = matlab/objlevel/Blobid.h; sourceTree = "<group>"; };
-		ACB641FA1686D760006B7B41 /* Blobid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Blobid.m; path = matlab/objlevel/Blobid.m; sourceTree = "<group>"; };
+		ACB641FA1686D760006B7B41 /* Blobid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Blobid.mm; path = matlab/objlevel/Blobid.mm; sourceTree = "<group>"; };
 		ACB641FC16876AE3006B7B41 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = matlab/Globals.h; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		ACEF530D169557AF00348916 /* MatrixOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MatrixOperations.mm; path = matlab/other/MatrixOperations.mm; sourceTree = "<group>"; };
@@ -521,7 +521,7 @@
 				ACB641DB16842434006B7B41 /* ImageTools.h */,
 				ACB641DC16842434006B7B41 /* ImageTools.mm */,
 				ACB641F91686D75F006B7B41 /* Blobid.h */,
-				ACB641FA1686D760006B7B41 /* Blobid.m */,
+				ACB641FA1686D760006B7B41 /* Blobid.mm */,
 			);
 			name = objlevel;
 			sourceTree = "<group>";
@@ -689,7 +689,7 @@
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 				ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */,
-				ACB641FB1686D760006B7B41 /* Blobid.m in Sources */,
+				ACB641FB1686D760006B7B41 /* Blobid.mm in Sources */,
 				ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */,
 				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
 			);

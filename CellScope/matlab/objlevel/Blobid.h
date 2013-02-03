@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <opencv2/core/core.hpp>
 
 @interface Blobid : NSObject
 

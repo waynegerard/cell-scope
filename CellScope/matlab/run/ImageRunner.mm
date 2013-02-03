@@ -19,22 +19,6 @@
 
 // TODO:
 
-// So I've completed the main image running loop for the most part. Some of the functions its calling still need
-// to be defined, things like finding connected components and blob identification. Besides 6-7 lines which are
-// calling out to uncompleted functions, though, it should be ready for testing.
-
-// That being said, I still need to do the iOS part of it - making a settings screen, and allowing users to select
-// images to run through. That's the easy part though, and those are standard iOS workflows that really involve
-// a Saturday at most, possibly even this Saturday if I need a break from porting some of the imaging.
-
-// Finding connected components looks like it's no big deal, so that shouldn't be a big problem.
-// Blob Identification might be a little more trouble, but it actually looks like there's a very nice OpenCV
-// framework plugin for doing blob identification that should work fine
-
-// There's an svmpredict method that's being called, and is pretty important presumably, but I don't see any reference
-// to it anywhere. I'm assuming it's what's in the mexw64 file, which I gather is a matlab file compiled - I'll either
-// need the source or something.
-
 // The HoG features are only being displayed on a graph. Is it something that needs to be output as a CSV somehow?
 
 // train_max, train_min
