@@ -11,9 +11,11 @@
 
 @interface Blobid : NSObject
 
--(cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz;
+- (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz;
 
--(cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img;
+- (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz;
+
+- (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img;
 
 /**
  Simple function that finds blobs in a grayscale image

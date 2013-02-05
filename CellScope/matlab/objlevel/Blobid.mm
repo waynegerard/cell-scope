@@ -13,8 +13,18 @@
 
 @implementation Blobid
 
-// The morphological open operation is an erosion followed by a dilation, using the same structuring element for both operations.
--(cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
+- (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
+    int type = cv::MORPH_RECT;
+    cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
+    cv::Mat returnMat;
+    
+    cv::dilate(mat, returnMat, element);
+    cv::erode(mat, returnMat, element);
+    return returnMat;
+}
+
+
+- (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
     int type = cv::MORPH_RECT;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
     cv::Mat returnMat;
@@ -26,7 +36,7 @@
 
 - (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img {
 
-    cv::Mat imBigOp = [self erodeAndDilateMat:img];
+    cv::Mat imBigOp = [self erodeAndDilateMat:img withSize:10];
     cv::Mat imdf;
     cv::Mat meanImdf;
     cv::Mat stdImdf;
@@ -40,18 +50,53 @@
     return imThresh;    
 }
 
+// Cross correlates image "orig" with a Gaussian kernel
 
-/**
-    Simple function that finds blobs in a grayscale image
- */
+- (cv::Mat) xCorrGaussWithImg: (cv::Mat) img {
+    
+    // Parameters
+    int kernelSize = 16 + 1;       // size of Gaussian kernel
+    // WAYNE NOTE: Why is there a +1 in the original?
+    float kernelStdDev  = 1.5;     // standard dev of Gaussian kernel
+    float correlationThreshold = 0.5; // threshold on normalized cross-correlation
+    cv::Mat tmplate;
+    
+    // Generate Gaussian kernel
+    cv::Mat gaussianKernel = cv::getGaussianKernel(kernelSize, kernelStdDev);
+    double* min;
+    double* max;
+    cv::minMaxIdx(gaussianKernel, min, max);
+    cv::divide(*max, gaussianKernel, tmplate);
+    C = normxcorr2(template, im);
+    
+    // Crop normxcorr image to recover original size, binarize
+    sztemplate = size(template);
+    margin = (sztemplate-1)/2;
+    Ccrop = C(margin+1:end-margin,margin+1:end-margin);
+    Cbin = Ccrop > Cthresh;
+    
+    // Touch-up morphological operations
+    int type = cv::MORPH_RECT;
+    cv::Mat returnMat;
+    cv::Mat element = cv::getStructuringElement(type, cv::Size(3,3));
+    cv::dilate(cBin, returnMat, element);
+    return returnMat;
+}
+
 - (cv::Mat) blobIDWithImage: (cv::Mat&) img {
     
     cv::Mat bwImage;
+    cv::Mat xCorrImage;
     cv::Mat imThreshold = [self getMorphologicalOpeningWithImg:img];
     
-    // Combine the xcorr and morphological opening outputs
-    //imbw = imbw_xcorr & imthresh;
-    //imbw = imclose(imbw,strel('square',3));
+    imbw_xcorr = [self xCorrGaussWithImg:img];
+
+    // Combine the xcorr and morphological opening output
+    
+    // The morphological close operation is a dilation followed by an erosion,
+    // using the same structuring element for both operations.
+    cv::bitwise_and(imThreshold, xCorrImage, bwImage);
+    bwImage = [self dilateAndErodeMat:bwImage withSize:3];
     return bwImage;
 }
 
