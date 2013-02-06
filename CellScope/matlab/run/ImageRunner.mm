@@ -14,6 +14,7 @@
 #import "ImageTools.h"
 #import "Globals.h"
 #import "MatrixOperations.h"
+#import "svm.h"
 #import <opencv2/core/core_c.h>
 
 @implementation ImageRunner
@@ -23,11 +24,9 @@
 // The HoG features are only being displayed on a graph. Is it something that needs to be output as a CSV somehow?
 
 // train_max, train_min
-// blobid
 // bwconncomp
 // regionprops
 // svmpredict
-// humoment
 
 // svmpredict
 
@@ -209,9 +208,10 @@
     Mat xTest = [self prepareFeatures];
     
     // Classify Objects with LibSVM IKSVM classifier
-    [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
+    
+    //*** NOT WORKING *** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
-    dvtest = dvtest(:,model.Label==1);
+    //*** NOT WORKING *** dvtest = dvtest(:,model.Label==1);
     NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
     
     // Sort Scores and Centroids
