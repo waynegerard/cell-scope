@@ -13,7 +13,7 @@
 
 @implementation Blobid
 
-- (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
++ (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
     int type = cv::MORPH_RECT;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
     cv::Mat returnMat;
@@ -24,7 +24,7 @@
 }
 
 
-- (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
++ (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
     int type = cv::MORPH_RECT;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
     cv::Mat returnMat;
@@ -34,7 +34,7 @@
     return returnMat;
 }
 
-- (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img {
++ (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img {
 
     cv::Mat imBigOp = [self erodeAndDilateMat:img withSize:10];
     cv::Mat imdf;
@@ -52,7 +52,7 @@
 
 // Cross correlates image "orig" with a Gaussian kernel
 
-- (cv::Mat) xCorrGaussWithImg: (cv::Mat) img {
++ (cv::Mat) xCorrGaussWithImg: (cv::Mat) img {
     
     // Parameters
     int kernelSize = 16 + 1;       // size of Gaussian kernel
@@ -60,6 +60,9 @@
     float kernelStdDev  = 1.5;     // standard dev of Gaussian kernel
     float correlationThreshold = 0.5; // threshold on normalized cross-correlation
     cv::Mat tmplate;
+    cv::Mat correlationMat;
+    cv::Mat correlationBin;
+    cv::Mat correlationCrop;
     
     // Generate Gaussian kernel
     cv::Mat gaussianKernel = cv::getGaussianKernel(kernelSize, kernelStdDev);
@@ -67,29 +70,30 @@
     double* max;
     cv::minMaxIdx(gaussianKernel, min, max);
     cv::divide(*max, gaussianKernel, tmplate);
-    C = normxcorr2(template, im);
+    cv::matchTemplate(img, tmplate, correlationMat, cv::TM_CCORR_NORMED);
     
     // Crop normxcorr image to recover original size, binarize
-    sztemplate = size(template);
-    margin = (sztemplate-1)/2;
-    Ccrop = C(margin+1:end-margin,margin+1:end-margin);
-    Cbin = Ccrop > Cthresh;
+    int margin_rows = (tmplate.rows - 1) / 2;
+    int margin_cols = (tmplate.cols - 1) / 2;
+    correlationMat = correlationMat.rowRange(margin_rows+1, correlationMat.rows - margin_rows);
+    correlationMat = correlationMat.colRange(margin_cols + 1, correlationMat.cols - margin_cols);
+    cv::threshold(correlationMat, correlationBin, correlationThreshold, 255.0, CV_THRESH_BINARY);
     
     // Touch-up morphological operations
     int type = cv::MORPH_RECT;
     cv::Mat returnMat;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(3,3));
-    cv::dilate(cBin, returnMat, element);
+    cv::dilate(correlationBin, returnMat, element);
     return returnMat;
 }
 
-- (cv::Mat) blobIDWithImage: (cv::Mat&) img {
++ (cv::Mat) blobIDWithImage: (cv::Mat&) img {
     
     cv::Mat bwImage;
     cv::Mat xCorrImage;
     cv::Mat imThreshold = [self getMorphologicalOpeningWithImg:img];
     
-    imbw_xcorr = [self xCorrGaussWithImg:img];
+    cv::Mat imbw_xcorr = [self xCorrGaussWithImg:img];
 
     // Combine the xcorr and morphological opening output
     

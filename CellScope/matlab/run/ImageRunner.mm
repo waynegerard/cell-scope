@@ -9,6 +9,7 @@
 //
 //
 
+#import "Blobid.h"
 #import "ImageRunner.h"
 #import "ImageTools.h"
 #import "Globals.h"
@@ -165,7 +166,7 @@
     NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
-    imbw = blobid(self.orig,0); // Use Gaussian kernel method
+    cv::Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
     
     imbwCC = bwconncomp(imbw);
     imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
