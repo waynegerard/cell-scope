@@ -35,42 +35,21 @@
     return cvMat;
 }
 
-cv::vector <cv::vector<cv::Point> > findBlobs(const cv::Mat &img)
-{
-    cv::vector <cv::vector<cv::Point> > blobs;
-    blobs.clear();
-    
-    // Using labels from 2+ for each blob
-    cv::Mat label_image;
-    img.convertTo(label_image, CV_32FC1);
-    
-    int label_count = 2; // starts at 2 because 0,1 are used already
-    
-    for(int row = 0; row < img.rows; row++) {
-        for(int col = 0; col < img.cols; col++) {
-            
-            if( (int)label_image.at<int>(row,col) != 1) {
-                continue;
-            }
-            
-            cv::Rect rect;
-            cv::floodFill(label_image, cv::Point(row,col), cv::Scalar(label_count), &rect, cv::Scalar(0), cv::Scalar(0), 4);
-            
-            cv::vector<cv::Point> blob;
-            
-            for(int i=rect.y; i < (rect.y+rect.height); i++) {
-                for(int j=rect.x; j < (rect.x+rect.width); j++) {
-                    if((int)label_image.at<int>(i,j) != label_count) {
-                        continue;
-                    }
-                    blob.push_back(cv::Point(j,i));
-                }
-            }
-            blobs.push_back(blob);
-            label_count++;
-        }
-    }
-    return blobs;
-}
+/**
+ CALCFEATS takes the patches and calculates various Hu moments, geometric,
+ and photometric features
+ */
++ (Mat) calcFeaturesWithBlobs: (NSMutableArray*) blobs withPatchSize:(int) patchSize {
 
+    for (int i = 0; i < [blobs count]; i++) {
+        // Stats is a NSMutabledictionary
+        NSMutableDictionary* stats = [blobs objectAtIndex:i];
+        NSNumber moment = [self huMomentForPatch: patch];
+        Mat binPatch = [stats valueForKey:@"binpatch"];
+        NSNumber geom = [self geomWithPatch: patch withBinaryPatch: binPatch];
+        [stats setValue:moment forKey: @"phi" ];
+        [stats setValue:geom forKey:@"geom"];
+        
+    }
+}
 @end

@@ -15,7 +15,7 @@
 #import "Globals.h"
 #import "MatrixOperations.h"
 #import "svm.h"
-#import <opencv2/core/core_c.h>
+#import <opencv2/imgproc/imgproc.hpp>
 
 @implementation ImageRunner
 
@@ -167,25 +167,43 @@
     // Perform object identification
     cv::Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
     
-    imbwCC = bwconncomp(imbw);
-    imbwCC.stats = regionprops(imbwCC,orig,'WeightedCentroid');
+    cv::Mat canny_output;
+    cv::vector<cv::vector<cv::Point> > contours;
+    cv::vector<Vec4i> hierarchy;
+    
+    /// Detect edges using canny
+    cv::Canny(imageBw, canny_output, 255, 255*2, 3 );
+    
+    /// Find contours
+    cv::findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
+        
+    /// Get the moments
+    vector<Moments> mu(contours.size() );
+    for( int i = 0; i < contours.size(); i++ )
+    { mu[i] = moments( contours[i], false ); }
+    
+    ///  Get the mass centers:
+    NSMutableArray* centroids = [NSMutableArray array];
 
-    // Computer gradient image for HoG features
-    if (self.hogFeatures) { //
-        // WAYNE NOTE: Pretty sure this isn't being used anywhere. Confirm?
-       // gradim = compute_gradient(orig,8);
+    vector<Point2f> mc( contours.size() );
+    for( int i = 0; i < contours.size(); i++ ) {
+        int x = lroundf(mu[i].m10/mu[i].m00);
+        int y = lroundf(mu[i].m01/mu[i].m00);
+        CGPoint pt = CGPointMake(x, y);
+        [centroids addObject: [NSValue valueWithCGPoint:pt]];
     }
+    
+    // Computer gradient image for HoG features
     
     _patchCount = 0;
     
-    // Update vector of centroid values
-    centroids = round(vertcat(imbwCC.stats(:).WeightedCentroid)); // col idx in col 1, row idx in col 2
-
-    int numObjects = imbwCC.numObjects;
+    int numObjects = contours.size();
     
     for (int j = 0; j < numObjects; j++) { // IM
-        int col = centroids[j][0];
-        int row = centroids[j][2];
+        NSValue* val = [centroids objectAtIndex:j];
+        CGPoint pt = [val CGPointValue];
+        int col = pt.x;
+        int row = pt.y;
         
         NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
         if (stats != NULL) { // If not a partial patch
@@ -196,7 +214,7 @@
     }
     
     // Calculate features
-    data = calcfeats(data, patchSize, hogFeatures);
+    data = calcfeats(data, self.patchSize);
     Mat train_max;
     Mat train_min;
 
