@@ -214,7 +214,8 @@
     }
     
     // Calculate features
-    data = calcfeats(data, self.patchSize);
+    data = [ImageTools calcFeaturesWithBlobs:data withPatchSize:self.patchSize];
+    
     Mat train_max;
     Mat train_min;
 

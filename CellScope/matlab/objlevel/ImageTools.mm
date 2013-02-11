@@ -8,6 +8,7 @@
 
 #import "ImageTools.h"
 #import <opencv2/imgproc/imgproc.hpp>
+#import <opencv2/highgui/highgui.hpp>
 
 @implementation ImageTools
 
@@ -39,17 +40,25 @@
  CALCFEATS takes the patches and calculates various Hu moments, geometric,
  and photometric features
  */
-+ (Mat) calcFeaturesWithBlobs: (NSMutableArray*) blobs withPatchSize:(int) patchSize {
++ (NSMutableArray*) calcFeaturesWithBlobs: (NSMutableArray*) blobs withPatchSize:(int) patchSize {
 
+    NSMutableArray* newBlobs = [NSMutableArray array];
     for (int i = 0; i < [blobs count]; i++) {
-        // Stats is a NSMutabledictionary
         NSMutableDictionary* stats = [blobs objectAtIndex:i];
-        NSNumber moment = [self huMomentForPatch: patch];
-        Mat binPatch = [stats valueForKey:@"binpatch"];
-        NSNumber geom = [self geomWithPatch: patch withBinaryPatch: binPatch];
-        [stats setValue:moment forKey: @"phi" ];
-        [stats setValue:geom forKey:@"geom"];
+        Mat* patch = (__bridge Mat*) [stats valueForKey:@"patch"];
         
+        // Calculate the hu moments
+        Moments m = cv::moments(*patch);
+        Mat huMoments;
+        HuMoments(m, huMoments);
+        
+        Mat* binPatch = (__bridge Mat*) [stats valueForKey:@"binpatch"];
+        NSNumber* geom = [self geomWithPatch: patch withBinaryPatch: binPatch];
+        id huPtr = [NSValue valueWithPointer:(Mat*)&huMoments];
+        [stats setValue:huPtr forKey: @"phi"];
+        [stats setValue:geom forKey:@"geom"];
+        [newBlobs addObject:stats];
     }
+    return newBlobs;
 }
 @end
