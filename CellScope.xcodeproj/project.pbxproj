@@ -69,6 +69,7 @@
 		9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */; };
 		9BF8133E15E1AB0700AC9B3F /* PictureListMainTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */; };
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
+		AC56072516D30055002ADF9C /* Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC56072416D30055002ADF9C /* Debug.mm */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
@@ -212,6 +213,8 @@
 		9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListMainTable.m; sourceTree = "<group>"; };
 		9BF8134015E1B13500AC9B3F /* PictureListDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureListDetail.h; sourceTree = "<group>"; };
 		9BF8134115E1B13500AC9B3F /* PictureListDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListDetail.m; sourceTree = "<group>"; };
+		AC56072316D30055002ADF9C /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = matlab/other/Debug.h; sourceTree = "<group>"; };
+		AC56072416D30055002ADF9C /* Debug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Debug.mm; path = matlab/other/Debug.mm; sourceTree = "<group>"; };
 		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = matlab/run/ImageRunner.h; sourceTree = "<group>"; };
 		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = matlab/run/ImageRunner.mm; sourceTree = "<group>"; };
 		ACB2657D1676D07500764B57 /* FeatureCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureCalculator.h; path = matlab/objlevel/FeatureCalculator.h; sourceTree = "<group>"; };
@@ -553,6 +556,8 @@
 			children = (
 				ACEF530D169557AF00348916 /* MatrixOperations.mm */,
 				ACEF530E169557AF00348916 /* MatrixOperations.h */,
+				AC56072316D30055002ADF9C /* Debug.h */,
+				AC56072416D30055002ADF9C /* Debug.mm */,
 			);
 			name = other;
 			sourceTree = "<group>";
@@ -718,6 +723,7 @@
 				ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */,
 				ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */,
 				ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */,
+				AC56072516D30055002ADF9C /* Debug.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

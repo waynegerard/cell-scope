@@ -13,6 +13,45 @@
 @implementation ImageTools
 
 
+/**
+    Calculates various geometric features provided through regionprops
+    @param patch    The patch to calculate geometric features on
+    @param binpatch The binary image used to find connected components
+    @return         Returns 14 geometric-based features calculated through regionProperties.
+ */
++ (Mat *)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
+    
+    Mat* geometricFeatures = new Mat(14, 1, CV_8UC3);
+    
+    
+    cc = bwconncomp(binpatch);
+    props = regionprops(cc,patch,'all');
+    if cc.NumObjects==0
+        nullobj = 1;
+    end
+    
+    % Store features values for object closest to the center of the patch
+        if nullobj
+            geomfeats = zeros(1,14);
+        else
+            geomfeats = [geomfeats...
+                         props.Area...           %1
+                         props.ConvexArea...     %2
+                         props.Eccentricity...   %3
+                         props.EquivDiameter...  %4
+                         props.Extent...         %5
+                         props.FilledArea...     %6
+                         props.MajorAxisLength...%7
+                         props.MinorAxisLength...%8
+                         props.MaxIntensity...   %9
+                         props.MinIntensity...   %10
+                         props.MeanIntensity...  %11
+                         props.Perimeter...      %12
+                         props.Solidity...       %13
+                         props.EulerNumber];     %14
+    end
+}
+
 + (Mat)cvMatWithImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
@@ -53,10 +92,11 @@
         HuMoments(m, huMoments);
         
         Mat* binPatch = (__bridge Mat*) [stats valueForKey:@"binpatch"];
-        NSNumber* geom = [self geomWithPatch: patch withBinaryPatch: binPatch];
+        Mat* geometricFeatures = [self geometricFeaturesWithPatch:patch withBinPatch:binPatch];
         id huPtr = [NSValue valueWithPointer:(Mat*)&huMoments];
+        id geomPtr = [NSValue valueWithPointer:geometricFeatures];
         [stats setValue:huPtr forKey: @"phi"];
-        [stats setValue:geom forKey:@"geom"];
+        [stats setValue:geomPtr forKey:@"geom"];
         [newBlobs addObject:stats];
     }
     return newBlobs;

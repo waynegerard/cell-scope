@@ -21,13 +21,7 @@
 
 // TODO:
 
-// The HoG features are only being displayed on a graph. Is it something that needs to be output as a CSV somehow?
-
 // train_max, train_min
-// bwconncomp
-// regionprops
-// svmpredict
-
 // svmpredict
 
 
@@ -49,7 +43,7 @@
 
 - (NSMutableIndexSet*) findSuppressedPatches
 {
-    float maxDistance = pow((pow(self.orig.rows, 2) + pow(self.orig.cols, 2)), 0.5);
+    float maxDistance = pow((pow(self.orig.rows, 2) + cv::pow(self.orig.cols, 2)), 0.5);
     
     // Setup rows and columns for next step
     NSMutableArray* centroidRows = [NSMutableArray array];
@@ -166,17 +160,12 @@
     
     // Perform object identification
     cv::Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
-    
-    cv::Mat canny_output;
+        
     cv::vector<cv::vector<cv::Point> > contours;
     cv::vector<Vec4i> hierarchy;
     
-    /// Detect edges using canny
-    cv::Canny(imageBw, canny_output, 255, 255*2, 3 );
+    cv::findContours(imageBw, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
     
-    /// Find contours
-    cv::findContours( canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::Point(0, 0));
-        
     /// Get the moments
     vector<Moments> mu(contours.size() );
     for( int i = 0; i < contours.size(); i++ )

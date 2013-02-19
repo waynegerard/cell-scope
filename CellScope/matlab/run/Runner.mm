@@ -17,7 +17,7 @@
     /////////////////////////////////
     // Handle incorrect parameters //
     /////////////////////////////////
-    int patchSize  = (patchSize % 2 != 0) ? 24 : patchSz;
+    int patchSize  = (patchSz % 2 != 0) ? 24 : patchSz;
     
     ////////////////////
     // Load the model //
