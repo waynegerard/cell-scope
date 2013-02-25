@@ -114,12 +114,12 @@ using namespace cv;
 
 
 /**
-    Writes to CSV given |_centroids| and a list of sorted scores |_sortedScores|
+    Writes to Core Data given |_centroids| and a list of sorted scores |_sortedScores|
     Output looks like:
     centroids:    array of centroids, sorted by descending patch score. Each
                   row contains (row,col) indices.
     sortedScores: corresponding scores (likelihood of being bacilli)
 */
-- (void) writeToCSV;
+- (void) writeToCoreData;
 
 @end

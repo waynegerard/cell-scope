@@ -32,8 +32,7 @@
     // Timing //
     ////////////
     
-    // Start timing
-    // TODO: Timing
+    NSDate *start = [NSDate date];
     
     ///////////////////////
     // Choose the images //
@@ -58,7 +57,10 @@
         [imgRunner runWithImage:ui_img];
     }
     
-    // TODO: Stop timing
+    NSDate *end = [NSDate date];
+    NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
+    CSLog(@"Execution Time: %f", executionTime);
+    
 }
 
 

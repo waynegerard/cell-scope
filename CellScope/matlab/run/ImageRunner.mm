@@ -20,7 +20,6 @@
 @implementation ImageRunner
 
 // TODO:
-
 // train_max, train_min
 // svmpredict
 
@@ -175,7 +174,7 @@
     NSMutableArray* centroids = [NSMutableArray array];
 
     vector<Point2f> mc( contours.size() );
-    for( int i = 0; i < contours.size(); i++ ) {
+    for (int i = 0; i < contours.size(); i++) {
         int x = lroundf(mu[i].m10/mu[i].m00);
         int y = lroundf(mu[i].m01/mu[i].m00);
         CGPoint pt = CGPointMake(x, y);
@@ -217,6 +216,7 @@
     
     // Classify Objects with LibSVM IKSVM classifier
     
+    //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
     //*** NOT WORKING *** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
     //*** NOT WORKING *** dvtest = dvtest(:,model.Label==1);
@@ -236,7 +236,7 @@
     [_centroids removeObjectsAtIndexes:suppressedPatches];
     
     // Output
-    [self writeToCSV];
+    [self writeToCoreData];
 }
 
 - (NSMutableArray*) sortScoresWithArray:(NSMutableArray*) scoreDictionaryArray
@@ -372,7 +372,7 @@
 }
 
 
-- (void) writeToCSV
+- (void) writeToCoreData
 {
     // TODO: Implement
 }

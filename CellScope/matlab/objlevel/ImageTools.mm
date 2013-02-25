@@ -19,21 +19,22 @@
     @param binpatch The binary image used to find connected components
     @return         Returns 14 geometric-based features calculated through regionProperties.
  */
-+ (Mat *)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
++ (Mat)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
     
     Mat* geometricFeatures = new Mat(14, 1, CV_8UC3);
     
+    cv::vector<cv::vector<cv::Point> > contours;
+    cv::vector<Vec4i> hierarchy;
     
-    cc = bwconncomp(binpatch);
+    cv::findContours(binPatch, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+    
+    if (contours.size() == 0) {
+        return cv::Mat::zeros(1, 14, CV_8UC3);
+    }
+    
     props = regionprops(cc,patch,'all');
-    if cc.NumObjects==0
-        nullobj = 1;
-    end
     
     % Store features values for object closest to the center of the patch
-        if nullobj
-            geomfeats = zeros(1,14);
-        else
             geomfeats = [geomfeats...
                          props.Area...           %1
                          props.ConvexArea...     %2
