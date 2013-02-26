@@ -6,6 +6,8 @@
 //  Copyright (c) 2012 Matthew Bakalar. All rights reserved.
 //
 
+#include <opencv2/core/core.hpp>
+
 #ifndef CellScope_Globals_h
 #define CellScope_Globals_h
 
@@ -16,6 +18,8 @@
 #else
 #   define CSLog(...) ;
 #endif
+
+typedef cv::vector<cv::vector<cv::Point> > contourContainer;
 
 
 #endif

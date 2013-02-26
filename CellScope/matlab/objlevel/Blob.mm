@@ -1,17 +1,17 @@
 //
-//  Blobid.m
+//  Blob.m
 //  CellScope
 //
 //  Created by Wayne Gerard on 12/22/12.
 //  Copyright (c) 2012 Matthew Bakalar. All rights reserved.
 //
 
-#import "Blobid.h"
+#import "Blob.h"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 
 
-@implementation Blobid
+@implementation Blob
 
 + (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
     int type = cv::MORPH_RECT;
@@ -52,7 +52,7 @@
 
 // Cross correlates image "orig" with a Gaussian kernel
 
-+ (cv::Mat) xCorrGaussWithImg: (cv::Mat) img {
++ (cv::Mat) crossCorrelateGaussianKernelWithImg: (cv::Mat) img {
     
     // Parameters
     int kernelSize = 16 + 1;       // size of Gaussian kernel
@@ -66,8 +66,8 @@
     
     // Generate Gaussian kernel
     cv::Mat gaussianKernel = cv::getGaussianKernel(kernelSize, kernelStdDev);
-    double* min;
-    double* max;
+    double* min = nullptr;
+    double* max = nullptr;
     cv::minMaxIdx(gaussianKernel, min, max);
     cv::divide(*max, gaussianKernel, tmplate);
     cv::matchTemplate(img, tmplate, correlationMat, cv::TM_CCORR_NORMED);
@@ -87,13 +87,13 @@
     return returnMat;
 }
 
-+ (cv::Mat) blobIDWithImage: (cv::Mat&) img {
++ (cv::Mat) blobIDWithImage: (cv::Mat) img {
     
     cv::Mat bwImage;
     cv::Mat xCorrImage;
     cv::Mat imThreshold = [self getMorphologicalOpeningWithImg:img];
     
-    cv::Mat imbw_xcorr = [self xCorrGaussWithImg:img];
+    cv::Mat imbw_xcorr = [self crossCorrelateGaussianKernelWithImg:img];
 
     // Combine the xcorr and morphological opening output
     

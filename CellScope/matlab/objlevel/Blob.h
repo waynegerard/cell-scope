@@ -1,5 +1,5 @@
 //
-//  Blobid.h
+//  Blob.h
 //  CellScope
 //
 //  Created by Wayne Gerard on 12/22/12.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <opencv2/core/core.hpp>
 
-@interface Blobid : NSObject
+@interface Blob : NSObject
 
 + (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz;
 
@@ -18,7 +18,9 @@
 + (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img;
 
 /**
- Simple function that finds blobs in a grayscale image
+    Finds blobs in a grayscale image.
+    @param img The image, assumed to be grayscale.
+    @return Returns
  */
 + (cv::Mat) blobIDWithImage: (const cv::Mat) img;
 

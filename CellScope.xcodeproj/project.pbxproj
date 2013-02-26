@@ -71,9 +71,10 @@
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
 		AC56072516D30055002ADF9C /* Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC56072416D30055002ADF9C /* Debug.mm */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
+		AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC7B129F16DC3A1B002AB47A /* Region.mm */; };
 		ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB2657E1676D07500764B57 /* FeatureCalculator.m */; };
 		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
-		ACB641FB1686D760006B7B41 /* Blobid.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blobid.mm */; };
+		ACB641FB1686D760006B7B41 /* Blob.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blob.mm */; };
 		ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B416C209DB00D7A384 /* svm-predict.c */; };
 		ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B516C209DB00D7A384 /* svm-scale.c */; };
 		ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B616C209DB00D7A384 /* svm-train.c */; };
@@ -217,12 +218,14 @@
 		AC56072416D30055002ADF9C /* Debug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Debug.mm; path = matlab/other/Debug.mm; sourceTree = "<group>"; };
 		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = matlab/run/ImageRunner.h; sourceTree = "<group>"; };
 		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = matlab/run/ImageRunner.mm; sourceTree = "<group>"; };
+		AC7B129E16DC3A1B002AB47A /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Region.h; path = matlab/Features/Region.h; sourceTree = "<group>"; };
+		AC7B129F16DC3A1B002AB47A /* Region.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Region.mm; path = matlab/Features/Region.mm; sourceTree = "<group>"; };
 		ACB2657D1676D07500764B57 /* FeatureCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FeatureCalculator.h; path = matlab/objlevel/FeatureCalculator.h; sourceTree = "<group>"; };
 		ACB2657E1676D07500764B57 /* FeatureCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FeatureCalculator.m; path = matlab/objlevel/FeatureCalculator.m; sourceTree = "<group>"; };
 		ACB641DB16842434006B7B41 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = matlab/objlevel/ImageTools.h; sourceTree = "<group>"; };
 		ACB641DC16842434006B7B41 /* ImageTools.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageTools.mm; path = matlab/objlevel/ImageTools.mm; sourceTree = "<group>"; };
-		ACB641F91686D75F006B7B41 /* Blobid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blobid.h; path = matlab/objlevel/Blobid.h; sourceTree = "<group>"; };
-		ACB641FA1686D760006B7B41 /* Blobid.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Blobid.mm; path = matlab/objlevel/Blobid.mm; sourceTree = "<group>"; };
+		ACB641F91686D75F006B7B41 /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = matlab/objlevel/Blob.h; sourceTree = "<group>"; };
+		ACB641FA1686D760006B7B41 /* Blob.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Blob.mm; path = matlab/objlevel/Blob.mm; sourceTree = "<group>"; };
 		ACB641FC16876AE3006B7B41 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = matlab/Globals.h; sourceTree = "<group>"; };
 		ACB705B416C209DB00D7A384 /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "LibSVM/svm-predict.c"; sourceTree = "<group>"; };
 		ACB705B516C209DB00D7A384 /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "LibSVM/svm-scale.c"; sourceTree = "<group>"; };
@@ -427,8 +430,11 @@
 		9B6BF0C015E19ACD002834C5 /* CellScope */ = {
 			isa = PBXGroup;
 			children = (
+				AC7B129D16DC385E002AB47A /* Features */,
+				AC7B129C16DC384C002AB47A /* Other */,
+				AC7B129B16DC3841002AB47A /* Matrix Operations */,
+				AC7B129A16DC3827002AB47A /* Main */,
 				ACB705B216C2097900D7A384 /* LibSVM */,
-				ACD63EA1165DDB6A00EDC898 /* matlab */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.m */,
 				9B6BF10015E19F2A002834C5 /* LoginViewController.h */,
@@ -504,7 +510,7 @@
 			path = CellScope/Images;
 			sourceTree = "<group>";
 		};
-		AC0D809F1669A5980055B9E1 /* Run */ = {
+		AC7B129A16DC3827002AB47A /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				AC5704581674252F0071225E /* ImageRunner.h */,
@@ -512,7 +518,41 @@
 				ACFC05AD1698D13500411641 /* Runner.h */,
 				ACFC05AE1698D13500411641 /* Runner.mm */,
 			);
-			name = Run;
+			name = Main;
+			sourceTree = "<group>";
+		};
+		AC7B129B16DC3841002AB47A /* Matrix Operations */ = {
+			isa = PBXGroup;
+			children = (
+				ACEF530D169557AF00348916 /* MatrixOperations.mm */,
+				ACEF530E169557AF00348916 /* MatrixOperations.h */,
+			);
+			name = "Matrix Operations";
+			sourceTree = "<group>";
+		};
+		AC7B129C16DC384C002AB47A /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				ACB641FC16876AE3006B7B41 /* Globals.h */,
+				ACB641DB16842434006B7B41 /* ImageTools.h */,
+				ACB641DC16842434006B7B41 /* ImageTools.mm */,
+				AC56072316D30055002ADF9C /* Debug.h */,
+				AC56072416D30055002ADF9C /* Debug.mm */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		AC7B129D16DC385E002AB47A /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				ACB2657D1676D07500764B57 /* FeatureCalculator.h */,
+				ACB2657E1676D07500764B57 /* FeatureCalculator.m */,
+				ACB641F91686D75F006B7B41 /* Blob.h */,
+				ACB641FA1686D760006B7B41 /* Blob.mm */,
+				AC7B129E16DC3A1B002AB47A /* Region.h */,
+				AC7B129F16DC3A1B002AB47A /* Region.mm */,
+			);
+			name = Features;
 			sourceTree = "<group>";
 		};
 		ACB705B216C2097900D7A384 /* LibSVM */ = {
@@ -525,41 +565,6 @@
 				ACB705B816C209DB00D7A384 /* svm.h */,
 			);
 			name = LibSVM;
-			sourceTree = "<group>";
-		};
-		ACD63EA1165DDB6A00EDC898 /* matlab */ = {
-			isa = PBXGroup;
-			children = (
-				AC0D809F1669A5980055B9E1 /* Run */,
-				ACD63EA4165DDB9000EDC898 /* other */,
-				ACD63EA3165DDB8400EDC898 /* objlevel */,
-				ACB641FC16876AE3006B7B41 /* Globals.h */,
-			);
-			name = matlab;
-			sourceTree = "<group>";
-		};
-		ACD63EA3165DDB8400EDC898 /* objlevel */ = {
-			isa = PBXGroup;
-			children = (
-				ACB2657D1676D07500764B57 /* FeatureCalculator.h */,
-				ACB2657E1676D07500764B57 /* FeatureCalculator.m */,
-				ACB641DB16842434006B7B41 /* ImageTools.h */,
-				ACB641DC16842434006B7B41 /* ImageTools.mm */,
-				ACB641F91686D75F006B7B41 /* Blobid.h */,
-				ACB641FA1686D760006B7B41 /* Blobid.mm */,
-			);
-			name = objlevel;
-			sourceTree = "<group>";
-		};
-		ACD63EA4165DDB9000EDC898 /* other */ = {
-			isa = PBXGroup;
-			children = (
-				ACEF530D169557AF00348916 /* MatrixOperations.mm */,
-				ACEF530E169557AF00348916 /* MatrixOperations.h */,
-				AC56072316D30055002ADF9C /* Debug.h */,
-				AC56072416D30055002ADF9C /* Debug.mm */,
-			);
-			name = other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -716,7 +721,7 @@
 				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
 				ACB2657F1676D07500764B57 /* FeatureCalculator.m in Sources */,
 				ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */,
-				ACB641FB1686D760006B7B41 /* Blobid.mm in Sources */,
+				ACB641FB1686D760006B7B41 /* Blob.mm in Sources */,
 				ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */,
 				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
 				ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */,
@@ -724,6 +729,7 @@
 				ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */,
 				ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */,
 				AC56072516D30055002ADF9C /* Debug.mm in Sources */,
+				AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
