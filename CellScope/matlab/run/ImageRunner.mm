@@ -9,7 +9,7 @@
 //
 //
 
-#import "Blobid.h"
+#import "Blob.h"
 #import "ImageRunner.h"
 #import "ImageTools.h"
 #import "Globals.h"
@@ -158,9 +158,9 @@
     NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
-    cv::Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
+    Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
         
-    cv::vector<cv::vector<cv::Point> > contours;
+    contourContainer contours;
     cv::vector<Vec4i> hierarchy;
     
     cv::findContours(imageBw, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);

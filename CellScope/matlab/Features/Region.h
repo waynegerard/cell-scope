@@ -46,20 +46,20 @@
 
 // Calculation methods
 
-- (float) calculateArea;
-- (float) calculateConvexArea;
-- (float) calculateEccentricity;
-- (float) calculateEquivDiameter;
-- (float) calculateExtent;
-- (float) calculateFilledArea;
-- (float) calculateMajorAxisLength;
-- (float) calculateMinorAxisLength;
-- (float) calculateMaxIntensity;
-- (float) calculateMinIntensity;
-- (float) calculateMeanIntensity;
-- (float) calculatePerimeter;
-- (float) calculateSolidity;
-- (float) calculateEulerNumber;
+- (cv::Mat) calculateArea;
+- (cv::Mat) calculateConvexArea;
+- (cv::Mat) calculateEccentricity;
+- (cv::Mat) calculateEquivDiameter;
+- (cv::Mat) calculateExtent;
+- (cv::Mat) calculateFilledArea;
+- (cv::Mat) calculateMajorAxisLength;
+- (cv::Mat) calculateMinorAxisLength;
+- (cv::Mat) calculateMaxIntensity;
+- (cv::Mat) calculateMinIntensity;
+- (cv::Mat) calculateMeanIntensity;
+- (cv::Mat) calculatePerimeter;
+- (cv::Mat) calculateSolidity;
+- (cv::Mat) calculateEulerNumber;
 
 @property (nonatomic, assign) contourContainer contours;
 @property (nonatomic, assign) cv::Mat img;
