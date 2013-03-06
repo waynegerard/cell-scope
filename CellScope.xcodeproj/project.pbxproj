@@ -79,7 +79,7 @@
 		ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B516C209DB00D7A384 /* svm-scale.c */; };
 		ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B616C209DB00D7A384 /* svm-train.c */; };
 		ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B716C209DB00D7A384 /* svm.cpp */; };
-		ACD3255C16E6E5B20027FB50 /* Contour.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACD3255B16E6E5B20027FB50 /* Contour.mm */; };
+		ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACD3255D16E6E96B0027FB50 /* Contour.mm */; };
 		ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACD63EA5165DDDC200EDC898 /* opencv2.framework */; };
 		ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.mm */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
@@ -234,7 +234,7 @@
 		ACB705B716C209DB00D7A384 /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = LibSVM/svm.cpp; sourceTree = "<group>"; };
 		ACB705B816C209DB00D7A384 /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = LibSVM/svm.h; sourceTree = "<group>"; };
 		ACD3255A16E6E5B20027FB50 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contour.h; path = matlab/Features/Contour.h; sourceTree = "<group>"; };
-		ACD3255B16E6E5B20027FB50 /* Contour.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Contour.mm; path = matlab/Features/Contour.mm; sourceTree = "<group>"; };
+		ACD3255D16E6E96B0027FB50 /* Contour.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Contour.mm; path = matlab/Features/Contour.mm; sourceTree = "<group>"; };
 		ACD63EA5165DDDC200EDC898 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
 		ACEF530D169557AF00348916 /* MatrixOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MatrixOperations.mm; path = matlab/other/MatrixOperations.mm; sourceTree = "<group>"; };
 		ACEF530E169557AF00348916 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = matlab/other/MatrixOperations.h; sourceTree = "<group>"; };
@@ -555,7 +555,7 @@
 				AC7B129E16DC3A1B002AB47A /* Region.h */,
 				AC7B129F16DC3A1B002AB47A /* Region.mm */,
 				ACD3255A16E6E5B20027FB50 /* Contour.h */,
-				ACD3255B16E6E5B20027FB50 /* Contour.mm */,
+				ACD3255D16E6E96B0027FB50 /* Contour.mm */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -735,7 +735,7 @@
 				ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */,
 				AC56072516D30055002ADF9C /* Debug.mm in Sources */,
 				AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */,
-				ACD3255C16E6E5B20027FB50 /* Contour.mm in Sources */,
+				ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

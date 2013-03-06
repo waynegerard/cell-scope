@@ -7,6 +7,7 @@
 //
 
 #import "Contour.h"
+#import <opencv2/imgproc/imgproc.hpp>
 using namespace cv;
 
 @implementation Contour
@@ -22,45 +23,41 @@ using namespace cv;
     if (self.area) {
         return self.area;
     }
-    self.area = cv::contourArea(self.contour);
+    self.area = contourArea(self.contour);
     return self.area;
 }
 
 - (double) calculateConvexArea {
+    if (self.convexArea) {
+        return self.convexArea;
+    }
     
     Mat hull;
-        cv::convexHull(self.contours[i], hull);
-        double convexArea = cv::contourArea(hull);
-        convexAreas.at<double>(0, i) = convexArea;
-    }
-    return convexAreas;
+    convexHull(self.contour, hull);
+    self.convexArea = contourArea(hull);
+    return self.convexArea;
 }
 
 - (double) calculateEccentricity {
-    Mat eccentricities(1, self.contours.size(), CV_8UC3);
     //   # eccentricity = sqrt( 1 - (ma/MA)^2) --- ma= minor axis --- MA= major axis
     //self.eccentricity = np.sqrt(1-(self.minoraxis_length/self.majoraxis_length)**2)
-    return eccentricities;
 }
 
 - (double) calculateEquivDiameter {
-    Mat diameters(1, self.contours.size(), CV_8UC3);
-    for (int i = 0; i < self.contours.size(); i++) {
-        // self.equi_diameter = np.sqrt(4*self.area/np.pi)
-        np.sqrt(4*self.area/np.pi)
+    if (self.equivDiameter) {
+        return self.equivDiameter;
     }
-    return diameters;
+    double area = [self calculateArea];
+    self.equivDiameter = pow((4.0 * M_PI * area), 0.5);
+    return self.equivDiameter;
 }
 
 - (double) calculateExtent {
-    Mat extents(1, self.contours.size(), CV_8UC3);
     //# extent = contour area/boundingrect area
     //self.extent = self.area/(self.bw*self.bh)
-    return extents;
 }
 
 - (double) calculateFilledArea {
-    Mat filledAreas(1, self.contours.size(), CV_8UC3);
     //# filled image :- binary image with contour region white and others black
     //self.filledImage = np.zeros(self.img.shape[0:2],np.uint8)
     //cv2.drawContours(self.filledImage,[self.cnt],0,255,-1)
@@ -68,11 +65,9 @@ using namespace cv;
     //# area of filled image
     //filledArea = cv2.countNonZero(self.filledImage)
     
-    return filledAreas;
 }
 
 - (double) calculateMajorAxisLength {
-    Mat axisLengths(1, self.contours.size(), CV_8UC3);
     // self.ellipse = cv2.fitEllipse(cnt)
     
     //# center, axis_length and orientation of ellipse
@@ -82,30 +77,21 @@ using namespace cv;
     //self.majoraxis_length = max(self.axes)
     //self.minoraxis_length = min(self.axes)
     
-    return axisLengths;
 }
 
 - (double) calculateMinorAxisLength {
-    Mat axisLengths(1, self.contours.size(), CV_8UC3);
-    return axisLengths;
 }
 
 - (double) calculateMaxIntensity {
-    Mat maxIntensities(1, self.contours.size(), CV_8UC3);
-    return maxIntensities;
 }
 
 - (double) calculateMinIntensity {
-    Mat minIntensities(1, self.contours.size(), CV_8UC3);
-    return minIntensities;
 }
 
 - (double) calculateMeanIntensity {
     //# mean value, minvalue, maxvalue
     //self.minval,self.maxval,self.minloc,self.maxloc = cv2.minMaxLoc(self.img,mask = self.filledImage)
     //self.meanval = cv2.mean(self.img,mask = self.filledImage)
-    Mat meanIntensities(1, self.contours.size(), CV_8UC3);
-    return meanIntensities;
 }
 
 - (double) calculatePerimeter {
@@ -119,7 +105,6 @@ using namespace cv;
 - (double) calculateSolidity {
     //# solidity = contour area / convex hull area
     //self.solidity = self.area/float(self.convex_area)
-    NSLog(@"Stub");
 }
 
 - (double) calculateEulerNumber {
@@ -145,7 +130,6 @@ using namespace cv;
      holes++;
      }
      }*/
-    NSLog(@"Stub");
 }
 
 @end

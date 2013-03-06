@@ -37,13 +37,13 @@
 - (double) calculateSolidity;
 - (double) calculateEulerNumber;
 
-@property (nonatomic, assign) Contour* contour;
+@property (nonatomic, retain) Contour* contour;
 @property (nonatomic, assign) double area;
 @property (nonatomic, assign) double convexArea;
 @property (nonatomic, assign) double eccentricity;
 @property (nonatomic, assign) double equivDiameter;
 @property (nonatomic, assign) double extent;
-@property (nonatomic, assign) double filledarea;
+@property (nonatomic, assign) double filledArea;
 @property (nonatomic, assign) double majorAxisLength;
 @property (nonatomic, assign) double minorAxisLength;
 @property (nonatomic, assign) double maxIntensity;
