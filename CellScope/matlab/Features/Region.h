@@ -13,7 +13,7 @@
     Represents a region similar to ones found in Matlab. Mostly meant to recreate the functionality
     of the regionprops method from Matlab.
  
-    Calculates the following properties:
+    Collaborates the following properties from the contours:
  
     1) Area
     2) ConvexArea
@@ -44,22 +44,6 @@
  */
 + (NSDictionary*) getRegionPropertiesWithContours:(contourContainer) contours withImage:(cv::Mat) img;
 
-// Calculation methods
-
-- (cv::Mat) calculateArea;
-- (cv::Mat) calculateConvexArea;
-- (cv::Mat) calculateEccentricity;
-- (cv::Mat) calculateEquivDiameter;
-- (cv::Mat) calculateExtent;
-- (cv::Mat) calculateFilledArea;
-- (cv::Mat) calculateMajorAxisLength;
-- (cv::Mat) calculateMinorAxisLength;
-- (cv::Mat) calculateMaxIntensity;
-- (cv::Mat) calculateMinIntensity;
-- (cv::Mat) calculateMeanIntensity;
-- (cv::Mat) calculatePerimeter;
-- (cv::Mat) calculateSolidity;
-- (cv::Mat) calculateEulerNumber;
 
 @property (nonatomic, assign) contourContainer contours;
 @property (nonatomic, assign) cv::Mat img;

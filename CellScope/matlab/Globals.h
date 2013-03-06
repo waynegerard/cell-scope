@@ -20,6 +20,6 @@
 #endif
 
 typedef cv::vector<cv::vector<cv::Point> > contourContainer;
-
+typedef cv::vector<cv::Point> contour;
 
 #endif
