@@ -19,7 +19,7 @@
 #   define CSLog(...) ;
 #endif
 
-typedef cv::vector<cv::vector<cv::Point> > contourContainer;
-typedef cv::vector<cv::Point> contour;
+typedef std::vector<std::vector<cv::Point> > ContourContainerType;
+typedef std::vector<cv::Point> ContourType;
 
 #endif

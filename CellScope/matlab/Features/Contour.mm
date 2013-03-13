@@ -8,128 +8,69 @@
 
 #import "Contour.h"
 #import <opencv2/imgproc/imgproc.hpp>
-using namespace cv;
 
 @implementation Contour
 
-@synthesize contour = _contour;
+@synthesize contour = _contour, image = _image, filledImage = _filledImage;
 @synthesize area = _area, convexArea = _convexArea, eccentricity = _eccentricity, equivDiameter = _equivDiameter;
 @synthesize extent = _extent, filledArea = _filledArea, majorAxisLength = _majorAxisLength;
 @synthesize minorAxisLength = _minorAxisLength, maxIntensity = _maxIntensity, minIntensity = _minIntensity;
-@synthesize meanIntensity = _meanIntensity, perimeter = _perimeter, solidity = _solidity, eulerNumber = _eulerNumber;
+@synthesize meanIntensity = _meanIntensity, perimeter = _perimeter, solidity = _solidity;
 
-
-- (double) calculateArea {
-    if (self.area) {
-        return self.area;
-    }
-    self.area = contourArea(self.contour);
-    return self.area;
+- (void) calculateProperties {
+    [self calculateAreaProperties];
+    [self calculateAxisProperties];
+    [self calculateMaskedImageProperties];
+    [self calculateMiscProperties];
 }
 
-- (double) calculateConvexArea {
-    if (self.convexArea) {
-        return self.convexArea;
-    }
-    
+- (void) calculateAreaProperties {
+    self.area = cv::contourArea(self.contour);
+
     Mat hull;
-    convexHull(self.contour, hull);
+    cv::convexHull(self.contour, hull);
     self.convexArea = contourArea(hull);
-    return self.convexArea;
+    self.solidity = self.area / self.convexArea;
+
+    self.equivDiameter = pow((4.0 * M_PI * self.area), 0.5);
 }
 
-- (double) calculateEccentricity {
-    //   # eccentricity = sqrt( 1 - (ma/MA)^2) --- ma= minor axis --- MA= major axis
-    //self.eccentricity = np.sqrt(1-(self.minoraxis_length/self.majoraxis_length)**2)
-}
-
-- (double) calculateEquivDiameter {
-    if (self.equivDiameter) {
-        return self.equivDiameter;
-    }
-    double area = [self calculateArea];
-    self.equivDiameter = pow((4.0 * M_PI * area), 0.5);
-    return self.equivDiameter;
-}
-
-- (double) calculateExtent {
-    //# extent = contour area/boundingrect area
-    //self.extent = self.area/(self.bw*self.bh)
-}
-
-- (double) calculateFilledArea {
-    //# filled image :- binary image with contour region white and others black
-    //self.filledImage = np.zeros(self.img.shape[0:2],np.uint8)
-    //cv2.drawContours(self.filledImage,[self.cnt],0,255,-1)
+- (void) calculateMiscProperties {
+    cv::Rect r = cv::boundingRect(self.contour);
+    self.extent = self.area / (r.width * r.height);
     
-    //# area of filled image
-    //filledArea = cv2.countNonZero(self.filledImage)
-    
-}
-
-- (double) calculateMajorAxisLength {
-    // self.ellipse = cv2.fitEllipse(cnt)
-    
-    //# center, axis_length and orientation of ellipse
-    //(self.center,self.axes,self.orientation) = self.ellipse
-    
-    //# length of MAJOR and minor axis
-    //self.majoraxis_length = max(self.axes)
-    //self.minoraxis_length = min(self.axes)
-    
-}
-
-- (double) calculateMinorAxisLength {
-}
-
-- (double) calculateMaxIntensity {
-}
-
-- (double) calculateMinIntensity {
-}
-
-- (double) calculateMeanIntensity {
-    //# mean value, minvalue, maxvalue
-    //self.minval,self.maxval,self.minloc,self.maxloc = cv2.minMaxLoc(self.img,mask = self.filledImage)
-    //self.meanval = cv2.mean(self.img,mask = self.filledImage)
-}
-
-- (double) calculatePerimeter {
-    if (self.perimeter) {
-        return self.perimeter;
-    }
     self.perimeter = cv::arcLength(self.contour, true);
-    return self.perimeter;
 }
 
-- (double) calculateSolidity {
-    //# solidity = contour area / convex hull area
-    //self.solidity = self.area/float(self.convex_area)
+- (void) calculateAxisProperties {
+    RotatedRect ellipse = cv::fitEllipse(self.contour);
+    
+    Size2f sz = ellipse.size;
+    if (sz.width <= sz.height) {
+        self.minorAxisLength = sz.width;
+        self.majorAxisLength = sz.height;
+    } else {
+        self.minorAxisLength = sz.height;
+        self.majorAxisLength = sz.width;
+    }
+    
+    double tmp = self.minorAxisLength / self.majorAxisLength;
+    tmp = pow(tmp, 2);
+    tmp = 1 - tmp;
+    self.eccentricity = pow(tmp, 0.5);
+
 }
 
-- (double) calculateEulerNumber {
-    /*CvSeq *firstContour = NULL;
-     CvMemStorage* storage = cvCreateMemStorage(0);
-     int holes = 0;
-     
-     cvFindContours(img, storage, &firstContour, sizeof(CvChain),
-     CV_RETR_CCOMP, CV_CHAIN_CODE);
-     
-     if(firstContour != NULL)
-     {
-     CvSeq *aux = firstContour;
-     if(aux->v_next)
-     {
-     holes++;
-     aux = aux->v_next;
-     }
-     
-     while(aux->h_next)
-     {
-     aux = aux->h_next;
-     holes++;
-     }
-     }*/
+- (void) calculateMaskedImageProperties {
+    double* minVal;
+    double* maxVal;
+    
+    minMaxLoc(self.image, minVal, maxVal, NULL, NULL, self.filledImage);
+    self.minIntensity = *minVal;
+    self.maxIntensity = *maxVal;
+    self.meanIntensity = cv::mean(self.image, self.filledImage)[0];
+    
+    self.filledArea = countNonZero(self.filledImage);
 }
 
 @end

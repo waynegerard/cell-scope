@@ -32,7 +32,7 @@
  
  */
 @interface Region : NSObject {
-    contourContainer _contours;
+    ContourContainerType _contours;
     cv::Mat          _img;
 }
 
@@ -42,10 +42,10 @@
     @param img      The image to look within
     @return         Returns a dictionary of region properties, calculated using matlab.
  */
-+ (NSDictionary*) getRegionPropertiesWithContours:(contourContainer) contours withImage:(cv::Mat) img;
++ (NSDictionary*) getRegionPropertiesWithContours:(ContourContainerType) contours withImage:(cv::Mat) img;
 
 
-@property (nonatomic, assign) contourContainer contours;
+@property (nonatomic, assign) ContourContainerType contours;
 @property (nonatomic, assign) cv::Mat img;
 
 @end

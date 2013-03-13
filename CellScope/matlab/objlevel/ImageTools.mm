@@ -7,6 +7,7 @@
 //
 
 #import "ImageTools.h"
+#import "Region.h"
 #import <opencv2/imgproc/imgproc.hpp>
 #import <opencv2/highgui/highgui.hpp>
 
@@ -21,36 +22,28 @@
  */
 + (Mat)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
     
-    Mat* geometricFeatures = new Mat(14, 1, CV_8UC3);
-    
-    cv::vector<cv::vector<cv::Point> > contours;
+    Mat geometricFeatures = Mat(14, 1, CV_8UC3);
+
+    ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
     
-    cv::findContours(binPatch, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+    findContours(binPatch, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
     if (contours.size() == 0) {
-        return cv::Mat::zeros(1, 14, CV_8UC3);
+        return cv::Mat::zeros(14, 1, CV_8UC3);
     }
     
-    props = regionprops(cc,patch,'all');
+    NSDictionary* regionProperties = [Region getRegionPropertiesWithContours:(contours) withImage:*patch];
+    NSArray* keys = [NSArray arrayWithObjects:@"area", @"convexArea", "eccentricity", "equivDiameter",
+                     @"extent", @"filledArea", @"majorAxisLength", @"maxIntensity", @"minIntensity",
+                     @"meanIntensity", @"perimeter", @"solidity", @"eulerNumber", nil];
+
+    for (int i = 0; i < keys.count; i++) {
+        geometricFeatures.at<float>(0, i) = [[regionProperties valueForKey:[keys objectAtIndex:i]] floatValue];
+    }
     
-    % Store features values for object closest to the center of the patch
-            geomfeats = [geomfeats...
-                         props.Area...           %1
-                         props.ConvexArea...     %2
-                         props.Eccentricity...   %3
-                         props.EquivDiameter...  %4
-                         props.Extent...         %5
-                         props.FilledArea...     %6
-                         props.MajorAxisLength...%7
-                         props.MinorAxisLength...%8
-                         props.MaxIntensity...   %9
-                         props.MinIntensity...   %10
-                         props.MeanIntensity...  %11
-                         props.Perimeter...      %12
-                         props.Solidity...       %13
-                         props.EulerNumber];     %14
-    end
+    
+    return geometricFeatures;    
 }
 
 + (Mat)cvMatWithImage:(UIImage *)image
@@ -93,9 +86,9 @@
         HuMoments(m, huMoments);
         
         Mat* binPatch = (__bridge Mat*) [stats valueForKey:@"binpatch"];
-        Mat* geometricFeatures = [self geometricFeaturesWithPatch:patch withBinPatch:binPatch];
+        Mat geometricFeatures = [self geometricFeaturesWithPatch:patch withBinPatch:binPatch];
         id huPtr = [NSValue valueWithPointer:(Mat*)&huMoments];
-        id geomPtr = [NSValue valueWithPointer:geometricFeatures];
+        id geomPtr = [NSValue valueWithPointer:(Mat*)&geometricFeatures];
         [stats setValue:huPtr forKey: @"phi"];
         [stats setValue:geomPtr forKey:@"geom"];
         [newBlobs addObject:stats];

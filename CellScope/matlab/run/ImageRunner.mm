@@ -42,7 +42,7 @@
 
 - (NSMutableIndexSet*) findSuppressedPatches
 {
-    float maxDistance = pow((pow(self.orig.rows, 2) + cv::pow(self.orig.cols, 2)), 0.5);
+    float maxDistance = cv::pow((cv::pow(self.orig.rows, 2.0) + cv::pow(self.orig.cols, 2.0)), 0.5);
     
     // Setup rows and columns for next step
     NSMutableArray* centroidRows = [NSMutableArray array];
@@ -75,8 +75,8 @@
             newRowVal = pow(newRowVal, 2.0);
             newColVal = pow(newColVal, 2.0);
             
-            float newVal = newRowVal + newColVal;
-            newVal = pow(newVal, 0.5);
+            double newVal = newRowVal + newColVal;
+            newVal = cv::pow(newVal, 0.5);
             
             if (newVal < minDistance && newVal != 0) {
                 minDistance = newVal;
@@ -92,12 +92,6 @@
         // See if it's too close. If it is, then suppress the patch
         float cutoff = 0.75 * self.patchSize; // non-max suppression parameter, "too close" distance
         if(minDistance <= cutoff) { // if too much overlap
-            // WG Note: Why is this necessary again?
-            // prevent triggering non-max again/get rid of lower-score object
-            NSArray* newCentroid = [NSArray arrayWithObjects:
-                                    [NSNumber numberWithInt:(-1 * self.orig.rows)],
-                                    [NSNumber numberWithInt:(-1 * self.orig.cols)],
-                                    nil];
             // Suppress this patch
             [suppressedPatches addIndex:i];
         }
@@ -107,17 +101,11 @@
 
 
 - (Mat) getRedImageNormalizedImage: (Mat) image {
-    // ASK: Is this right?
-    // Use only red channel for image
-    
-    // WN: I have no idea if this is the right thing to be doing
-    // This seems to suggest so: http://www.cs.bc.edu/~hjiang/c335/notes/lec3/lec3.pdf
     Mat red(image.rows, image.cols, CV_8UC1);
     Mat green(image.rows, image.cols, CV_8UC1);
     Mat blue(image.rows, image.cols, CV_8UC1);
     cvSplit(&image, &red, &green, &blue, 0);
     
-    // TODO: Converting to red channel right now, is that correct? Check back with Mike and Arunan
     // Normalize the image to values between 0..1
     Mat orig = Mat(image.rows, image.cols, CV_32F);
     Mat red_32F(image.rows, image.cols, CV_32F);
@@ -158,12 +146,12 @@
     NSMutableArray* data = [NSMutableArray array];
     
     // Perform object identification
-    Mat imageBw = [Blobid blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
+    Mat imageBw = [Blob blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
         
-    contourContainer contours;
+    ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
     
-    cv::findContours(imageBw, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE);
+    cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
     /// Get the moments
     vector<Moments> mu(contours.size() );
@@ -217,9 +205,9 @@
     // Classify Objects with LibSVM IKSVM classifier
     
     //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
-    //*** NOT WORKING *** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
+    //*** NOT WORKING - Waiting on test data*** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
-    //*** NOT WORKING *** dvtest = dvtest(:,model.Label==1);
+    //*** NOT WORKING  - Waiting on test data*** dvtest = dvtest(:,model.Label==1);
     NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
     
     // Sort Scores and Centroids
@@ -351,22 +339,6 @@
     Mat _patch = self.orig.operator()(rows, cols);
     id patch = [MatrixOperations convertMatToObject:_patch];
     [stats setValue:patch forKey: @"patch"];
-    
-    /* WAYNE NOTE: This isn't being used anywhere - do we need this method?
-     if (self.hogFeatures) {
-     int patchCenter = self.patchSize / 2;
-     int row_start = row - patchCenter - 1;
-     int row_end = row + patchCenter - 1;
-     int col_start = col - patchCenter - 1;
-     int col_end = col + patchCenter - 1;
-     
-     Range rows = Range(row_start, row_end);
-     Range cols = Range(col_start, col_end);
-     Mat _gradpatch = gradim(rows, cols);
-     id gradpatch = [MatrixOperations convertMatToObject:_gradpatch];
-     [stats setValue:gradpatch forKey: @"gradpatch"];
-     }
-     */
     
     return stats;
 }
