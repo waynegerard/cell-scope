@@ -126,9 +126,9 @@
     subtract(maxMatrix, minMatrix, MaxMinusMin);
     subtract(*_features, minMatrix, FeaturesMinusMin);
     
-    Mat Xtest = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
-    divide(FeaturesMinusMin, MaxMinusMin, Xtest);
-    return Xtest;
+    Mat featuresMatrix = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
+    divide(FeaturesMinusMin, MaxMinusMin, featuresMatrix);
+    return featuresMatrix;
 }
 
 - (void) runWithImage: (UIImage*) img
@@ -199,8 +199,8 @@
     [self storeCentroidsAndFeaturesWithData:data];
     
     // Prepare features
-    Mat yTest = Mat::zeros(self.patchSize, 1, CV_8UC1);
-    Mat xTest = [self prepareFeatures];
+    Mat zeroMatrix = Mat::zeros(self.patchSize, 1, CV_8UC1);
+    Mat featuresMatrix = [self prepareFeatures];
     
     // Classify Objects with LibSVM IKSVM classifier
     
