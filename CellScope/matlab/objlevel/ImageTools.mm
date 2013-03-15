@@ -33,10 +33,10 @@
         return cv::Mat::zeros(14, 1, CV_8UC3);
     }
     
-    NSDictionary* regionProperties = [Region getRegionPropertiesWithContours:(contours) withImage:*patch];
+    NSDictionary* regionProperties = [Region getCenterContourProperties:contours withImage:*binPatch];
     NSArray* keys = [NSArray arrayWithObjects:@"area", @"convexArea", "eccentricity", "equivDiameter",
-                     @"extent", @"filledArea", @"majorAxisLength", @"maxIntensity", @"minIntensity",
-                     @"meanIntensity", @"perimeter", @"solidity", @"eulerNumber", nil];
+                     @"extent", @"filledArea", @"minorAxisLength", @"majorAxisLength", @"maxIntensity",
+                     @"minIntensity", @"meanIntensity", @"perimeter", @"solidity", @"eulerNumber", nil];
 
     for (int i = 0; i < keys.count; i++) {
         geometricFeatures.at<float>(0, i) = [[regionProperties valueForKey:[keys objectAtIndex:i]] floatValue];

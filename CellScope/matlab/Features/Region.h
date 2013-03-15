@@ -37,13 +37,12 @@
 }
 
 /**
-    Gets the region properties for the given contours |contours| contained within the image |img|
+    Gets the region properties for the center contour which is part of |contours| contained within the image |img|
     @param contours The vector of points for each contour
     @param img      The image to look within
     @return         Returns a dictionary of region properties, calculated using matlab.
  */
-+ (NSDictionary*) getRegionPropertiesWithContours:(ContourContainerType) contours withImage:(cv::Mat) img;
-
++ (NSDictionary*) getCenterContourProperties:(ContourContainerType) contours withImage:(cv::Mat) img;
 
 @property (nonatomic, assign) ContourContainerType contours;
 @property (nonatomic, assign) cv::Mat img;
