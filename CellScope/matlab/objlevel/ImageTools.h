@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Globals.h"
-#import <opencv2/imgproc/imgproc.hpp>
 
 using namespace cv;
 

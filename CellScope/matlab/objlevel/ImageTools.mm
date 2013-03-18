@@ -8,6 +8,7 @@
 
 #import "ImageTools.h"
 #import "Region.h"
+#import <opencv2/imgproc/imgproc.hpp>
 
 @implementation ImageTools
 
