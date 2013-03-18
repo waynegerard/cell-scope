@@ -62,8 +62,8 @@
 }
 
 - (void) calculateMaskedImageProperties {
-    double* minVal;
-    double* maxVal;
+    double* minVal = nullptr;
+    double* maxVal = nullptr;
     
     minMaxLoc(self.image, minVal, maxVal, NULL, NULL, self.filledImage);
     self.minIntensity = *minVal;

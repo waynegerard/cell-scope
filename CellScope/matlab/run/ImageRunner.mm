@@ -19,10 +19,6 @@
 
 @implementation ImageRunner
 
-// TODO:
-// train_max, train_min
-// svmpredict
-
 
 @synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
 
