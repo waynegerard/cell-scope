@@ -18,10 +18,10 @@ using namespace cv;
 @interface ImageTools : NSObject 
 
 /**
- Calculates various geometric features provided through regionprops
- @param patch    The patch to calculate geometric features on
- @param binpatch The binary image used to find connected components
- @return         Returns 14 geometric-based features calculated through regionProperties.
+    Calculates various geometric features provided through regionprops
+    @param patch    The patch to calculate geometric features on
+    @param binpatch The binary image used to find connected components
+    @return         Returns 14 geometric-based features calculated through regionProperties.
  */
 + (Mat)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch;
 
@@ -37,11 +37,7 @@ using namespace cv;
     Calculates the Hu moments and geometric features of an array of blobs.
     @param blobs An array of NSDictionaries, containing information about that blob
     @return      Returns, for each blob, a dictionary containing the hu moments and geometric features for that blob
- 
- CALCFEATS takes the patches and calculates various Hu moments, geometric,
- and photometric features
  */
-
 + (NSMutableArray*) calcFeaturesWithBlobs: (NSMutableArray*) blobs;
 
 @end
