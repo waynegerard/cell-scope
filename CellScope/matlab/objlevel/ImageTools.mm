@@ -13,12 +13,6 @@
 @implementation ImageTools
 
 
-/**
-    Calculates various geometric features provided through regionprops
-    @param patch    The patch to calculate geometric features on
-    @param binpatch The binary image used to find connected components
-    @return         Returns 14 geometric-based features calculated through regionProperties.
- */
 + (Mat)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
     
     Mat geometricFeatures = Mat(14, 1, CV_8UC3);
@@ -68,11 +62,7 @@
     return cvMat;
 }
 
-/**
- CALCFEATS takes the patches and calculates various Hu moments, geometric,
- and photometric features
- */
-+ (NSMutableArray*) calcFeaturesWithBlobs: (NSMutableArray*) blobs withPatchSize:(int) patchSize {
++ (NSMutableArray*) calcFeaturesWithBlobs: (NSMutableArray*) blobs {
 
     NSMutableArray* newBlobs = [NSMutableArray array];
     for (int i = 0; i < [blobs count]; i++) {
@@ -84,6 +74,7 @@
         Mat huMoments;
         HuMoments(m, huMoments);
         
+        // Grab the geometric features and return
         Mat* binPatch = (__bridge Mat*) [stats valueForKey:@"binpatch"];
         Mat geometricFeatures = [self geometricFeaturesWithPatch:patch withBinPatch:binPatch];
         id huPtr = [NSValue valueWithPointer:(Mat*)&huMoments];

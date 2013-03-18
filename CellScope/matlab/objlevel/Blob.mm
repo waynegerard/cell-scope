@@ -7,8 +7,8 @@
 //
 
 #import "Blob.h"
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
+#import <opencv2/imgproc/imgproc.hpp>
+#import <opencv2/highgui/highgui.hpp>
 
 
 @implementation Blob

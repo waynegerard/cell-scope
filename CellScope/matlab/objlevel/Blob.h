@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <opencv2/core/core.hpp>
+#import "Globals.h"
 
 @interface Blob : NSObject
 

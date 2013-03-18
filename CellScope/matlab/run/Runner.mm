@@ -28,10 +28,6 @@
         // TODO: Load model with HoG features
     }
     
-    ////////////
-    // Timing //
-    ////////////
-    
     NSDate *start = [NSDate date];
     
     ///////////////////////

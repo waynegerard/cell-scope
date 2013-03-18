@@ -252,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */,
 				9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */,
 				9B13455615E28E14009863DF /* ImageIO.framework in Frameworks */,
 				9B9109C015E1FD610067BB8D /* CoreImage.framework in Frameworks */,
@@ -262,7 +263,6 @@
 				9B6BF0BB15E19ACD002834C5 /* Foundation.framework in Frameworks */,
 				9B6BF0BD15E19ACD002834C5 /* CoreGraphics.framework in Frameworks */,
 				9B6BF0BF15E19ACD002834C5 /* CoreData.framework in Frameworks */,
-				ACD63EA6165DDDC200EDC898 /* opencv2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -874,6 +874,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -893,6 +894,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
