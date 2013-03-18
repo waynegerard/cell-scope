@@ -8,7 +8,6 @@
 
 #import "ImageTools.h"
 #import "Region.h"
-#import <opencv2/imgproc/imgproc.hpp>
 
 @implementation ImageTools
 
@@ -26,7 +25,7 @@
     ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
 
-    findContours(binPatch, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+    findContours(*binPatch, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
     if (contours.size() == 0) {
         return cv::Mat::zeros(14, 1, CV_8UC3);

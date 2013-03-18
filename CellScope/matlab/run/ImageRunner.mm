@@ -114,6 +114,11 @@
 - (Mat) prepareFeatures
 {
     // Minmax normalization of features
+    // TODO: This needs to be updated to use train_max and train_min from CSV
+    Mat train_max = Mat::zeros(1, 1, CV_8UC1);
+    Mat train_min = Mat::zeros(1, 1, CV_8UC1);
+
+    
     Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
     Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
     
@@ -225,7 +230,8 @@
 
 - (NSMutableArray*) sortScoresWithArray:(NSMutableArray*) scoreDictionaryArray
 {
-    [scoreDictionaryArray sortUsingComparator:^(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
+    
+    [scoreDictionaryArray sortUsingComparator:^NSComparisonResult(NSMutableDictionary* dictOne, NSMutableDictionary* dictTwo){
         float score1 = [[dictOne valueForKey:@"value"] floatValue];
         float score2 = [[dictTwo valueForKey:@"value"] floatValue];
         if (score1 < score2)
