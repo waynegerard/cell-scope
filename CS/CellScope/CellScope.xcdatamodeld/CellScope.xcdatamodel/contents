@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Pictures" representedClassName="Pictures" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="group" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="metadata" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="path" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sharing" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="smallPicture" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="user" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ScoresAndCentroids" syncable="YES">
+        <attribute name="centroids" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="scores" optional="YES" attributeType="Binary" syncable="YES"/>
+    </entity>
+    <entity name="Users" representedClassName="Users" syncable="YES">
+        <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="username" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Pictures" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Users" positionX="0" positionY="0" width="128" height="75"/>
+        <element name="ScoresAndCentroids" positionX="160" positionY="192" width="128" height="75"/>
+    </elements>
+</model>
