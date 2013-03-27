@@ -14,28 +14,34 @@
 @implementation Blob
 
 + (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
+    CSLog(@"Starting dilation then erosion of matrix");
     int type = cv::MORPH_RECT;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
     cv::Mat returnMat;
     
     cv::dilate(mat, returnMat, element);
     cv::erode(mat, returnMat, element);
+    CSLog(@"Finished dilation then erosion of matrix");
+    
     return returnMat;
 }
 
 
 + (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
+    CSLog(@"Starting erosion then dilation of matrix");
     int type = cv::MORPH_RECT;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
     cv::Mat returnMat;
     
     cv::erode(mat, returnMat, element);
     cv::dilate(mat, returnMat, element);
+    CSLog(@"Finished erosion then dilation of matrix");
+
     return returnMat;
 }
 
 + (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img {
-
+    CSLog(@"Getting morphological opening");
     cv::Mat imBigOp = [self erodeAndDilateMat:img withSize:10];
     cv::Mat imdf;
     cv::Mat meanImdf;
@@ -47,6 +53,7 @@
     
     imdf = imdf * cv::Scalar_<int>(3);
     cv::add(meanImdf, stdImdf, imThresh);
+    CSLog(@"Finished with morphological opening");
     return imThresh;    
 }
 
@@ -54,6 +61,7 @@
 
 + (cv::Mat) crossCorrelateGaussianKernelWithImg: (cv::Mat) img {
     
+    CSLog(@"Beginning cross correlation of gaussian kernel with image");
     // Parameters
     int kernelSize = 16 + 1;       // size of Gaussian kernel
     // WAYNE NOTE: Why is there a +1 in the original?
@@ -84,11 +92,14 @@
     cv::Mat returnMat;
     cv::Mat element = cv::getStructuringElement(type, cv::Size(3,3));
     cv::dilate(correlationBin, returnMat, element);
+    CSLog(@"Finished cross correlation of gaussian kernel with image");
+
     return returnMat;
 }
 
 + (cv::Mat) blobIDWithImage: (cv::Mat) img {
     
+    CSLog(@"Beginning object identification");
     cv::Mat bwImage;
     cv::Mat xCorrImage;
     cv::Mat imThreshold = [self getMorphologicalOpeningWithImg:img];

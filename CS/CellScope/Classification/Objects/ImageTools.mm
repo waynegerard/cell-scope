@@ -12,6 +12,36 @@
 
 @implementation ImageTools
 
++ (Mat) getRedChannelForImage: (Mat) image {
+    CSLog(@"Starting conversion to red normalized image");
+    
+    Mat red(image.rows, image.cols, CV_8UC1);
+    Mat junk(image.rows, image.cols, CV_8UC2);
+    
+    Mat output[] = { red, junk };
+    int index_map[] = { 0,0, 1,1, 2,2 };
+    mixChannels(&image, 1, output, 2, index_map, 3);
+    
+    CSLog(@"Red channel conversion complete");
+    return red;
+}
+
+
++ (Mat) getNormalizedImage: (Mat) image {
+    
+    CSLog(@"Normalizing image");
+    
+    // Normalize the image to values between 0..1
+    Mat orig = Mat(image.rows, image.cols, CV_32F);
+    Mat img_32F(image.rows, image.cols, CV_32F);
+    convertScaleAbs(image, img_32F);
+    normalize(img_32F, orig, 0, NORM_MINMAX);
+    
+    CSLog(@"Image normalized");
+    return orig;
+}
+
+
 
 + (Mat)geometricFeaturesWithPatch: (Mat*)patch withBinPatch: (Mat*)binPatch {
     
@@ -42,11 +72,14 @@
 
 + (Mat)cvMatWithImage:(UIImage *)image
 {
+    CSLog(@"Starting conversion of image to Mat process... ");
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
+    CSLog(@"Image columns: %f Image rows: %f", cols, rows);
     
     Mat cvMat(rows, cols, CV_8UC3); // 8 bits per component, 3 channels (RGB)
+
     
     CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
                                                     cols,                       // Width of bitmap

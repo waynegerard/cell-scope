@@ -97,22 +97,6 @@
     return suppressedPatches;
 }
 
-
-- (Mat) getRedImageNormalizedImage: (Mat) image {
-    Mat red(image.rows, image.cols, CV_8UC1);
-    Mat green(image.rows, image.cols, CV_8UC1);
-    Mat blue(image.rows, image.cols, CV_8UC1);
-    cvSplit(&image, &red, &green, &blue, 0);
-    
-    // Normalize the image to values between 0..1
-    Mat orig = Mat(image.rows, image.cols, CV_32F);
-    Mat red_32F(image.rows, image.cols, CV_32F);
-    convertScaleAbs(red, red_32F);
-    cvNormalize(&orig, &red_32F);
-    normalize(red_32F, orig, 0, NORM_MINMAX);
-    return orig;
-}
-
 - (Mat) prepareFeatures
 {
     // Minmax normalization of features
@@ -136,8 +120,14 @@
 
 - (void) runWithImage: (UIImage*) img
 {
+
+    NSMutableArray* data = [NSMutableArray array];
+
+    
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
+    CSLog(@"Image converted successfully to matrix!");
+    
     if(!image.data) // IM
     {
         CSLog(@"Could not load image with filename"); 
@@ -145,23 +135,23 @@
     }
     
     // Convert to a red-channel normalized image
-    self.orig = [self getRedImageNormalizedImage:image];
-    NSMutableArray* data = [NSMutableArray array];
+    Mat redImage = [ImageTools getRedChannelForImage:image];
+    self.orig = [ImageTools getNormalizedImage:redImage];
+
     
     // Perform object identification
-    Mat imageBw = [Blob blobIDWithImage:(self.orig)]; // Use Gaussian kernel method
+    Mat imageBw = [Blob blobIDWithImage:(self.orig)]; 
         
     ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
-    
     cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
-    /// Get the moments
+    // Get the moments
     vector<Moments> mu(contours.size() );
     for( int i = 0; i < contours.size(); i++ )
     { mu[i] = moments( contours[i], false ); }
     
-    ///  Get the mass centers:
+    //  Get the mass centers:
     NSMutableArray* centroids = [NSMutableArray array];
 
     vector<Point2f> mc( contours.size() );

@@ -9,6 +9,7 @@
 #import "CSAppDelegate.h"
 #import "Users.h"
 #import "LoginViewController.h"
+#import "ImageRunner.h"
 
 @implementation CSAppDelegate
 
@@ -20,6 +21,14 @@
 {
     // Get a reference to the stardard user defaults
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    
+    // WAYNE NOTE: We're circumventing the main app here to do testing
+    // TODO: Remove this.
+    ImageRunner* runner = [[ImageRunner alloc] init];
+    UIImage* img = [UIImage imageNamed:@"1350_Clay_Fluor_Yes.png"];
+    [runner runWithImage:img];
+    
+    return YES;
     
     LoginViewController *rootView = (LoginViewController *)self.window.rootViewController;
     rootView.managedObjectContext = self.managedObjectContext;
@@ -155,6 +164,7 @@
          
          */
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
         abort();
     }    
     
