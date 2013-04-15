@@ -99,22 +99,26 @@
 
 - (Mat) prepareFeatures
 {
+    CSLog(@"Preparing features");
     // Minmax normalization of features
-    // TODO: This needs to be updated to use train_max and train_min from CSV
-    Mat train_max = Mat::zeros(1, 1, CV_8UC1);
-    Mat train_min = Mat::zeros(1, 1, CV_8UC1);
-
-    
+    Mat train_max = [DataInteractor loadCSVWithPath:@"train_max"];
+    Mat train_min = [DataInteractor loadCSVWithPath:@"train_min"];
+        
     Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
     Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+    CSLog(@"min and max matrices successfully repeated");
     
     Mat FeaturesMinusMin;
     Mat MaxMinusMin;
     subtract(maxMatrix, minMatrix, MaxMinusMin);
     subtract(*_features, minMatrix, FeaturesMinusMin);
+    CSLog(@"min and max matrices successfully subtracted")
+    
     
     Mat featuresMatrix = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
     divide(FeaturesMinusMin, MaxMinusMin, featuresMatrix);
+    CSLog(@"Leaving prepareFeatures");
+    
     return featuresMatrix;
 }
 
@@ -140,13 +144,17 @@
 
     
     // Perform object identification
-    Mat imageBw = [Blob blobIDWithImage:(self.orig)]; 
-        
+    Mat imageBw = [Blob blobIdentificationForImage:self.orig];
+    
+    CSLog(@"Finished object identification")
     ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
+    // ImageBW.type() == 5
     cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
     
+    
     // Get the moments
+    CSLog(@"Grabbing Hu moments");
     vector<Moments> mu(contours.size() );
     for( int i = 0; i < contours.size(); i++ )
     { mu[i] = moments( contours[i], false ); }

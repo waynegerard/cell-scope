@@ -11,18 +11,33 @@
 
 @implementation DataInteractor
 
-+ (NSMutableArray*) loadCSVWithPath: (NSString*) path {
-    NSMutableArray* array = [NSMutableArray array];
-    
-    NSString* fullBuffer = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
++ (cv::Mat) loadCSVWithPath: (NSString*) path {
+    NSString* filePath = [[NSBundle mainBundle] pathForResource:path ofType:@"csv"];
+    NSString* fullBuffer = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
     NSArray* csvArray = [fullBuffer componentsSeparatedByString:@"\r"]; // Line endings
+    int row = 0;
+    int col = 0;
     
-    for (NSString* row in csvArray) { // Split into commas
-        NSArray* splitRow = [row componentsSeparatedByString:@","];
-        [array addObject:splitRow];
+    int maxRows = [csvArray count];
+    NSString* firstRow = [csvArray objectAtIndex:0];
+    int maxCols = [[firstRow componentsSeparatedByString:@","] count];
+    cv::Mat csvMat(maxRows, maxCols, CV_32F);
+    
+    for (int i = 0; i < [csvArray count]; i++) {
+        NSString* items = [csvArray objectAtIndex:i];
+        NSArray* splitRow = [items componentsSeparatedByString:@","];
+        col = 0;
+        for (int j = 0; j < [splitRow count]; j++) {
+            NSString* item = [splitRow objectAtIndex:j];
+            CSLog(@"Trying to add item %@", item);
+            csvMat.at<float>(row, col) = [item floatValue];
+            CSLog(@"Added item: %@", item);
+            col++;
+        }
+        row++;
     }
     
-    return array;
+    return csvMat;
 }
 
 + (void) storeScores: (NSMutableArray*) scores withCentroids:(NSMutableArray*) centroids{

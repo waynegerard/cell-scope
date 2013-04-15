@@ -14,7 +14,7 @@
 /**
     Loads a CSV into an NSMutableArray (an array of arrays), and returns it.
  */
-+ (NSMutableArray*) loadCSVWithPath: (NSString*) path;
++ (cv::Mat) loadCSVWithPath: (NSString*) path;
 
 /**
     Stores scores and centroids down to core data.

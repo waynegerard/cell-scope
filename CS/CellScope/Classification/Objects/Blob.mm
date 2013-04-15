@@ -10,109 +10,99 @@
 #import <opencv2/imgproc/imgproc.hpp>
 #import <opencv2/highgui/highgui.hpp>
 
+using namespace cv;
 
 @implementation Blob
 
-+ (cv::Mat) dilateAndErodeMat: (cv::Mat) mat withSize:(int)sz {
-    CSLog(@"Starting dilation then erosion of matrix");
-    int type = cv::MORPH_RECT;
-    cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
-    cv::Mat returnMat;
++ (Mat) dilateAndErodeMatrix:(Mat) matrix dilateFirst:(BOOL) dilateFirst withSize:(int) sz {
+    CSFNLog(@"Applying dilation and erosion with dilation first: %c", dilateFirst);
     
-    cv::dilate(mat, returnMat, element);
-    cv::erode(mat, returnMat, element);
-    CSLog(@"Finished dilation then erosion of matrix");
+    int type = MORPH_RECT;
+    Mat structuringElement = getStructuringElement(type, cv::Size(sz,sz));
+    Mat returnMatrix;
     
-    return returnMat;
+    if (dilateFirst) {
+        dilate(matrix, returnMatrix, structuringElement);
+        erode(matrix, returnMatrix, structuringElement);
+    } else {
+        erode(matrix, returnMatrix, structuringElement);
+        dilate(matrix, returnMatrix, structuringElement);
+    }
+    
+    CSFNLog(@"Finished applying dilation and erosion");
+    return returnMatrix;
 }
 
++ (Mat) morphologicalOpeningForMatrix: (Mat) matrix {
+    CSFNLog(@"Getting morphological opening");
 
-+ (cv::Mat) erodeAndDilateMat: (cv::Mat) mat withSize:(int)sz {
-    CSLog(@"Starting erosion then dilation of matrix");
-    int type = cv::MORPH_RECT;
-    cv::Mat element = cv::getStructuringElement(type, cv::Size(sz,sz));
-    cv::Mat returnMat;
+    Mat imageOpening = [self dilateAndErodeMatrix:matrix dilateFirst:NO withSize:10];
     
-    cv::erode(mat, returnMat, element);
-    cv::dilate(mat, returnMat, element);
-    CSLog(@"Finished erosion then dilation of matrix");
-
-    return returnMat;
+    CSFNLog(@"Finished with morphological opening");
+    return imageOpening;
 }
 
-+ (cv::Mat) getMorphologicalOpeningWithImg: (cv::Mat) img {
-    CSLog(@"Getting morphological opening");
-    cv::Mat imBigOp = [self erodeAndDilateMat:img withSize:10];
-    cv::Mat imdf;
-    cv::Mat meanImdf;
-    cv::Mat stdImdf;
-    cv::Mat imThresh;
-
-    cv::subtract(img, imBigOp, imdf);
-    cv::meanStdDev(imdf, meanImdf, stdImdf);
++ (Mat) crossCorrelateGaussianKernelForMatrix: (Mat) matrix {
+    CSFNLog(@"Beginning cross correlation of gaussian kernel with image");
     
-    imdf = imdf * cv::Scalar_<int>(3);
-    cv::add(meanImdf, stdImdf, imThresh);
-    CSLog(@"Finished with morphological opening");
-    return imThresh;    
-}
-
-// Cross correlates image "orig" with a Gaussian kernel
-
-+ (cv::Mat) crossCorrelateGaussianKernelWithImg: (cv::Mat) img {
-    
-    CSLog(@"Beginning cross correlation of gaussian kernel with image");
-    // Parameters
-    int kernelSize = 16 + 1;       // size of Gaussian kernel
-    // WAYNE NOTE: Why is there a +1 in the original?
-    float kernelStdDev  = 1.5;     // standard dev of Gaussian kernel
-    float correlationThreshold = 0.5; // threshold on normalized cross-correlation
-    cv::Mat tmplate;
-    cv::Mat correlationMat;
-    cv::Mat correlationBin;
-    cv::Mat correlationCrop;
+    Mat correlationMatrix;
+    Mat binarizedMatrix;
+    Mat correlationCrop;
+    Mat result;
+    double* min = new double();
+    double* max = new double();
+    int kernelSize = 16;               // Size of Gaussian kernel
+    float kernelStdDev  = 1.5;         // StdDev of Gaussian kernel
+    float correlationThreshold = 0.5;  // Threshold on normalized cross-correlation
     
     // Generate Gaussian kernel
-    cv::Mat gaussianKernel = cv::getGaussianKernel(kernelSize, kernelStdDev);
-    double* min = nullptr;
-    double* max = nullptr;
-    cv::minMaxIdx(gaussianKernel, min, max);
-    cv::divide(*max, gaussianKernel, tmplate);
-    cv::matchTemplate(img, tmplate, correlationMat, cv::TM_CCORR_NORMED);
+    Mat gaussianKernel = cv::getGaussianKernel(kernelSize, kernelStdDev);
+    Mat imageTemplate = cv::Mat(gaussianKernel.rows, gaussianKernel.cols, CV_32F);
+
+    // Convert the template type and match the template to the image
+    minMaxIdx(gaussianKernel, min, max);
+    divide(*max, gaussianKernel, imageTemplate);
+    imageTemplate.convertTo(imageTemplate, CV_8UC1);
+    matchTemplate(matrix, imageTemplate, correlationMatrix, TM_CCORR_NORMED);
     
-    // Crop normxcorr image to recover original size, binarize
-    int margin_rows = (tmplate.rows - 1) / 2;
-    int margin_cols = (tmplate.cols - 1) / 2;
-    correlationMat = correlationMat.rowRange(margin_rows+1, correlationMat.rows - margin_rows);
-    correlationMat = correlationMat.colRange(margin_cols + 1, correlationMat.cols - margin_cols);
-    cv::threshold(correlationMat, correlationBin, correlationThreshold, 255.0, CV_THRESH_BINARY);
+    // Crop normalized cross correlation image to recover original size, and binarize
+    int marginRows = (imageTemplate.rows - 1) / 2;
+    int marginCols = (imageTemplate.cols - 1) / 2;
+    correlationMatrix = correlationMatrix.rowRange(marginRows + 1, correlationMatrix.rows - marginRows);
+    correlationMatrix = correlationMatrix.colRange(marginCols + 1, correlationMatrix.cols - marginCols);
+    threshold(correlationMatrix, binarizedMatrix, correlationThreshold, 255.0, CV_THRESH_BINARY);
     
     // Touch-up morphological operations
     int type = cv::MORPH_RECT;
-    cv::Mat returnMat;
-    cv::Mat element = cv::getStructuringElement(type, cv::Size(3,3));
-    cv::dilate(correlationBin, returnMat, element);
-    CSLog(@"Finished cross correlation of gaussian kernel with image");
-
-    return returnMat;
+    Mat element = getStructuringElement(type, cv::Size(3,3));
+    dilate(binarizedMatrix, result, element);
+    
+    CSFNLog(@"Finished cross correlation of gaussian kernel with image");
+    return result;
 }
 
-+ (cv::Mat) blobIDWithImage: (cv::Mat) img {
++ (Mat) blobIdentificationForImage: (Mat) image {
+    CSFNLog(@"Beginning blob identification");
     
-    CSLog(@"Beginning object identification");
-    cv::Mat bwImage;
-    cv::Mat xCorrImage;
-    cv::Mat imThreshold = [self getMorphologicalOpeningWithImg:img];
+    Mat grayscaleImage;
+    Mat imageThreshold;
+    Mat imageDifference;
+    Mat meanImageDifference;
+    Mat stdDevImageDifference;
     
-    cv::Mat imbw_xcorr = [self crossCorrelateGaussianKernelWithImg:img];
+    Mat imageOpening = [self morphologicalOpeningForMatrix: image];
+    subtract(image, imageOpening, imageDifference);
+    meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
+    add(meanImageDifference, stdDevImageDifference, imageThreshold);
 
-    // Combine the xcorr and morphological opening output
+    cv::Mat grayscaleCrossCorrelation = [self crossCorrelateGaussianKernelForMatrix: image];
     
-    // The morphological close operation is a dilation followed by an erosion,
-    // using the same structuring element for both operations.
-    cv::bitwise_and(imThreshold, xCorrImage, bwImage);
-    bwImage = [self dilateAndErodeMat:bwImage withSize:3];
-    return bwImage;
+    cv::bitwise_and(imageThreshold, grayscaleCrossCorrelation, grayscaleImage);
+    grayscaleImage = [self dilateAndErodeMatrix:grayscaleImage dilateFirst:YES withSize:3];
+    grayscaleImage.convertTo(grayscaleImage, CV_8UC1);
+    
+    CSFNLog(@"Finished blob identification");
+    return grayscaleImage;
 }
 
 @end
