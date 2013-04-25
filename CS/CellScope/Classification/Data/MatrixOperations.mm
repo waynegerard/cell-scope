@@ -7,23 +7,33 @@
 //
 
 #import "MatrixOperations.h"
+#import "highgui.hpp"
 
 @implementation MatrixOperations
 
 + (Mat) repMat:(Mat) mat withRows:(int) rows withCols:(int) cols{
-    Mat m = Mat(rows, cols, CV_8UC1);
+    int newWidth = mat.rows * rows;
+    int newHeight = mat.cols * cols;
     
-    // Naive implementation for now, copy row and column individually
+    Mat newMatrix = Mat(newWidth, newHeight, CV_8UC1);
     
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            int row = i % mat.rows;
-            int col = j % mat.cols;
-            float val = mat.at<float>(row, col);
-            m.at<float>(i, j) = val;
+    int left_top_x = 0;
+    int left_top_y = 0;
+        
+    for(; left_top_x < newHeight; left_top_y += (mat.rows))
+    {
+        if(left_top_y >= newWidth)
+        {
+            left_top_y = -mat.rows;
+            left_top_x += mat.cols;
+            continue;
         }
+        Mat tileMat = mat(cv::Rect(0, 0, mat.cols, mat.rows));
+
+        cv::Rect newROI = cv::Rect(left_top_x, left_top_y, mat.cols, mat.rows);
+        newMatrix(newROI) = tileMat;
     }
-    return m;
+    return newMatrix;
 }
 
 + (id) convertMatToObject:(Mat) mat{

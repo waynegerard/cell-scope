@@ -23,4 +23,15 @@
     }
 }
 
++ (void) printMatrixToFile:(cv::Mat) mat withRows:(int) rows withCols:(int) cols {
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            float val = mat.at<float>(i, j);
+            NSLog(@"Value at %d, %d: %f", i, j, val);
+        }
+    }
+    
+}
+
 @end

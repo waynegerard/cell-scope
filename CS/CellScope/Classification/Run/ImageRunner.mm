@@ -132,10 +132,13 @@
     Mat image = [ImageTools cvMatWithImage:img];
     CSLog(@"Image converted successfully to matrix!");
     
-    if(!image.data) // IM
-    {
+    if(!image.data) {
         CSLog(@"Could not load image with filename"); 
         return;
+    }
+    
+    if (!self.patchSize) {
+        self.patchSize = 16;
     }
     
     // Convert to a red-channel normalized image
@@ -146,7 +149,7 @@
     // Perform object identification
     Mat imageBw = [Blob blobIdentificationForImage:self.orig];
     
-    CSLog(@"Finished object identification")
+    CSLog(@"Finished object identification");
     ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
     // ImageBW.type() == 5
