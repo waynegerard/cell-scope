@@ -30,15 +30,14 @@
 + (Mat) getNormalizedImage: (Mat) image {
     
     CSLog(@"Normalizing image");
-    
-    // Normalize the image to values between 0..1
-    Mat orig = Mat(image.rows, image.cols, CV_32F);
+
     Mat img_32F(image.rows, image.cols, CV_32F);
-    convertScaleAbs(image, img_32F);
-    normalize(img_32F, orig, 0, NORM_MINMAX);
+    Mat res(image.rows, image.cols, CV_32F);
+    image.convertTo(img_32F, CV_32F);
+    normalize(image, res, 0, 1, NORM_MINMAX, CV_32F);
     
     CSLog(@"Image normalized");
-    return orig;
+    return res;
 }
 
 
@@ -70,31 +69,31 @@
     return geometricFeatures;    
 }
 
-+ (Mat)cvMatWithImage:(UIImage *)image
++ (cv::Mat)cvMatWithImage:(UIImage *)image
 {
-    CSLog(@"Starting conversion of image to Mat process... ");
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
-    CSLog(@"Image columns: %f Image rows: %f", cols, rows);
     
-    Mat cvMat(rows, cols, CV_8UC3); // 8 bits per component, 3 channels (RGB)
-
+    Mat cvMat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
     
-    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to backing data
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to data
                                                     cols,                       // Width of bitmap
                                                     rows,                       // Height of bitmap
                                                     8,                          // Bits per component
                                                     cvMat.step[0],              // Bytes per row
                                                     colorSpace,                 // Colorspace
-                                                    kCGImageAlphaNoneSkipLast |
+                                                    kCGImageAlphaNone |
                                                     kCGBitmapByteOrderDefault); // Bitmap info flags
     
     CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
     CGContextRelease(contextRef);
+    CGColorSpaceRelease(colorSpace);
     
     return cvMat;
 }
+
+
 
 + (NSMutableArray*) calcFeaturesWithBlobs: (NSMutableArray*) blobs {
 

@@ -62,7 +62,7 @@ using namespace cv;
     // Convert the template type and match the template to the image
     minMaxIdx(gaussianKernel, min, max);
     divide(*max, gaussianKernel, imageTemplate);
-    imageTemplate.convertTo(imageTemplate, CV_8UC1);
+    imageTemplate.convertTo(imageTemplate, CV_32F);
     matchTemplate(matrix, imageTemplate, correlationMatrix, TM_CCORR_NORMED);
     
     // Crop normalized cross correlation image to recover original size, and binarize

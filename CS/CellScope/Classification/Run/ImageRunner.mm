@@ -11,6 +11,7 @@
 
 #import "Blob.h"
 #import "DataInteractor.h"
+#import "Debug.h"
 #import "ImageRunner.h"
 #import "ImageTools.h"
 #import "Globals.h"
@@ -130,6 +131,7 @@
     
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
+    [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"decimated_loaded_image"];
     CSLog(@"Image converted successfully to matrix!");
     
     if(!image.data) {
@@ -142,12 +144,15 @@
     }
     
     // Convert to a red-channel normalized image
-    Mat redImage = [ImageTools getRedChannelForImage:image];
-    self.orig = [ImageTools getNormalizedImage:redImage];
-
+    // WAYNE NOTE: this is not necessary for grayscale images. Need something in here.
+    //Mat redImage = [ImageTools getRedChannelForImage:image];
+    //[Debug printMatrixToFile:redImage withRows:10 withCols:10 withName:@"decimated_red_image"];
+    self.orig = [ImageTools getNormalizedImage:image];
+    [Debug printMatrixToFile:self.orig withRows:10 withCols:10 withName:@"decimated_normalized_image"];
     
     // Perform object identification
     Mat imageBw = [Blob blobIdentificationForImage:self.orig];
+    [Debug printMatrixToFile:imageBw withRows:10 withCols:10 withName:@"decimated_blob_image"];
     
     CSLog(@"Finished object identification");
     ContourContainerType contours;
@@ -162,6 +167,7 @@
     for( int i = 0; i < contours.size(); i++ )
     { mu[i] = moments( contours[i], false ); }
     
+    
     //  Get the mass centers:
     NSMutableArray* centroids = [NSMutableArray array];
 
@@ -172,11 +178,9 @@
         CGPoint pt = CGPointMake(x, y);
         [centroids addObject: [NSValue valueWithCGPoint:pt]];
     }
-    
-    // Computer gradient image for HoG features
+    [Debug printArrayToFile:centroids withName:@"mass_centers_full_1"];
     
     _patchCount = 0;
-    
     int numObjects = contours.size();
     
     for (int j = 0; j < numObjects; j++) { // IM

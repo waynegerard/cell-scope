@@ -19,4 +19,14 @@
  */
 + (void) printMatrix:(cv::Mat) mat;
 
+/**
+    Pretty print to file.
+ */
++ (void) printMatrixToFile:(cv::Mat) mat withRows:(int) rows withCols:(int) cols withName:(NSString*) name;
+
+/**
+   Pretty print for array
+ */
++ (void) printArrayToFile:(NSMutableArray*) arr withName:(NSString*) name;
+
 @end

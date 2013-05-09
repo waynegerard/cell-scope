@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Globals.h"
+#import "svm.h"
 
 @interface DataInteractor : NSObject
 
@@ -23,5 +24,12 @@
                      Each row contains (row,col) indices.
  */
 + (void) storeScores: (NSMutableArray*) scores withCentroids:(NSMutableArray*) centroids;
+
+/**
+    Loads a SVM model from disk and returns it as a LibSVM model
+    @param fileName The filename to load from
+    @return         Returns a LibSVM model
+ */
++ (svm_model) loadSVMModelWithPathName: (NSString*) fileName;
 
 @end
