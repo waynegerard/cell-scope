@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Globals.h"
-#import "svm.h"
+#include "svm.h"
 
 @interface DataInteractor : NSObject
 
@@ -30,6 +30,6 @@
     @param fileName The filename to load from
     @return         Returns a LibSVM model
  */
-+ (svm_model) loadSVMModelWithPathName: (NSString*) fileName;
++ (svm_model*) loadSVMModelWithPathName: (NSString*) fileName;
 
 @end

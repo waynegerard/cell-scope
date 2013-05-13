@@ -128,6 +128,7 @@
 
     NSMutableArray* data = [NSMutableArray array];
 
+    svm_model* model = [DataInteractor loadSVMModelWithPathName:@"model_out"];
     
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
@@ -211,7 +212,6 @@
     Mat featuresMatrix = [self prepareFeatures];
     
     // Classify Objects with LibSVM IKSVM classifier
-    
     //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
     //*** NOT WORKING - Waiting on test data*** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
     NSMutableArray* dvtest = [NSMutableArray array];
