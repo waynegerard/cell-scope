@@ -7,8 +7,11 @@
 //
 
 #import "Runner.h"
+
+#import "DataInteractor.h"
 #import "ImageRunner.h"
 #import "Globals.h"
+#import "svm.h"
 
 @implementation Runner
 
@@ -22,10 +25,11 @@
     ////////////////////
     // Load the model //
     ////////////////////
+    svm_model* model;
     if (hogFeatures) {
         // TODO: Load the model without HoG features
     } else {
-        // TODO: Load model with HoG features
+        model = [DataInteractor loadSVMModelWithPathName:@"model_without"];
     }
     
     NSDate *start = [NSDate date];
@@ -36,6 +40,8 @@
     
     // TODO: Let user choose images
     NSMutableArray* images = [NSMutableArray arrayWithCapacity:1];
+    UIImage* img = [UIImage imageNamed:@"1350_Clay_Fluor_Yes.png"];
+    [images addObject:img];
     int count = [images count];
     
     ////////////////////
@@ -49,7 +55,7 @@
         ImageRunner* imgRunner = [[ImageRunner alloc] init];
         [imgRunner setPatchSize:patchSize];
         [imgRunner setHogFeatures:hogFeatures];
-        
+        [imgRunner setModel:model];
         [imgRunner runWithImage:ui_img];
     }
     

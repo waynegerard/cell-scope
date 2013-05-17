@@ -9,7 +9,7 @@
 #import "CSAppDelegate.h"
 #import "Users.h"
 #import "LoginViewController.h"
-#import "ImageRunner.h"
+#import "Runner.h"
 
 @implementation CSAppDelegate
 
@@ -22,12 +22,13 @@
     // Get a reference to the stardard user defaults
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     
-    // WAYNE NOTE: We're circumventing the main app here to do testing
-    // TODO: Remove this.
-    ImageRunner* runner = [[ImageRunner alloc] init];
-    UIImage* img = [UIImage imageNamed:@"1350_Clay_Fluor_Yes.png"];
-    [runner runWithImage:img];
     
+    // TODO:
+    // 1) This needs to be dealloced
+    // 2) This needs to be integrated with the main app
+    // 3) These settings should come fro ma menu or something
+    Runner* runner = [[Runner alloc] init];
+    [runner runWithHogFeatures:NO wthPatchSize:16];
     return YES;
     
     LoginViewController *rootView = (LoginViewController *)self.window.rootViewController;

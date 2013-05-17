@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Globals.h"
+#import "svm.h"
 
 using namespace cv;
 
@@ -44,36 +45,22 @@ using namespace cv;
     int _patchCount;
     
     /**
+       The LibSVM model
+     */
+    svm_model* _model;
+    
+    /**
         A list of sorted scores
      */
     NSMutableArray* _sortedScores;
     
 }
 
+@property (nonatomic, assign) svm_model* model;
 @property (nonatomic, assign) Mat orig;
 @property (nonatomic, assign) int patchSize;
 @property (nonatomic, assign) BOOL hogFeatures;
 
-/**
-    Drops low confidence patches, defined as patches where the score is less
-    than some designated threshold
- 
-    @return Returns a list of indices of patches that should be dropped
-*/
-- (NSMutableIndexSet*) findLowConfidencePatches;
-
-/**
-    Locates patches that should be suppressed, for being too close to each other
-    @return Returns the indices for all patches that should be suppressed
-*/
-- (NSMutableIndexSet*) findSuppressedPatches;
-
-/**
-    Converts an image (as a Mat) to a red-channel only normalized image, with pixel intensities between 0..1
-    @param image The image, assumed to be a color image with all 3 channels
-    @return      Returns an the red-channel normalized image
-*/
-- (Mat) getRedImageNormalizedImage: (Mat) image;
 
 /**
     Prepares the features for object classification

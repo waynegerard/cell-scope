@@ -12,8 +12,8 @@
 @implementation MatrixOperations
 
 + (Mat) repMat:(Mat) mat withRows:(int) rows withCols:(int) cols{
-    int newWidth = mat.rows * rows;
-    int newHeight = mat.cols * cols;
+    int newWidth = rows;
+    int newHeight = cols;
     
     Mat newMatrix = Mat(newWidth, newHeight, CV_8UC1);
     

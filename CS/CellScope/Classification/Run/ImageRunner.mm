@@ -16,97 +16,53 @@
 #import "ImageTools.h"
 #import "Globals.h"
 #import "MatrixOperations.h"
-
-#import "svm.h"
+#import "Patch.h"
 #import "imgproc.hpp"
 
 @implementation ImageRunner
 
 
-@synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures;
-
-- (NSMutableIndexSet*) findLowConfidencePatches
-{
-    float lowlim = 1e-6;
-    NSMutableIndexSet* lowConfidencePatches = [NSMutableIndexSet indexSet];
-    
-    for (int i = 0; i < [_sortedScores count]; i++) {
-        float score = [[_sortedScores objectAtIndex:i] floatValue];
-        if (score <= lowlim) {
-            [lowConfidencePatches addIndex:i];
-        }
-    }
-    return lowConfidencePatches;
-}
-
-- (NSMutableIndexSet*) findSuppressedPatches
-{
-    float maxDistance = cv::pow((cv::pow(self.orig.rows, 2.0) + cv::pow(self.orig.cols, 2.0)), 0.5);
-    
-    // Setup rows and columns for next step
-    NSMutableArray* centroidRows = [NSMutableArray array];
-    NSMutableArray* centroidCols = [NSMutableArray array];
-    for (int i = 0; i < [_centroids count]; i++) {
-        NSArray* centroid = [_centroids objectAtIndex:i];
-        int row = [[centroid objectAtIndex:0] intValue];
-        int col = [[centroid objectAtIndex:1] intValue];
-        [centroidRows addObject:[NSNumber numberWithInt:row]];
-        [centroidCols addObject:[NSNumber numberWithInt:col]];
-    }
-    
-    NSMutableIndexSet* suppressedPatches = [NSMutableIndexSet indexSet];
-    for (int i = 0; i < [_sortedScores count]; i++) { // This should start from the highest-scoring patch
-        NSArray* centroid = [_centroids objectAtIndex:i];
-        int row = [[centroid objectAtIndex:0] intValue];
-        int col = [[centroid objectAtIndex:1] intValue];
-        
-        NSArray* rowCopy = [NSArray arrayWithArray:centroidRows];
-        NSArray* colCopy = [NSArray arrayWithArray:centroidCols];
-        NSMutableArray* distance = [NSMutableArray array];
-        
-        float minDistance = 1e99;
-        int minDistanceIndex = -1;
-        
-        for (int j = 0; j < [rowCopy count]; j++) {
-            int newRowVal = row - [[rowCopy objectAtIndex: j] intValue];
-            int newColVal = col - [[colCopy objectAtIndex: j] intValue];
-            
-            newRowVal = pow(newRowVal, 2.0);
-            newColVal = pow(newColVal, 2.0);
-            
-            double newVal = newRowVal + newColVal;
-            newVal = cv::pow(newVal, 0.5);
-            
-            if (newVal < minDistance && newVal != 0) {
-                minDistance = newVal;
-                minDistanceIndex = j;
-            }
-            
-            
-            [distance addObject:[NSNumber numberWithFloat:newVal]];
-        }
-        
-        // Find the patch with the minimum distance (that isn't the current patch, where distance == 0)
-        
-        // See if it's too close. If it is, then suppress the patch
-        float cutoff = 0.75 * self.patchSize; // non-max suppression parameter, "too close" distance
-        if(minDistance <= cutoff) { // if too much overlap
-            // Suppress this patch
-            [suppressedPatches addIndex:i];
-        }
-    }
-    return suppressedPatches;
-}
+@synthesize patchSize = _patchSize, orig = _orig, hogFeatures = _hogFeatures, model = _model;
 
 - (Mat) prepareFeatures
 {
+    
+    /*
+    for t = 1:data.NumObjects
+        ctrs(t,:) = [data.stats(t).row data.stats(t).col];
+    
+        if dohog
+            feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
+        else
+            feats(t,:) = [data.stats(t).phi data.stats(t).geom];
+        end
+        binpatches{1,t} = data.stats(t).binpatch;
+        patches{1,t} = data.stats(t).patch;
+    end
+    
+    % Prepare features and run object-level classifier
+    Xtest = feats;
+    ytest_dummy = zeros(size(Xtest,1),1);
+    
+    % Minmax normalization of features
+    maxmat = repmat(train_max,size(ytest_dummy));
+    minmat = repmat(train_min,size(ytest_dummy));
+    Xtest = (Xtest-minmat)./(maxmat-minmat);
+    */
+    
+    
+    // WAYNE:
+    // Two problems: repMat is not respecting the rows
+    // features should not have 0 columns
     CSLog(@"Preparing features");
     // Minmax normalization of features
     Mat train_max = [DataInteractor loadCSVWithPath:@"train_max"];
     Mat train_min = [DataInteractor loadCSVWithPath:@"train_min"];
-        
-    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:self.patchSize withCols:1];
-    Mat minMatrix = [MatrixOperations repMat:train_min withRows:self.patchSize withCols:1];
+    
+    int rows = _features->rows;
+    int cols = _features->cols;
+    Mat maxMatrix = [MatrixOperations repMat:train_max withRows:rows withCols:cols];
+    Mat minMatrix = [MatrixOperations repMat:train_min withRows:rows withCols:cols];
     CSLog(@"min and max matrices successfully repeated");
     
     Mat FeaturesMinusMin;
@@ -127,8 +83,6 @@
 {
 
     NSMutableArray* data = [NSMutableArray array];
-
-    svm_model* model = [DataInteractor loadSVMModelWithPathName:@"model_out"];
     
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
@@ -138,10 +92,6 @@
     if(!image.data) {
         CSLog(@"Could not load image with filename"); 
         return;
-    }
-    
-    if (!self.patchSize) {
-        self.patchSize = 16;
     }
     
     // Convert to a red-channel normalized image
@@ -184,7 +134,7 @@
     _patchCount = 0;
     int numObjects = contours.size();
     
-    for (int j = 0; j < numObjects; j++) { // IM
+    for (int j = 0; j < numObjects; j++) {
         NSValue* val = [centroids objectAtIndex:j];
         CGPoint pt = [val CGPointValue];
         int col = pt.x;
@@ -197,19 +147,24 @@
             
         }
     }
+    [Debug printArrayToFile:data withName:@"centroids_data"];
     
     // Calculate features
     data = [ImageTools calcFeaturesWithBlobs:data];
+    [Debug printArrayToFile:data withName: @"features_with_blob_data"];
     
     Mat train_max;
     Mat train_min;
 
     // Store good centroids
     [self storeCentroidsAndFeaturesWithData:data];
+    [Debug printMatrixToFile:*_features withRows:_features->rows withCols:_features->cols withName:@"features"];
     
     // Prepare features
     Mat zeroMatrix = Mat::zeros(self.patchSize, 1, CV_8UC1);
     Mat featuresMatrix = [self prepareFeatures];
+    [Debug printMatrixToFile:featuresMatrix withRows:featuresMatrix.rows withCols:featuresMatrix.cols withName:@"features_matrix"];
+    
     
     // Classify Objects with LibSVM IKSVM classifier
     //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
@@ -222,12 +177,13 @@
     _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
     
     // Drop Low-confidence Patches
-    NSMutableIndexSet* lowConfidencePatches = [self findLowConfidencePatches];
+    Patch* patch = [[Patch alloc] init];
+    NSMutableIndexSet* lowConfidencePatches = [patch findLowConfidencePatches];
     [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
     [_centroids removeObjectsAtIndexes:lowConfidencePatches];
     
     // Non-max Suppression Based on Scores
-    NSMutableIndexSet* suppressedPatches = [self findSuppressedPatches];
+    NSMutableIndexSet* suppressedPatches = [patch findSuppressedPatches];
     [_sortedScores removeObjectsAtIndexes:suppressedPatches];
     [_centroids removeObjectsAtIndexes:suppressedPatches];
     
@@ -270,16 +226,11 @@
 
 - (void) storeCentroidsAndFeaturesWithData:(NSMutableArray*) data
 {
-    
     _centroids  = [NSMutableArray array];
     
     Mat feature_mat;
-    if (self.hogFeatures) {
-        feature_mat = Mat(_patchCount, 3, CV_8UC1);
-    } else {
-        feature_mat = Mat(_patchCount, 2, CV_8UC1);
-    }
-    _features = (Mat*) &feature_mat;
+    int columns = (self.hogFeatures) ? 3 : 2;
+    _features = new Mat(_patchCount, columns, CV_8UC1);
     
     for (int j = 0; j < _patchCount; j++) {
         NSMutableDictionary* stats = [data objectAtIndex:j];

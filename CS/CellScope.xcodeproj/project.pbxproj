@@ -73,6 +73,7 @@
 		AC024C59170143880071DD14 /* white.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC024C58170143880071DD14 /* white.jpg */; };
 		AC24EF3A1738742800B50B36 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC24EF391738742800B50B36 /* model_out.txt */; };
 		AC3B06A016F50EFA00A90983 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */; };
+		AC523DCE1746AFFD003E9A73 /* Patch.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC523DCD1746AFFD003E9A73 /* Patch.mm */; };
 		AC56072516D30055002ADF9C /* Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC56072416D30055002ADF9C /* Debug.mm */; };
 		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
 		AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC7B129F16DC3A1B002AB47A /* Region.mm */; };
@@ -361,6 +362,8 @@
 		AC024C58170143880071DD14 /* white.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = white.jpg; path = CellScope/resources/testing/white.jpg; sourceTree = "<group>"; };
 		AC24EF391738742800B50B36 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_out.txt; path = Resources/model_out.txt; sourceTree = "<group>"; };
 		AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		AC523DCC1746AFFD003E9A73 /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Patch.h; path = Classification/Features/Patch.h; sourceTree = "<group>"; };
+		AC523DCD1746AFFD003E9A73 /* Patch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Patch.mm; path = Classification/Features/Patch.mm; sourceTree = "<group>"; };
 		AC56072316D30055002ADF9C /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = Classification/Data/Debug.h; sourceTree = "<group>"; };
 		AC56072416D30055002ADF9C /* Debug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Debug.mm; path = Classification/Data/Debug.mm; sourceTree = "<group>"; };
 		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = Classification/Run/ImageRunner.h; sourceTree = "<group>"; };
@@ -707,6 +710,8 @@
 				AC7B129F16DC3A1B002AB47A /* Region.mm */,
 				ACD3255A16E6E5B20027FB50 /* Contour.h */,
 				ACD3255D16E6E96B0027FB50 /* Contour.mm */,
+				AC523DCC1746AFFD003E9A73 /* Patch.h */,
+				AC523DCD1746AFFD003E9A73 /* Patch.mm */,
 			);
 			name = Features;
 			sourceTree = "<group>";
@@ -1068,6 +1073,7 @@
 				AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */,
 				ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
+				AC523DCE1746AFFD003E9A73 /* Patch.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
