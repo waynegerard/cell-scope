@@ -29,4 +29,6 @@
  */
 + (void) printArrayToFile:(NSMutableArray*) arr withName:(NSString*) name;
 
++ (void) printMatStats:(cv::Mat) mat;
+
 @end

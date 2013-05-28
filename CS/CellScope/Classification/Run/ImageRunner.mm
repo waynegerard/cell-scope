@@ -86,7 +86,7 @@
     
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
-    [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"decimated_loaded_image"];
+    [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"orig"];
     CSLog(@"Image converted successfully to matrix!");
     
     if(!image.data) {
@@ -94,16 +94,18 @@
         return;
     }
     
-    // Convert to a red-channel normalized image
-    // WAYNE NOTE: this is not necessary for grayscale images. Need something in here.
-    //Mat redImage = [ImageTools getRedChannelForImage:image];
-    //[Debug printMatrixToFile:redImage withRows:10 withCols:10 withName:@"decimated_red_image"];
+    // Convert to a red-channel normalized image if necessary
+    if (image.type() == CV_8UC3) {
+        image = [ImageTools getRedChannelForImage:image];
+        [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"orig_color"];
+    }
     self.orig = [ImageTools getNormalizedImage:image];
-    [Debug printMatrixToFile:self.orig withRows:10 withCols:10 withName:@"decimated_normalized_image"];
+    [Debug printMatrixToFile:self.orig withRows:10 withCols:10 withName:@"im2double"];
     
     // Perform object identification
     Mat imageBw = [Blob blobIdentificationForImage:self.orig];
-    [Debug printMatrixToFile:imageBw withRows:10 withCols:10 withName:@"decimated_blob_image"];
+    [Debug printMatStats:imageBw];
+    [Debug printMatrixToFile:imageBw withRows:10 withCols:10 withName:@"imbw"];
     
     CSLog(@"Finished object identification");
     ContourContainerType contours;
@@ -138,7 +140,7 @@
         NSValue* val = [centroids objectAtIndex:j];
         CGPoint pt = [val CGPointValue];
         int col = pt.x;
-        int row = pt.y;
+        int row = pt.y; 
         
         NSMutableDictionary* stats  = [self storeGoodCentroidsWithRow:row withCol:col];
         if (stats != NULL) { // If not a partial patch

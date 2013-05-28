@@ -14,7 +14,7 @@
 
 + (Mat) getRedChannelForImage: (Mat) image {
     CSLog(@"Starting conversion to red normalized image");
-    
+     
     Mat red(image.rows, image.cols, CV_8UC1);
     Mat junk(image.rows, image.cols, CV_8UC2);
     
@@ -33,11 +33,22 @@
 
     Mat img_32F(image.rows, image.cols, CV_32F);
     Mat res(image.rows, image.cols, CV_32F);
+    
     image.convertTo(img_32F, CV_32F);
-    normalize(image, res, 0, 1, NORM_MINMAX, CV_32F);
+    double max;
+    double min;
+    cv::minMaxIdx(image, &min, &max);
+    
+    for (int i = 0; i < img_32F.rows; i++) {
+        for (int j = 0; j < img_32F.cols; j++) {
+            float val = img_32F.at<float>(i, j);
+            val = val / max;
+            img_32F.at<float>(i, j) = val;
+        }
+    }
     
     CSLog(@"Image normalized");
-    return res;
+    return img_32F;
 }
 
 
@@ -69,13 +80,20 @@
     return geometricFeatures;    
 }
 
-+ (cv::Mat)cvMatWithImage:(UIImage *)image
++ (Mat)cvMatWithImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
+    Mat cvMat;
     
-    Mat cvMat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
+    if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelRGB) { // 3 channels
+        cvMat = Mat(rows, cols, CV_8UC3);
+    } else if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelMonochrome) { // 1 channel
+        cvMat = Mat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
+    } else {
+        CSLog(@"Didnt understand colorspace! %@", colorSpace);
+    }
     
     CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to data
                                                     cols,                       // Width of bitmap

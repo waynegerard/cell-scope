@@ -98,69 +98,6 @@
     
     svm_model* model = svm_load_model(fpath); 
     return model;
-    
-    /**
-     
-    svm_model* model = new svm_model();
-	model->rho = NULL;
-	model->probA = NULL;
-	model->probB = NULL;
-	model->label = NULL;
-	model->nSV = NULL;
-    svm_parameter& param = model->param;
-
-    NSString* filePath = [[NSBundle mainBundle] pathForResource:fileName ofType:@"txt"];
-    NSString* fullBuffer = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:nil];
-    NSArray* allStrings = [fullBuffer componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-
-    bool done = false;
-    int index = 0;
-    while (!done) {
-        NSString* cmd = [self tknKeyHelper:[allStrings objectAtIndex:index]];
-        if ([cmd isEqualToString:@"svm_type"]) {
-            param.svm_type = 0;
-        } else if ([cmd isEqualToString:@"kernel_type"]) {
-            
-        } else if ([cmd isEqualToString:@"nr_class"]) {
-            model->nr_class = [[self tknValHelper:[allStrings objectAtIndex:index]] floatValue];
-        } else if ([cmd isEqualToString:@"total_sv"]) {
-            model->l = [[self tknValHelper:[allStrings objectAtIndex:3]] intValue];            
-        } else if ([cmd isEqualToString:@"rho"]) {
-            model->rho = [self tknDoubleArrayHelper:[allStrings objectAtIndex:4]];
-        } else if ([cmd isEqualToString:@"label"]) {
-            model->label = [self tknIntArrayHelper:[allStrings objectAtIndex:5]];
-        } else if ([cmd isEqualToString:@"probA"]) {
-            model->probA = new double([[self tknValHelper:[allStrings objectAtIndex:6]] doubleValue]);
-        } else if ([cmd isEqualToString:@"probB"]) {
-            model->probB = new double([[self tknValHelper:[allStrings objectAtIndex:7]] doubleValue]);
-        } else if ([cmd isEqualToString:@"nr_sv"]) {
-            model->nSV = [self tknIntArrayHelper:[allStrings objectAtIndex:8]];
-        } else if ([cmd isEqualToString:@"SV"]) {
-            done = true;
-        }
-        index++;
-    }
-    
-    for (; index < [allStrings count]; index++) {
-        NSString* line = [allStrings objectAtIndex:index];
-        NSArray* elements = [line componentsSeparatedByString:@":"];
-        
-    }
-    [allStrings objectAtIndex:1]; // Kernel Type
-    
-    
-    svm_type c_svc   X
-    kernel_type (null)
-    nr_class 2    X
-    total_sv 1654   X
-    rho 3.17932
-    label 1 0
-    probA -3.17405   X
-    probB -0.0287109   X
-    nr_sv 826 828
-    SV
-    
-    */
 }
 
 @end
