@@ -89,6 +89,8 @@
 		ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B516C209DB00D7A384 /* svm-scale.c */; };
 		ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B616C209DB00D7A384 /* svm-train.c */; };
 		ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B716C209DB00D7A384 /* svm.cpp */; };
+		ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
+		ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
 		ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACD3255D16E6E96B0027FB50 /* Contour.mm */; };
 		ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.mm */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
@@ -384,6 +386,7 @@
 		ACB705B616C209DB00D7A384 /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "LibSVM/svm-train.c"; sourceTree = "<group>"; };
 		ACB705B716C209DB00D7A384 /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = LibSVM/svm.cpp; sourceTree = "<group>"; };
 		ACB705B816C209DB00D7A384 /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = LibSVM/svm.h; sourceTree = "<group>"; };
+		ACC23A21176241C000C6BF9D /* algorithm_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = algorithm_settings.plist; path = ../Resources/algorithm_settings.plist; sourceTree = "<group>"; };
 		ACD3255A16E6E5B20027FB50 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contour.h; path = Classification/Features/Contour.h; sourceTree = "<group>"; };
 		ACD3255D16E6E96B0027FB50 /* Contour.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Contour.mm; path = Classification/Features/Contour.mm; sourceTree = "<group>"; };
 		ACEF530D169557AF00348916 /* MatrixOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MatrixOperations.mm; path = Classification/Data/MatrixOperations.mm; sourceTree = "<group>"; };
@@ -613,6 +616,7 @@
 		9B6BF0C115E19ACD002834C5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ACC23A21176241C000C6BF9D /* algorithm_settings.plist */,
 				9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */,
 				9B6BF0C315E19ACD002834C5 /* InfoPlist.strings */,
 				9B6BF0C615E19ACD002834C5 /* main.m */,
@@ -986,6 +990,7 @@
 				ACAD723216F6B59700D557BC /* 1350_Clay_Fluor_Yes.png in Resources */,
 				AC024C59170143880071DD14 /* white.jpg in Resources */,
 				AC24EF3A1738742800B50B36 /* model_out.txt in Resources */,
+				ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -994,6 +999,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B6BF0E115E19ACD002834C5 /* InfoPlist.strings in Resources */,
+				ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

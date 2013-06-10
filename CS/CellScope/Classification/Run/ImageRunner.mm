@@ -86,7 +86,7 @@
     
     // Convert the image to an OpenCV matrix
     Mat image = [ImageTools cvMatWithImage:img];
-    [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"orig"];
+    [Debug printMatrixToFile:image withRows:90 withCols:90 withName:@"orig"];
     CSLog(@"Image converted successfully to matrix!");
     
     if(!image.data) {
@@ -97,31 +97,28 @@
     // Convert to a red-channel normalized image if necessary
     if (image.type() == CV_8UC3) {
         image = [ImageTools getRedChannelForImage:image];
-        [Debug printMatrixToFile:image withRows:10 withCols:10 withName:@"orig_color"];
     }
     self.orig = [ImageTools getNormalizedImage:image];
-    [Debug printMatrixToFile:self.orig withRows:10 withCols:10 withName:@"im2double"];
-    
+    [Debug printMatrixToFile:self.orig withRows:90 withCols:90 withName:@"im2double"];
     // Perform object identification
     Mat imageBw = [Blob blobIdentificationForImage:self.orig];
-    [Debug printMatStats:imageBw];
-    [Debug printMatrixToFile:imageBw withRows:10 withCols:10 withName:@"imbw"];
     
     CSLog(@"Finished object identification");
     ContourContainerType contours;
     cv::vector<Vec4i> hierarchy;
     // ImageBW.type() == 5
-    cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+    cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
     
     
     // Get the moments
-    CSLog(@"Grabbing Hu moments");
+    CSLog(@"Acquiring Hu moments. Contours size: %zd", contours.size());
     vector<Moments> mu(contours.size() );
     for( int i = 0; i < contours.size(); i++ )
     { mu[i] = moments( contours[i], false ); }
-    
+    exit(0);
     
     //  Get the mass centers:
+    CSLog(@"Acquiring mass centers")
     NSMutableArray* centroids = [NSMutableArray array];
 
     vector<Point2f> mc( contours.size() );
@@ -131,11 +128,13 @@
         CGPoint pt = CGPointMake(x, y);
         [centroids addObject: [NSValue valueWithCGPoint:pt]];
     }
-    [Debug printArrayToFile:centroids withName:@"mass_centers_full_1"];
+    [Debug printArrayToFile:centroids withName:@"mass_centers_full"];
+    exit(0);
     
     _patchCount = 0;
     int numObjects = contours.size();
     
+    CSLog(@"Removing partial patches");
     for (int j = 0; j < numObjects; j++) {
         NSValue* val = [centroids objectAtIndex:j];
         CGPoint pt = [val CGPointValue];
@@ -150,13 +149,13 @@
         }
     }
     [Debug printArrayToFile:data withName:@"centroids_data"];
-    
+    exit(0);
+
     // Calculate features
     data = [ImageTools calcFeaturesWithBlobs:data];
-    [Debug printArrayToFile:data withName: @"features_with_blob_data"];
+    [Debug printArrayToFile:data withName: @"features"];
+    exit(0);
     
-    Mat train_max;
-    Mat train_min;
 
     // Store good centroids
     [self storeCentroidsAndFeaturesWithData:data];
@@ -167,6 +166,8 @@
     Mat featuresMatrix = [self prepareFeatures];
     [Debug printMatrixToFile:featuresMatrix withRows:featuresMatrix.rows withCols:featuresMatrix.cols withName:@"features_matrix"];
     
+    Mat train_max;
+    Mat train_min;
     
     // Classify Objects with LibSVM IKSVM classifier
     //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
