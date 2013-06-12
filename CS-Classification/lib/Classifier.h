@@ -10,6 +10,6 @@ namespace Classifier
 		Runs the matrix. Calculates scores and centroids that pass the low-confidence filter.
 		@param img The image to run
 	*/
-	void runWithMatrix(cv::Mat matrix);
+	bool runWithImage(cv::Mat image);
 }
 #endif

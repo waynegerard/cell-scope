@@ -1,14 +1,13 @@
 #include "Blob.h"
 #include "Classifier.h"
 #include "ImageTools.h"
-#include "Globals.h"
 
 namespace Classifier 
 {
-	void runWithImage (cv::Mat image)
+	bool runWithImage(cv::Mat image)
 	{   
 		if(!image.data) {
-			return;
+			return false;
 		}
     
 		// Convert to a red-channel normalized image if necessary
@@ -28,5 +27,6 @@ namespace Classifier
 		//cv::vector<Moments> mu(contours.size() );
 		//for( int i = 0; i < contours.size(); i++ )
 		//{ mu[i] = cv::moments( contours[i], false ); }
+		return true;
 	}
 }

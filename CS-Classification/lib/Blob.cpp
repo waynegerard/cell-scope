@@ -28,8 +28,6 @@ namespace Blob
 
 	cv::Mat blobIdentification(cv::Mat image) 
 	{
-    
-		cv::Mat thresholdCutoff = cv::Mat(1,1, CV_32F);
 		cv::Mat grayscaleImage;
 		cv::Mat imageOpening;
 		cv::Mat imageDifference;
@@ -45,12 +43,11 @@ namespace Blob
 		// Get the threshold cutoff, generate the image difference
 		cv::subtract(image, imageOpening, imageDifference);
 		cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
-		cv::add(meanImageDifference, stdDevImageDifference, thresholdCutoff);
-		cv::add(thresholdCutoff, stdDevImageDifference, thresholdCutoff);
-		cv::add(thresholdCutoff, stdDevImageDifference, thresholdCutoff);
+		double mean = meanImageDifference.at<double>(0, 0);
+		double stdev = stdDevImageDifference.at<double>(0, 0);
+		double threshold_value = mean + (3 * stdev);
 
-		// Use the threshold
-		imageThreshold = MatrixOperations::greaterThanValue(thresholdCutoff.at<float>(0,0), imageDifference);
+		imageThreshold = MatrixOperations::greaterThanValue((float)threshold_value, imageDifference);
     
 		// Only use pixels which pass the threshold from the cross correlation
 		cv::Mat grayscaleCrossCorrelation = crossCorrelateWithGaussian(image);

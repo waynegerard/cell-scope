@@ -56,7 +56,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>"C:\Program Files\OpenCV2.3\build\x86\vc11\lib\opencv_core245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_highgui245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_imgproc245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_ml245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_video245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_features2d245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_calib3d245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_objdetect245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_contrib245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_legacy245d.lib";"C:\Program Files\OpenCV2.3\build\x86\vc10\lib\opencv_flann245d.lib";%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Program Files\OpenCV2.3\build\x86\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Program Files\OpenCV2.3\build\x86\vc10\lib;C:\Users\Wayne\Documents\GitHub\cell-scope\CS-Classification\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
