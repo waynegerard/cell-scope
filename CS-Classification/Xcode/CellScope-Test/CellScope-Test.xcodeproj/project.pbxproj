@@ -31,8 +31,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		AC1BFB2C176FFF7C00B2CC22 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../Debug.cpp; sourceTree = "<group>"; };
-		AC1BFB2D176FFF7C00B2CC22 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../Debug.h; sourceTree = "<group>"; };
+		AC1BFB2C176FFF7C00B2CC22 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
+		AC1BFB2D176FFF7C00B2CC22 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
 		ACADFF0617694E2F0072908F /* CellScope-Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "CellScope-Test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACADFF0917694E2F0072908F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -90,8 +90,6 @@
 		ACADFF0817694E2F0072908F /* CellScope-Test */ = {
 			isa = PBXGroup;
 			children = (
-				AC1BFB2C176FFF7C00B2CC22 /* Debug.cpp */,
-				AC1BFB2D176FFF7C00B2CC22 /* Debug.h */,
 				AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */,
 				ACADFF0917694E2F0072908F /* main.cpp */,
 			);
@@ -101,6 +99,8 @@
 		ACADFF1217694E3D0072908F /* CS-Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				AC1BFB2C176FFF7C00B2CC22 /* Debug.cpp */,
+				AC1BFB2D176FFF7C00B2CC22 /* Debug.h */,
 				ACADFFCC176973930072908F /* svm.h */,
 				ACADFF1317694E5A0072908F /* Blob.cpp */,
 				ACADFF1417694E5A0072908F /* Blob.h */,

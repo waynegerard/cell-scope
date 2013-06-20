@@ -2,6 +2,7 @@
 #include "MatrixOperations.h"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
+#import "Debug.h"
 
 namespace Blob 
 {
@@ -12,7 +13,7 @@ namespace Blob
 		cv::Mat result;
 
 		int kernelSize = 17;               // Size of Gaussian kernel // 16 + 1
-		float kernelStdDev  = 1.5;         // StdDev of Gaussian kernel
+		float kernelStdDev  = 1.5f;         // StdDev of Gaussian kernel
 		double correlationThreshold = 0.122;  // Threshold on normalized cross-correlation
 
 		cv::GaussianBlur(matrix, correlationMatrix, cv::Size(kernelSize, kernelSize), kernelStdDev, kernelStdDev); 
@@ -39,16 +40,19 @@ namespace Blob
 		cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(10,10));
 		imageOpening = cv::Mat(image.rows, image.cols, image.type());
 		cv::morphologyEx(image, imageOpening, cv::MORPH_OPEN, element);
+        Debug::print(imageOpening, "imbigop.txt");
     
 		// Get the threshold cutoff, generate the image difference
 		cv::subtract(image, imageOpening, imageDifference);
+        Debug::print(imageDifference, "imdf.txt");
+        
 		cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
 		double mean = meanImageDifference.at<double>(0, 0);
 		double stdev = stdDevImageDifference.at<double>(0, 0);
 		double threshold_value = mean + (3 * stdev);
-
 		imageThreshold = MatrixOperations::greaterThanValue((float)threshold_value, imageDifference);
-    
+        Debug::print(imageThreshold, "imthresh.txt");
+        
 		// Only use pixels which pass the threshold from the cross correlation
 		cv::Mat grayscaleCrossCorrelation = crossCorrelateWithGaussian(image);
 		cv::bitwise_and(imageThreshold, grayscaleCrossCorrelation, grayscaleImage);

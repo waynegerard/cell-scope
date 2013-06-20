@@ -1,12 +1,18 @@
 #include "Globals.h"
 #include <string>
 
+#if __APPLE__
+    #define OUTPUT_FOLDER "/Users/wgerard/Dropbox/CS_Comparisons/cpp/"
+#else // Assumed to be windows
+    #define OUTPUT_FOLDER "C:\Dropbox\CS_Comparisons\"
+#endif
+
 using namespace cv;
 using namespace std;
 
 namespace Debug
 {
-    void print(Mat mat, int rows, int cols, char* name);
+    void print(Mat mat, const char* name);
 
-    void printStats(Mat mat, char* fileName);
+    void printStats(Mat mat, const char* fileName);
 }
