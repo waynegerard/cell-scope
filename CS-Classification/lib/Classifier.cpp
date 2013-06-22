@@ -13,8 +13,6 @@ namespace Classifier
 			return false;
 		}
         
-        Debug::print(image, "orig.txt");
-        
 		// Convert to a red-channel normalized image if necessary
 		if (image.type() == CV_8UC3) {
 			image = ImageTools::getRedChannel(image);
@@ -22,8 +20,10 @@ namespace Classifier
         
         cout << "Normalizing image\n";
 		cv::Mat originalImage = ImageTools::normalizeImage(image);
-        Debug::print(originalImage, "im2double.txt");
         
+		// WG NOTE:
+		// Perfect up to here
+
 		// Perform object identification
         cout << "Performing object identification\n";
 		cv::Mat imageBw = Blob::blobIdentification(originalImage);

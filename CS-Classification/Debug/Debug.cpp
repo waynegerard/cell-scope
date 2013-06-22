@@ -1,134 +1,93 @@
-//
-//  Debug.m
-//  CellScope
-//
-//  Created by Wayne Gerard on 2/18/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
-//
+#include "Debug.h"
+#include <iostream>
+#include <cstring>
+#include <fstream>
 
-#import "Debug.h"
+namespace Debug
+{
 
-@implementation Debug
+void printStats(cv::Mat mat, const char* fileName)
+{
+    string path = OUTPUT_FOLDER;
+    path += fileName;
+    char* full_path = (char*)path.c_str();
 
-+ (void) printMatrix:(cv::Mat) mat {
-
-    int rows = mat.rows;
-    int cols = mat.cols;
+    ofstream out_file;
+    out_file.open(full_path);
     
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            float val = mat.at<float>(i, j);
-            NSLog(@"Value at %d, %d: %f", i, j, val);
-        }
-    }
-}
-
-+ (void) printMatStats:(cv::Mat) mat withFileName: (NSString*) name {
     double min;
     double max;
-    cv::minMaxIdx(mat, &min, &max);
+    minMaxIdx(mat, &min, &max);
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@/%@.txt", documentsDirectory, name];
-    [@"" writeToFile:fileName atomically:YES encoding:NSASCIIStringEncoding error:nil];
-    
-    NSString* valueText = @"";
     int count = 0;
+    string valueText = "";
     
-    CSLog(@"Loading contents");
-    for (int i = 0; i < mat.rows; i++) {
-        for (int j = 0; j < mat.cols; j++) {
+    for (int i = 0; i < mat.cols; i++) {
+        for (int j = 0; j < mat.rows; j++) {
             if (mat.type() == CV_8UC1) {
-                int val = (int) mat.at<unsigned char>(i, j);
+                int val = (int) mat.at<unsigned char>(j, i);
                 if (val != 0) {
                     if (count < 100)
-                        valueText = [NSString stringWithFormat:@"%@%d,", valueText, val];
+                        out_file << val << ",";
                     count++;
                 }
             } else if (mat.type() == CV_32F) {
-                float val = (float) mat.at<float>(i, j);
+                float val = (float) mat.at<float>(j, i);
                 if (val != 0) {
                     if (count < 100)
-                        valueText = [NSString stringWithFormat:@"%@%f,", valueText, val];
+                        out_file << val << ",";
                     count++;
                 }
             } else if (mat.type() == CV_64F) {
-                double val = (double) mat.at<double>(i, j);
+                double val = (double) mat.at<double>(j, i);
                 if (val != 0) {
                     if (count < 100)
-                        valueText = [NSString stringWithFormat:@"%@%f,", valueText, val];
+                        out_file << val << ",";
                     count++;
                 }
             } else {
-                CSLog(@"Didn't understand matrix type! Type: %d ", mat.type());
+                cout << "Didn't understand matrix type! Type: " << mat.type() << endl;
             }
         }
     }
 
-    NSString* minStr = [NSString stringWithFormat:@"Min of array: %f\n", min];
-    NSString* maxStr = [NSString stringWithFormat:@"Max of array: %f\n", max];
-    NSString* rowStr = [NSString stringWithFormat:@"Rows of array: %d\n", mat.rows];
-    NSString* colStr = [NSString stringWithFormat:@"Cols of array: %d\n", mat.cols];
-    NSString* totalNonZero = [NSString stringWithFormat:@"Total non-zero values of array: %d\n", count];
-    NSString* firstValuesStr = @"\n\nFirst 100 non-zero values for array: \n\n";
-    NSString* countText = [NSString stringWithFormat:@"Found %d values\n", count];
-    NSString* outText = [NSString stringWithFormat:@"%@%@%@%@%@%@%@%@", minStr, maxStr, rowStr, colStr, totalNonZero, firstValuesStr, countText, valueText];
-    
-    [outText writeToFile:fileName atomically:YES encoding:NSASCIIStringEncoding error:nil];
+    out_file.close();
 }
 
-+ (void) printMatrixToFile:(cv::Mat) mat withRows:(int) rows withCols:(int) cols withName:(NSString*) name {
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@/%@.txt", documentsDirectory, name];
+void print(cv::Mat mat, const char* name)
+{
+    string path = OUTPUT_FOLDER;
+    path += name;
+    char* full_path = (char*)path.c_str();
     
-    [@"" writeToFile:fileName atomically:YES encoding:NSASCIIStringEncoding error:nil];
-    NSString* newText = @"";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
+    cout << "Print to file: " << name << " Rows: " << mat.rows << " Cols: " << mat.cols << endl;
+    cout << "Fullpath: " << full_path << endl;
+    ofstream out_file;
+    out_file.open(full_path);
+    
+    if (!out_file) {
+        cerr << "Can't open output file!" << endl;
+    }
+    
+    for (int i = 0; i < mat.cols; i++) {
+        for (int j = 0; j < mat.rows; j++) {
             if (mat.type() == CV_8UC1) {
-                int val = (int) mat.at<unsigned char>(i, j);
-                newText = [NSString stringWithFormat:@"%@%d,", newText, val];
+                int val = (int) mat.at<unsigned char>(j, i);
+                out_file << val << ",";
             } else if (mat.type() == CV_32F) {
-                float val = (float) mat.at<float>(i, j);
-                newText = [NSString stringWithFormat:@"%@%f,", newText, val];
+                float val = (float) mat.at<float>(j, i);
+                out_file << val << ",";
             } else if (mat.type() == CV_64F) {
-                double val = (double) mat.at<double>(i, j);
-                newText = [NSString stringWithFormat:@"%@%f,", newText, val];
+                double val = (double) mat.at<double>(j, i);
+                out_file << val << ",";
             } else {
-                CSLog(@"Didn't understand matrix type! Type: %d ", mat.type());
+                cout << "Didn't understand matrix type! Type: " << mat.type() << endl;
             }
         }
     }
-    NSError* err;
-    NSString* contents = [NSString stringWithContentsOfFile:fileName encoding:NSASCIIStringEncoding error:&err];
-    contents = [contents stringByAppendingString:newText];
-    [contents writeToFile:fileName atomically:YES encoding: NSASCIIStringEncoding error:&err];
+
+    out_file.close();
 
     
 }
-
-+ (void) printArrayToFile:(NSMutableArray*) arr withName:(NSString*) name{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@/%@.txt", documentsDirectory, name];
-    
-    [@"" writeToFile:fileName atomically:YES encoding:NSASCIIStringEncoding error:nil];
-    
-    for (int i = 0; i < [arr count]; i++) {
-        NSValue* val = (NSValue*) [arr objectAtIndex:i];
-        CGPoint pt = [val CGPointValue];
-        NSString* newText = [NSString stringWithFormat:@"%f,%f ", pt.x, pt.y];
-        NSError* err;
-        NSString* contents = [NSString stringWithContentsOfFile:fileName encoding:NSUnicodeStringEncoding error:&err];
-        contents = [contents stringByAppendingString:newText];
-        [contents writeToFile:fileName atomically:YES encoding: NSUnicodeStringEncoding error:&err];
-        
-    }
-
 }
-
-
-@end

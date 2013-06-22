@@ -1,36 +1,18 @@
-//
-//  Debug.h
-//  CellScope
-//
-//  Created by Wayne Gerard on 2/18/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
-//
+#include "Globals.h"
+#include <string>
 
-#import <Foundation/Foundation.h>
-#import "Globals.h"
+#if __APPLE__
+    #define OUTPUT_FOLDER "/Users/wgerard/Dropbox/CS_Comparisons/cpp/"
+#else // Assumed to be windows
+    #define OUTPUT_FOLDER "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\cpp\\"
+#endif
 
-/**
-    A class used for debugging. Mostly pretty print methods.
- */
-@interface Debug : NSObject
+using namespace cv;
+using namespace std;
 
-/**
-    Pretty print for matrix.
- */
-+ (void) printMatrix:(cv::Mat) mat;
+namespace Debug
+{
+    void print(Mat mat, const char* name);
 
-/**
-    Pretty print to file.
- */
-+ (void) printMatrixToFile:(cv::Mat) mat withRows:(int) rows withCols:(int) cols withName:(NSString*) name;
-
-/**
-   Pretty print for array
- */
-+ (void) printArrayToFile:(NSMutableArray*) arr withName:(NSString*) name;
-
-+ (void) printMatStats:(cv::Mat) mat withIdentifier:(NSString*) identifier;
-
-+ (void) printMatStats:(cv::Mat) mat withFileName: (NSString*) name;
-
-@end
+    void printStats(Mat mat, const char* fileName);
+}
