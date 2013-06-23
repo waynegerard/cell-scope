@@ -21,23 +21,20 @@ namespace Classifier
         cout << "Normalizing image\n";
 		cv::Mat originalImage = ImageTools::normalizeImage(image);
         
-		// WG NOTE:
-		// Perfect up to here
-
 		// Perform object identification
         cout << "Performing object identification\n";
 		cv::Mat imageBw = Blob::blobIdentification(originalImage);
         Debug::print(imageBw, "imbw.txt");
+		return true;
         
-		//CSLog(@"Finished object identification");
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
 		cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
     
 		// Get the Hu moments
-		//cv::vector<Moments> mu(contours.size() );
-		//for( int i = 0; i < contours.size(); i++ )
-		//{ mu[i] = cv::moments( contours[i], false ); }
+		cv::vector<Moments> mu(contours.size() );
+		for( int i = 0; i < contours.size(); i++ )
+		{ mu[i] = cv::moments( contours[i], false ); }
 		return true;
 	}
 }

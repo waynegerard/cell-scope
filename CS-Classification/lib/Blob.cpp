@@ -21,8 +21,8 @@ namespace Blob
     
 		// Touch-up morphological operations
 		int type = cv::MORPH_RECT;
-		cv::Mat element = getStructuringElement(type, cv::Size(3,3));
-		cv::dilate(binarizedMatrix, result, element);
+		cv::Mat element = getStructuringElement(type, cv::Size(2,2));
+		cv::morphologyEx(binarizedMatrix, result, cv::MORPH_CLOSE, element);
     
 		return result;
 	}
@@ -37,32 +37,18 @@ namespace Blob
 		cv::Mat stdDevImageDifference;
     
 		// Morphological opening
-		Debug::print(image, "orig_before_op.txt");
 		
-		cv::Mat elementTen = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(10,10));
-		cv::Mat imageOpeningTen = cv::Mat(image.rows, image.cols, image.type());
-		cv::Mat elementEleven = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(11,11));
-		cv::Mat imageOpeningEleven = cv::Mat(image.rows, image.cols, image.type());
-		cv::Mat elementNine = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(9,9));
-		cv::Mat imageOpeningNine = cv::Mat(image.rows, image.cols, image.type());
-		cv::morphologyEx(image, imageOpeningTen, cv::MORPH_OPEN, elementTen);
-		cv::morphologyEx(image, imageOpeningEleven, cv::MORPH_OPEN, elementEleven);
-		cv::morphologyEx(image, imageOpeningNine, cv::MORPH_OPEN, elementNine);
-
-        Debug::print(imageOpeningTen, "imbigop_rect_10.txt");
-		Debug::print(imageOpeningEleven, "imbigop_rect_11.txt");
-		Debug::print(imageOpeningNine, "imbigop_rect_9.txt");
-
+		cv::morphologyEx(image, imageOpening, cv::MORPH_OPEN, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(9,9)));
+		
 		// Get the threshold cutoff, generate the image difference
 		cv::subtract(image, imageOpening, imageDifference);
-        //Debug::print(imageDifference, "imdf.txt");
         
 		cv::meanStdDev(imageDifference, meanImageDifference, stdDevImageDifference);
 		double mean = meanImageDifference.at<double>(0, 0);
 		double stdev = stdDevImageDifference.at<double>(0, 0);
 		double threshold_value = mean + (3 * stdev);
 		imageThreshold = MatrixOperations::greaterThanValue((float)threshold_value, imageDifference);
-        //Debug::print(imageThreshold, "imthresh.txt");
+        Debug::print(imageThreshold, "imthresh.txt");
         
 		// Only use pixels which pass the threshold from the cross correlation
 		cv::Mat grayscaleCrossCorrelation = crossCorrelateWithGaussian(image);
