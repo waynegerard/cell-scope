@@ -34,15 +34,15 @@ std::map<const char*, float> getProperties(ContourContainerType contours, Mat im
     
     // Calculate the contour closest to the center of the image, using bounding rectangles
     ContourContainerType::iterator it = contours.begin();
-    float xCenter = img.cols / 2.0;
-    float yCenter = img.rows / 2.0;
-    float currentDistance = 1E99;
+    float xCenter = (float)img.cols / 2.0f;
+    float yCenter = (float)img.rows / 2.0f;
+    unsigned long currentDistance = 1E32;
     ContourType centerCountour;
     for (; it != contours.end(); ++it) {
         cv::Rect boundingRect = cv::boundingRect(*it);
-        float x = boundingRect.x + (boundingRect.width / 2.0);
-        float y = boundingRect.y + (boundingRect.height / 2.0);
-        float euclideanDistance = cv::pow((double)(cv::pow((yCenter - y), 2) - cv::pow((xCenter - x), 2)), 0.5);
+        float x = boundingRect.x + (boundingRect.width / 2.0f);
+        float y = boundingRect.y + (boundingRect.height / 2.0f);
+        float euclideanDistance = (float)cv::pow((double)(cv::pow((yCenter - y), 2) - cv::pow((xCenter - x), 2)), 0.5);
         if (euclideanDistance < currentDistance) {
             currentDistance = euclideanDistance;
             centerCountour = *it;
@@ -52,20 +52,20 @@ std::map<const char*, float> getProperties(ContourContainerType contours, Mat im
     Contour* contourClass = new Contour(centerCountour, filledImage);
     contourClass->calculateProperties();
 
-    regionProperties.set("eulerNumber", eulerNumber);
-    regionProperties.set("area", contourClass->getArea());
-    regionProperties.set("convexArea", contourClass->getConvexArea());
-    regionProperties.set("eccentricity", contourClass->getEccentricity());
-    regionProperties.set("equivDiameter", contourClass->getEquivDiameter());
-    regionProperties.set("extent", contourClass->getExtent());
-    regionProperties.set("filledArea", contourClass->getFilledArea());
-    regionProperties.set("minorAxisLength", contourClass->getMinorAxisLength());
-    regionProperties.set("majorAxisLength", contourClass->getMajorAxisLength());
-    regionProperties.set("maxIntensity", contourClass->getMaxIntensity());
-    regionProperties.set("minIntensity", contourClass->getMinIntensity());
-    regionProperties.set("meanIntensity", contourClass->getMeanIntensity());
-    regionProperties.set("perimeter", contourClass->getPerimeter());
-    regionProperties.set("solidity", contourClass->getSolidity());
+    regionProperties.insert(std::pair<const char*, float>("eulerNumber", eulerNumber));
+    regionProperties.insert(std::pair<const char*, float>("area", contourClass->getArea()));
+    regionProperties.insert(std::pair<const char*, float>("convexArea", contourClass->getConvexArea()));
+    regionProperties.insert(std::pair<const char*, float>("eccentricity", contourClass->getEccentricity()));
+    regionProperties.insert(std::pair<const char*, float>("equivDiameter", contourClass->getEquivDiameter()));
+    regionProperties.insert(std::pair<const char*, float>("extent", contourClass->getExtent()));
+    regionProperties.insert(std::pair<const char*, float>("filledArea", contourClass->getFilledArea()));
+    regionProperties.insert(std::pair<const char*, float>("minorAxisLength", contourClass->getMinorAxisLength()));
+    regionProperties.insert(std::pair<const char*, float>("majorAxisLength", contourClass->getMajorAxisLength()));
+    regionProperties.insert(std::pair<const char*, float>("maxIntensity", contourClass->getMaxIntensity()));
+    regionProperties.insert(std::pair<const char*, float>("minIntensity", contourClass->getMinIntensity()));
+    regionProperties.insert(std::pair<const char*, float>("meanIntensity", contourClass->getMeanIntensity()));
+    regionProperties.insert(std::pair<const char*, float>("perimeter", contourClass->getPerimeter()));
+    regionProperties.insert(std::pair<const char*, float>("solidity", contourClass->getSolidity()));
         
     return regionProperties;
 }

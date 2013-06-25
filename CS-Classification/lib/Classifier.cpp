@@ -27,39 +27,53 @@ namespace Classifier
 		return imageBw;
 	}
 
-	cv::Mat featureDetection(cv::Mat imageBw)
+	vector<Patch*> featureDetection(cv::Mat imageBw)
 	{
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
 		cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
-		int numObjects = contours.size();
-    
+		unsigned long numObjects = contours.size();
+        cout << "Found " << numObjects << " Contours in image" << endl;
+        
 		// Get the Hu moments
-		cv::vector<Moments> mu(numObjects);
-		for(int i = 0; i < numObjects; i++ )
-		{ 
-			mu[i] = cv::moments(contours[i], false); 
+        cout << "Calculating Hu moments..." << endl;
+		cv::vector<Moments> mu;
+        
+        ContourContainerType::iterator c_it = contours.begin();
+		for(; c_it != contours.end(); c_it++)
+		{
+            ContourType ctr = *c_it;
+			mu.push_back(cv::moments(ctr, false));
 		}
     
 		//  Get the mass centers
-		vector<Point2f> centroids(contours.size());
-		for (int i = 0; i < numObjects; i++) {
-			double x = mu[i].m10 / mu[i].m00;
-			double y = mu[i].m01 / mu[i].m00;
-			Point2f pt = Point2f(x, y);
-			centroids.push_back(pt);
+        cout << "Calculating mass centers..." << endl;
+        cv::vector<Point> centroids;
+        cv::vector<Moments>::iterator m_it = mu.begin();
+		for (; m_it != mu.end(); m_it++) {
+            Moments val = *m_it;
+            if (val.m00 != 0)
+            {
+                int x = (int) (val.m10 / val.m00);
+                int y = (int) (val.m01 / val.m00);
+                Point pt = *new Point(x, y);
+                centroids.push_back(pt);
+            }
 		}
     
 		int patchCount = 0;
 		
 		// Remove partial patches
+        cout << "Removing partial patches..." << endl;
 		vector<Patch*> stats;
-		for (int i = 0; i < numObjects; i++) {
-			Point2f pt = centroids[i];
-			float col = pt.x;
-			float row = pt.y; 
+        
+        vector<Point>::iterator it = centroids.begin();
+        for (; it != centroids.end(); ++it) {
+			Point2d pt = *it;
+            int col = (int)pt.x;
+			int row = (int)pt.y;
 			
-			bool partial = Features::checkPartialPatch(row, col, PATCH_SIZE, imageBw.rows, imageBw.cols);
+			bool partial = Features::checkPartialPatch(row, col, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
                 Patch* p = Features::makePatch(row, col, imageBw);
@@ -67,9 +81,11 @@ namespace Classifier
 				stats.push_back(p);
 			}
 		}
+        cout << "Final patch count: " << patchCount << endl;
    
 		// Calculate features
 		Features::calculateFeatures(stats);
+        return stats;
 	}
 
 
@@ -86,7 +102,7 @@ namespace Classifier
 		
 		// Feature detection
 		cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
-		cv::Mat features = featureDetection(imageBw);
+        cv::vector<Patch*> features = featureDetection(imageBw);
 		
 		return true;
 	}

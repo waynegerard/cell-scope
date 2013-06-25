@@ -6,8 +6,8 @@
 class Contour {
     ContourType* contour;
     cv::Mat* image, *filledImage;
-    double *area, *convexArea, *eccentricity, *equivDiameter, *extent, *filledArea, *majorAxisLength;
-    double *minorAxisLength, *maxIntensity, *minIntensity, *meanIntensity, *perimeter, *solidity;
+    float *area, *convexArea, *eccentricity, *equivDiameter, *extent, *filledArea, *majorAxisLength;
+    float *minorAxisLength, *maxIntensity, *minIntensity, *meanIntensity, *perimeter, *solidity;
 	
 private:
     void calculateAreaProperties();
@@ -16,7 +16,7 @@ private:
     void calculateMiscProperties();
 
 public:
-    Contour (ContourType,cv::Mat,cv::Mat);
+    Contour (ContourType, cv::Mat);
     void calculateProperties();
     float getArea();
     float getConvexArea();
@@ -35,5 +35,3 @@ public:
 };
 
 #endif
-
-@end

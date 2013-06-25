@@ -12,6 +12,7 @@ class Patch {
     cv::Mat* binPatch;
 	
   public:
+    void calculateBinarizedPatch();
     Patch (int,int,cv::Mat);
     cv::Mat* getPatch();
     cv::Mat* getBinPatch();

@@ -34,20 +34,20 @@ namespace Features
 		return geometricFeatures;    
 	}
 
-	bool checkPartialPatch(int row, int col, int patchSize, int maxRow, int maxCol)
+	bool checkPartialPatch(int row, int col, int maxRow, int maxCol)
 	{
 		bool partial = false;
     
 		// Lower bounds checking
-		int lowerC = col - patchSize / 2;
-		int lowerR = row - patchSize / 2;
+		int lowerC = col - PATCH_SIZE / 2;
+		int lowerR = row - PATCH_SIZE / 2;
 		if (lowerC <= 0 || lowerR <= 0) {
 			partial = true;
 		}
     
 		// Higher bounds checking
-		int higherC = (col + (patchSize / 2 - 1));
-		int higherR = (row + (patchSize / 2 - 1));
+		int higherC = (col + (PATCH_SIZE / 2 - 1));
+		int higherR = (row + (PATCH_SIZE / 2 - 1));
     
 		if ((higherC > maxCol) || (higherR  > maxRow)) {
 			partial = true;
@@ -66,8 +66,9 @@ namespace Features
 		Range rows = Range(row_start, row_end);
 		Range cols = Range(col_start, col_end);
     
-		Mat patchMatrix = original.operator()(rows, cols);
+		Mat patchMatrix = *new Mat(original.operator()(rows, cols));
 		Patch* patch = new Patch(row, col, patchMatrix);
+        patch->calculateBinarizedPatch();
     
 		return patch;
 	}
@@ -84,11 +85,11 @@ namespace Features
 			Moments m = cv::moments(*patch);
             double huMomentsArr[7];
 			HuMoments(m, huMomentsArr);
-           cv::Mat* huMoments = new cv::Mat(7,1,CV_64F);
-           for (int j = 0; j < 7; j++)
-           {
+            cv::Mat* huMoments = new cv::Mat(7,1,CV_64F);
+            for (int j = 0; j < 7; j++)
+            {
                huMoments->at<double>(j, 0) = huMomentsArr[j];
-           }
+            }
         
 			// Grab the geometric features and return
             Mat* binPatch = p->getBinPatch();
