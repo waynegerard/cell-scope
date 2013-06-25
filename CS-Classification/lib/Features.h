@@ -5,7 +5,9 @@ using namespace cv;
 
 namespace Features
 {
+    void calculateFeatures(vector<Patch*> blobs);
 	bool checkPartialPatch(int row, int col, int patchSize, int maxRow, int maxCol);
+	Mat geometricFeatures(Mat* binPatch);
+	Patch* makePatch(int row, int col, Mat original);
 
-	Patch* makePatch(int row, int col, int patchSize, Mat original);
 }

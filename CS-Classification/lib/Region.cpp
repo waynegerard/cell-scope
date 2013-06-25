@@ -1,23 +1,14 @@
-//
-//  Region.m
-//  CellScope
-//
-//  Created by Wayne Gerard on 2/25/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
-//
-
-#import "Region.h"
-#import "Contour.h"
-#import <opencv2/imgproc/imgproc.hpp>
+#include "Region.h"
+#include "Contour.h"
+#include <opencv2/imgproc/imgproc.hpp>
 using namespace cv;
 
 
-@implementation Region
-@synthesize contours = _contours, img = _img;
-
-
-+ (NSDictionary*) getCenterContourProperties:(ContourContainerType) contours withImage:(cv::Mat) img {
-    NSDictionary* regionProperties = [NSDictionary dictionary];
+namespace Region
+{
+std::map<const char*, float> getProperties(ContourContainerType contours, Mat img)
+{
+    std::map<const char*, float> regionProperties;
     
     // Create the filled image
     Mat filledImage = Mat::zeros(img.rows, img.cols, CV_8UC1);
@@ -40,7 +31,6 @@ using namespace cv;
     }
     
     float eulerNumber = total - holes;
-    [regionProperties setValue:[NSNumber numberWithFloat:eulerNumber] forKey:@"eulerNumber"];
     
     // Calculate the contour closest to the center of the image, using bounding rectangles
     ContourContainerType::iterator it = contours.begin();
@@ -59,31 +49,24 @@ using namespace cv;
         }
     }
         
-    Contour* contourClass = [[Contour alloc] init];
-    [contourClass setContour: centerCountour];
-    [contourClass setFilledImage:filledImage];
-    [contourClass calculateProperties];
-    
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass area]] forKey:@"area"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass convexArea]] forKey:@"convexArea"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass eccentricity]] forKey:@"eccentricity"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass equivDiameter]] forKey:@"equivDiameter"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass extent]] forKey:@"extent"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass filledArea]] forKey:@"filledArea"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass minorAxisLength]] forKey:@"minorAxisLength"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass majorAxisLength]] forKey:@"majorAxisLength"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass maxIntensity]] forKey:@"maxIntensity"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass minIntensity]] forKey:@"minIntensity"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass meanIntensity]] forKey:@"meanIntensity"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass perimeter]] forKey:@"perimeter"];
-    [regionProperties setValue:[NSNumber numberWithFloat:[contourClass solidity]] forKey:@"solidity"];
-    
-    
-    // WAYNE NOTE: This shold only return region properties for the contour closest to the image center
-    // Use bounding boxes and calculate euclidean distance to center?
+    Contour* contourClass = new Contour(centerCountour, filledImage);
+    contourClass->calculateProperties();
+
+    regionProperties.set("eulerNumber", eulerNumber);
+    regionProperties.set("area", contourClass->getArea());
+    regionProperties.set("convexArea", contourClass->getConvexArea());
+    regionProperties.set("eccentricity", contourClass->getEccentricity());
+    regionProperties.set("equivDiameter", contourClass->getEquivDiameter());
+    regionProperties.set("extent", contourClass->getExtent());
+    regionProperties.set("filledArea", contourClass->getFilledArea());
+    regionProperties.set("minorAxisLength", contourClass->getMinorAxisLength());
+    regionProperties.set("majorAxisLength", contourClass->getMajorAxisLength());
+    regionProperties.set("maxIntensity", contourClass->getMaxIntensity());
+    regionProperties.set("minIntensity", contourClass->getMinIntensity());
+    regionProperties.set("meanIntensity", contourClass->getMeanIntensity());
+    regionProperties.set("perimeter", contourClass->getPerimeter());
+    regionProperties.set("solidity", contourClass->getSolidity());
+        
     return regionProperties;
 }
-
-
-
-@end
+}

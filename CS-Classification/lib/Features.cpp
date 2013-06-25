@@ -1,4 +1,5 @@
 #include "Features.h"
+#include "Region.h"
 
 namespace Features 
 {
@@ -17,14 +18,16 @@ namespace Features
 		}
     
 		std::map<const char*, float> regionProperties = Region::getProperties(contours, *binPatch);
-		
-		NSArray* keys = [NSArray arrayWithObjects:@"area", @"convexArea", @"eccentricity",
-						 @"equivDiameter", @"extent", @"filledArea", @"minorAxisLength",
-						 @"majorAxisLength", @"maxIntensity", @"minIntensity", @"meanIntensity",
-						 @"perimeter", @"solidity", @"eulerNumber", nil];
+        
+        int key_count = 14;
+		const char* keys[] = {"area", "convexArea", "eccentricity", "equivDiameter", "extent", "filledArea",
+            "minorAxisLength", "majorAxisLength", "maxIntensity", "minIntensity",
+            "meanIntensity", "perimeter", "solidity", "eulerNumber"};
 
-		for (int i = 0; i < keys.count; i++) {
-			geometricFeatures.at<float>(0, i) = [[regionProperties valueForKey:[keys objectAtIndex:i]] floatValue];
+		for (int i = 0; i < key_count; i++) {
+            const char* key = keys[i];
+            float val = regionProperties.at(key);
+			geometricFeatures.at<float>(0, i) = val;
 		}
     
     
@@ -53,13 +56,13 @@ namespace Features
 		return partial;
 	}
 
-	Patch* makePatch(int row, int col, int patchSize, Mat original) 
+	Patch* makePatch(int row, int col, Mat original)
 	{
 		// Indices in matlab are 1 based
-		int row_start = (row - patchSize / 2) - 1;
-		int row_end = row + (patchSize / 2 - 1) - 1;
-		int col_start = col - patchSize / 2 - 1;
-		int col_end = col + (patchSize / 2 - 1) - 1;
+		int row_start = (row - PATCH_SIZE / 2) - 1;
+		int row_end = row + (PATCH_SIZE / 2 - 1) - 1;
+		int col_start = col - PATCH_SIZE / 2 - 1;
+		int col_end = col + (PATCH_SIZE / 2 - 1) - 1;
 		Range rows = Range(row_start, row_end);
 		Range cols = Range(col_start, col_end);
     
@@ -70,78 +73,29 @@ namespace Features
 	}
 
 
-	+ (NSMutableArray*) calculateFeatures: (NSMutableArray*) blobs {
-
-		NSMutableArray* newBlobs = [NSMutableArray array];
-		for (int i = 0; i < [blobs count]; i++) {
-			NSMutableDictionary* stats = [blobs objectAtIndex:i];
-			Mat* patch = (__bridge Mat*) [stats valueForKey:@"patch"];
+    void calculateFeatures(vector<Patch*> blobs)
+    {
+       for (int i = 0; i < blobs.size(); i++)
+       {
+			Patch* p = blobs.at(i * sizeof(Patch*));
+			Mat* patch = p->getPatch();
         
 			// Calculate the hu moments
 			Moments m = cv::moments(*patch);
-			Mat huMoments;
-			HuMoments(m, huMoments);
+            double huMomentsArr[7];
+			HuMoments(m, huMomentsArr);
+           cv::Mat* huMoments = new cv::Mat(7,1,CV_64F);
+           for (int j = 0; j < 7; j++)
+           {
+               huMoments->at<double>(j, 0) = huMomentsArr[j];
+           }
         
 			// Grab the geometric features and return
-			Mat* binPatch = (__bridge Mat*) [stats valueForKey:@"binpatch"];
-			Mat geometricFeatures = [self geometricFeaturesWithPatch:patch withBinPatch:binPatch];
-			id huPtr = [NSValue valueWithPointer:(Mat*)&huMoments];
-			id geomPtr = [NSValue valueWithPointer:(Mat*)&geometricFeatures];
-			[stats setValue:huPtr forKey: @"phi"];
-			[stats setValue:geomPtr forKey:@"geom"];
-			[newBlobs addObject:stats];
-		}
-		return newBlobs;
+            Mat* binPatch = p->getBinPatch();
+            Mat* geom = new Mat(geometricFeatures(binPatch));
+            p->setGeom(*geom);
+            p->setPhi(*huMoments);
+        }
+    }
 
-
-
-		- (NSMutableDictionary*) storeGoodCentroidsWithRow:(int) row withCol:(int) col {
-    
-		NSMutableDictionary* stats = [NSMutableDictionary dictionary];
-    
-		/////////////////////////////////
-		// Patch Completeness Checking //
-		/////////////////////////////////
-		bool partial = NO;
-    
-		// Lower bounds checking
-		int lowerC = col - self.patchSize / 2;
-		int lowerR = row - self.patchSize / 2;
-		if (lowerC <= 0 || lowerR <= 0) {
-			partial = YES;
-		}
-    
-		// Higher bounds checking
-		int higherC = (col + (self.patchSize / 2 - 1));
-		int higherR = (row + (self.patchSize / 2 - 1));
-    
-		if ((higherC > self.orig.cols) || (higherR  > self.orig.rows)) {
-			partial = YES;
-		}
-    
-		if (partial) {
-			return NULL;
-		}
-    
-		//////////////////////////
-		// Store good centroids //
-		//////////////////////////
-    
-		[stats setValue:[NSNumber numberWithInt:col] forKey:@"col"];
-		[stats setValue:[NSNumber numberWithInt:row] forKey:@"row"];
-    
-		// Indices in matlab are 1 based
-		int row_start = (row - self.patchSize / 2) - 1;
-		int row_end = row + (self.patchSize / 2 - 1) - 1;
-		int col_start = col - self.patchSize / 2 - 1;
-		int col_end = col + (self.patchSize / 2 - 1) - 1;
-		Range rows = Range(row_start, row_end);
-		Range cols = Range(col_start, col_end);
-    
-		Mat _patch = self.orig.operator()(rows, cols);
-		id patch = [MatrixOperations convertMatToObject:_patch];
-		[stats setValue:patch forKey: @"patch"];
-    
-		return stats;
-	}
 }

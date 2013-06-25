@@ -1,76 +1,172 @@
-//
-//  Contour.mm
-//  CellScope
-//
-//  Created by Wayne Gerard on 3/5/13.
-//  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
-//
+#include "Contour.h"
+#include <opencv2/imgproc/imgproc.hpp>
 
-#import "Contour.h"
-#import <opencv2/imgproc/imgproc.hpp>
+Contour::Contour (ContourType contour, int b, cv::Mat c) {
+    *area = new double;
+    *convexArea = new double;
+    *solidity = new double;
+    *equivDiameter = new double;
+    *extent = new double;
+    *perimeter = new double;ß
+    *minIntensity = new double;
+    *maxIntensity = new double;
+    *meanIntensity = new double;
+    *filledArea = new cv::Mat();
+    *contour = contour;
+    *minorAxisLength = new double;
+    *majorAxisLength = new double;
+    *eccentricity = new double;
 
-@implementation Contour
-
-@synthesize contour = _contour, image = _image, filledImage = _filledImage;
-@synthesize area = _area, convexArea = _convexArea, eccentricity = _eccentricity, equivDiameter = _equivDiameter;
-@synthesize extent = _extent, filledArea = _filledArea, majorAxisLength = _majorAxisLength;
-@synthesize minorAxisLength = _minorAxisLength, maxIntensity = _maxIntensity, minIntensity = _minIntensity;
-@synthesize meanIntensity = _meanIntensity, perimeter = _perimeter, solidity = _solidity;
-
-- (void) calculateProperties {
-    [self calculateAreaProperties];
-    [self calculateAxisProperties];
-    [self calculateMaskedImageProperties];
-    [self calculateMiscProperties];
-}
-
-- (void) calculateAreaProperties {
-    self.area = cv::contourArea(self.contour);
-
-    Mat hull;
-    cv::convexHull(self.contour, hull);
-    self.convexArea = contourArea(hull);
-    self.solidity = self.area / self.convexArea;
-
-    self.equivDiameter = pow((4.0 * M_PI * self.area), 0.5);
-}
-
-- (void) calculateMiscProperties {
-    cv::Rect r = cv::boundingRect(self.contour);
-    self.extent = self.area / (r.width * r.height);
+    *contour = contour;
     
-    self.perimeter = cv::arcLength(self.contour, true);
+
 }
 
-- (void) calculateAxisProperties {
-    RotatedRect ellipse = cv::fitEllipse(self.contour);
+Contour::~Contour () {
+    delete area;
+    delete convexArea;
+    delete solidity;
+    delete equivDiameter;
+    delete extent;
+    delete perimeter;
+    delete minIntensity;
+    delete maxIntensity;
+    delete meanIntensity;
+    delete filledArea;
+    delete contour;
+    delete minorAxisLength;
+    delete majorAxisLength;
+    delete eccentricity;
+}
+
+
+void Contour::calculateAreaProperties()
+{
+    *area = cv::contourArea(*contour);
     
-    Size2f sz = ellipse.size;
+    cv::Mat hull;
+    cv::convexHull(*contour, hull);
+    *convexArea = contourArea(hull);
+    *solidity = *area / *convexArea;
+    
+    *equivDiameter = pow((4.0 * M_PI * (*area)), 0.5);
+}
+
+void Contour::calculateMiscProperties()
+{
+    cv::Rect r = cv::boundingRect(*contour);
+    *extent = *area / (r.width * r.height);
+    
+    *perimeter = cv::arcLength(*contour, true);
+}
+
+void Contour::calculateAxisProperties()
+{
+    cv::RotatedRect ellipse = cv::fitEllipse(*contour);
+    
+    cv::Size2f sz = ellipse.size;
     if (sz.width <= sz.height) {
-        self.minorAxisLength = sz.width;
-        self.majorAxisLength = sz.height;
+        *minorAxisLength = sz.width;
+        *majorAxisLength = sz.height;
     } else {
-        self.minorAxisLength = sz.height;
-        self.majorAxisLength = sz.width;
+        *minorAxisLength = sz.height;
+        *majorAxisLength = sz.width;
     }
     
-    double tmp = self.minorAxisLength / self.majorAxisLength;
+    double tmp = *minorAxisLength / *majorAxisLength;
     tmp = pow(tmp, 2);
     tmp = 1 - tmp;
-    self.eccentricity = pow(tmp, 0.5);
-
+    *eccentricity = pow(tmp, 0.5);
+    
 }
 
-- (void) calculateMaskedImageProperties {
-    double* minVal = nullptr;
-    double* maxVal = nullptr;
+void Contour::calculateMaskedImageProperties()
+{
+    double minVal;
+    double maxVal;
     
-    minMaxLoc(self.image, minVal, maxVal, NULL, NULL, self.filledImage);
-    self.minIntensity = *minVal;
-    self.maxIntensity = *maxVal;
-    self.meanIntensity = cv::mean(self.image, self.filledImage)[0];
+    cv::minMaxLoc(*image, &minVal, &maxVal, NULL, NULL, *filledImage);
+    *minIntensity = minVal;
+    *maxIntensity = maxVal;
+    *meanIntensity = cv::mean(*image, *filledImage)[0];
     
-    self.filledArea = countNonZero(self.filledImage);
+    *filledArea = countNonZero(*filledImage);
 }
+
+void Contour::calculateProperties()
+{
+    calculateAreaProperties();
+    calculateAxisProperties();
+    calculateMaskedImageProperties();
+    calculateMiscProperties();
+}
+
+
+float getArea()
+{
+    return *area;
+}
+
+float getConvexArea()
+{
+    return *convexArea;
+}
+
+float getEccentricity()
+{
+    return *eccentricity;
+}
+
+float getEquivDiameter()
+{
+    return *equivDiameter;
+}
+
+float getExtent()
+{
+    return *extent;
+}
+
+float getFilledArea()
+{
+    return *filledArea;
+}
+
+float getMajorAxisLength()
+{
+    return *majorAxisLength;
+}
+
+float getMinorAxisLength()
+{
+    return *minorAxisLength;
+}
+
+float getMaxIntensity()
+{
+    return *maxIntensity;
+}
+
+float getMinIntensity()
+{
+    return *minIntensity;
+}
+
+float getMeanIntensity()
+{
+    return *meanIntensity;
+}
+
+float getPerimeter()
+{
+    return *perimeter;
+}
+
+float getSolidity()
+{
+    return *solidity;
+}
+
+
 
 @end

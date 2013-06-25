@@ -1,19 +1,15 @@
 #include "Blob.h"
 #include "Classifier.h"
+#include "Features.h"
 #include "ImageTools.h"
+#include "Patch.h"
 #include "Debug.h"
 
 namespace Classifier 
 {
 
 	cv::Mat initializeImage(cv::Mat image) 
-	{
-		cout << "Running with image\n";
-		if(!image.data) {
-            cout << "Image has no data! Returning.\n";
-			return false;
-		}
-        
+	{        
 		// Convert to a red-channel normalized image if necessary
 		if (image.type() == CV_8UC3) {
 			image = ImageTools::getRedChannel(image);
@@ -48,8 +44,8 @@ namespace Classifier
 		//  Get the mass centers
 		vector<Point2f> centroids(contours.size());
 		for (int i = 0; i < numObjects; i++) {
-			float x = mu[i].m10 / mu[i].m00;
-			float y = mu[i].m01 / mu[i].m00;
+			double x = mu[i].m10 / mu[i].m00;
+			double y = mu[i].m01 / mu[i].m00;
 			Point2f pt = Point2f(x, y);
 			centroids.push_back(pt);
 		}
@@ -57,28 +53,34 @@ namespace Classifier
 		int patchCount = 0;
 		
 		// Remove partial patches
-		vector<std::Map> stats;
-		for (int i = 0; i < numObjects; j++) {
+		vector<Patch*> stats;
+		for (int i = 0; i < numObjects; i++) {
 			Point2f pt = centroids[i];
 			float col = pt.x;
 			float row = pt.y; 
 			
-			bool partial = Features::checkPartialPatch(row, col, patchSize, maxRow, maxCol);
+			bool partial = Features::checkPartialPatch(row, col, PATCH_SIZE, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
-				std::map stats = Features::storeGoodCentroids(row, col);
+                Patch* p = Features::makePatch(row, col, imageBw);
 				patchCount++;
-				stats.push_back(stats);
+				stats.push_back(p);
 			}
 		}
    
 		// Calculate features
-		cv::Mat data = Features::calculateFeatures(data);
+		Features::calculateFeatures(stats);
 	}
 
 
 	bool runWithImage(cv::Mat image)
 	{
+        cout << "Running with image\n";
+		if(!image.data) {
+            cout << "Image has no data! Returning.\n";
+			return false;
+		}
+
 		//cv::Mat normalizedImaged = initializeImage(image);
 		//cv::Mat imageBw = objectIdentification(normalizedImage);
 		
