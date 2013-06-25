@@ -48,7 +48,6 @@ namespace Blob
 		double stdev = stdDevImageDifference.at<double>(0, 0);
 		double threshold_value = mean + (3 * stdev);
 		imageThreshold = MatrixOperations::greaterThanValue((float)threshold_value, imageDifference);
-        Debug::print(imageThreshold, "imthresh.txt");
         
 		// Only use pixels which pass the threshold from the cross correlation
 		cv::Mat grayscaleCrossCorrelation = crossCorrelateWithGaussian(image);
