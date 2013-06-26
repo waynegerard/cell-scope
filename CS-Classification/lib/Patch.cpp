@@ -3,7 +3,8 @@
 Patch::Patch (int a, int b, cv::Mat c) {
     row = new int;
     col = new int;
-    patch = new cv::Mat(c);
+    origPatch = new cv::Mat(c);
+    
     geom = new cv::Mat;
     phi = new cv::Mat;
     binPatch = new cv::Mat;
@@ -16,10 +17,7 @@ Patch::Patch (int a, int b, cv::Mat c) {
 Patch::~Patch () {
     delete row;
     delete col;
-    delete patch;
-    delete geom;
-    delete phi;
-    delete binPatch;
+
 }
 
 
@@ -27,44 +25,22 @@ void Patch::calculateBinarizedPatch()
 {
     // Calculate binarized patch using Otsu threshold.
     
-    // move zeros to the back of a temp array
-    cv::Mat copyImg = *patch;
-    uchar* ptr = copyImg.datastart;
-    uchar* ptr_end = copyImg.dataend;
-    while (ptr < ptr_end) {
-        if (*ptr == 0) { // swap if zero
-            uchar tmp = *ptr_end;
-            *ptr_end = *ptr;
-            *ptr = tmp;
-            ptr_end--; // make array smaller
-        } else {
-            ptr++;
-        }
-    }
-    
-    // make a new matrix with only valid data
-    cv::Mat nz = cv::Mat(std::vector<uchar>(copyImg.datastart,ptr_end),true);
-    
-    // compute optimal Otsu threshold
-    double thresh = cv::threshold(nz,nz,0,255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-    
-    // apply threshold
-    cv::threshold(*patch,*binPatch,thresh,255,CV_THRESH_BINARY_INV);
+    cv::threshold(*origPatch,*binPatch,0,255,CV_THRESH_BINARY|CV_THRESH_OTSU);
 }
 
-cv::Mat* Patch::getPatch()
+cv::Mat Patch::getPatch()
 {
-    return patch;
+    return *origPatch;
 }
 
-void Patch::setPhi(cv::Mat p)
+void Patch::setPhi(const cv::Mat p)
 {
-    phi = &p;
+    *phi = p;
 }
 
-void Patch::setGeom(cv::Mat g)
+void Patch::setGeom(const cv::Mat g)
 {
-    geom = &g;
+    *geom = g;
 }
 
 cv::Mat* Patch::getBinPatch()
@@ -72,7 +48,7 @@ cv::Mat* Patch::getBinPatch()
     return binPatch;
 }
 
-void Patch::setBinPatch(cv::Mat b)
+void Patch::setBinPatch(const cv::Mat b)
 {
-    binPatch = &b;
+    *binPatch = b;
 }

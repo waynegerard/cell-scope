@@ -36,21 +36,28 @@ std::map<const char*, float> getProperties(ContourContainerType contours, Mat im
     ContourContainerType::iterator it = contours.begin();
     float xCenter = (float)img.cols / 2.0f;
     float yCenter = (float)img.rows / 2.0f;
-    unsigned long currentDistance = 1E32;
-    ContourType centerCountour;
+    unsigned long currentDistance = 1E10;
+    ContourType centerContour;
     for (; it != contours.end(); ++it) {
         cv::Rect boundingRect = cv::boundingRect(*it);
         float x = boundingRect.x + (boundingRect.width / 2.0f);
         float y = boundingRect.y + (boundingRect.height / 2.0f);
-        float euclideanDistance = (float)cv::pow((double)(cv::pow((yCenter - y), 2) - cv::pow((xCenter - x), 2)), 0.5);
+        
+        double yDistance = cv::pow((yCenter - y), 2);
+        double xDistance = cv::pow((xCenter - x), 2);
+        double diff = (yDistance - xDistance);
+        if (diff < 0) {
+            diff = -diff;
+        }
+        double euclideanDistance = cv::pow(diff, 0.5);
         if (euclideanDistance < currentDistance) {
             currentDistance = euclideanDistance;
-            centerCountour = *it;
+            centerContour = *it;
         }
     }
         
-    Contour* contourClass = new Contour(centerCountour, filledImage);
-    contourClass->calculateProperties();
+    Contour* contourClass = new Contour(centerContour, filledImage);
+    contourClass->calculateProperties(img);
 
     regionProperties.insert(std::pair<const char*, float>("eulerNumber", eulerNumber));
     regionProperties.insert(std::pair<const char*, float>("area", contourClass->getArea()));

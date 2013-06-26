@@ -12,12 +12,12 @@ class Contour {
 private:
     void calculateAreaProperties();
     void calculateAxisProperties();
-    void calculateMaskedImageProperties();
+    void calculateMaskedImageProperties(cv::Mat image);
     void calculateMiscProperties();
 
 public:
     Contour (ContourType, cv::Mat);
-    void calculateProperties();
+    void calculateProperties(cv::Mat image);
     float getArea();
     float getConvexArea();
     float getEccentricity();

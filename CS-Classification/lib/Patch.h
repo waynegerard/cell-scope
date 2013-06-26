@@ -6,20 +6,21 @@
 class Patch {
     int *row, 
 		*col;
-	cv::Mat* patch;
+	cv::Mat* origPatch;
     cv::Mat* geom;
     cv::Mat* phi;
     cv::Mat* binPatch;
-	
-  public:
-    void calculateBinarizedPatch();
-    Patch (int,int,cv::Mat);
-    cv::Mat* getPatch();
-    cv::Mat* getBinPatch();
-    void setPhi(cv::Mat);
-    void setGeom(cv::Mat);
-    void setBinPatch(cv::Mat);
-    ~Patch ();
+
+    public:
+        Patch (int,int,cv::Mat);
+        ~Patch ();
+        void calculateBinarizedPatch();
+        cv::Mat getPatch();
+        cv::Mat* getBinPatch();
+        void setPhi(const cv::Mat);
+        void setGeom(const cv::Mat);
+        void setBinPatch(const cv::Mat);
+
 };
 
 #endif

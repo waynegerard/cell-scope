@@ -15,8 +15,9 @@ Contour::Contour (ContourType c, cv::Mat filledImg) {
     minorAxisLength = new float;
     majorAxisLength = new float;
     eccentricity = new float;
-
-    contour = &c;
+    contour = new ContourType;
+    
+    *contour = c;
     filledImage = &filledImg;
 
 }
@@ -62,6 +63,13 @@ void Contour::calculateMiscProperties()
 
 void Contour::calculateAxisProperties()
 {
+    if (contour->size() < 5)
+    {
+        *minorAxisLength = 0;
+        *majorAxisLength = 0;
+        *eccentricity = 0;
+        return;
+    }
     cv::RotatedRect ellipse = cv::fitEllipse(*contour);
     
     cv::Size2f sz = ellipse.size;
@@ -80,24 +88,24 @@ void Contour::calculateAxisProperties()
     
 }
 
-void Contour::calculateMaskedImageProperties()
+void Contour::calculateMaskedImageProperties(cv::Mat image)
 {
     double minVal;
     double maxVal;
     
-    cv::minMaxLoc(*image, &minVal, &maxVal, NULL, NULL, *filledImage);
+    cv::minMaxLoc(image, &minVal, &maxVal, NULL, NULL, *filledImage);
     *minIntensity = (float)minVal;
     *maxIntensity = (float)maxVal;
-    *meanIntensity = (float)cv::mean(*image, *filledImage)[0];
+    *meanIntensity = (float)cv::mean(image, *filledImage)[0];
     
     *filledArea = countNonZero(*filledImage);
 }
 
-void Contour::calculateProperties()
+void Contour::calculateProperties(cv::Mat image)
 {
     calculateAreaProperties();
     calculateAxisProperties();
-    calculateMaskedImageProperties();
+    calculateMaskedImageProperties(image);
     calculateMiscProperties();
 }
 

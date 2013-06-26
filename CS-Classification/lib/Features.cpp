@@ -76,13 +76,15 @@ namespace Features
 
     void calculateFeatures(vector<Patch*> blobs)
     {
-       for (int i = 0; i < blobs.size(); i++)
-       {
-			Patch* p = blobs.at(i * sizeof(Patch*));
-			Mat* patch = p->getPatch();
+        vector<Patch*>::const_iterator it = blobs.begin();
+        
+        for (; it != blobs.end(); ++it)
+        {
+            Patch* p = *it;
+			Mat patch = p->getPatch();
         
 			// Calculate the hu moments
-			Moments m = cv::moments(*patch);
+			Moments m = cv::moments(patch);
             double huMomentsArr[7];
 			HuMoments(m, huMomentsArr);
             cv::Mat* huMoments = new cv::Mat(7,1,CV_64F);
