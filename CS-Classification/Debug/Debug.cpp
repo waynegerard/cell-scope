@@ -129,4 +129,19 @@ namespace Debug
 
 		return returnMatrix;
 	}
+
+	void printFeatures(vector<Patch*> features, const char* fileName)
+	{
+		string path = OUTPUT_FOLDER;
+		path += fileName;
+		char* full_path = (char*)path.c_str();
+    
+		cout << "Printing features to path: " << full_path << endl;
+		ofstream out_file;
+		out_file.open(full_path);
+    
+		if (!out_file) {
+			cerr << "Can't open output file!" << endl;
+		}
+	}
 }

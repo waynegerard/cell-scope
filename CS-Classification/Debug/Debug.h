@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "Patch.h"
 #include <string>
 
 #if __APPLE__
@@ -17,6 +18,8 @@ namespace Debug
     void print(Mat mat, const char* name);
 
     void printStats(Mat mat, const char* fileName);
+
+	void printFeatures(vector<Patch*> features, const char* fileName);
 
 	Mat loadMatrix(const char* fileName, int rows, int cols, int type);
 }
