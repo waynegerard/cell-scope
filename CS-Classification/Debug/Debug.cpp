@@ -112,7 +112,7 @@ namespace Debug
 					getline(inFile, line);
 
 					if (type == CV_32F) {
-						float val = ::atof(line.c_str());
+						float val = (float) ::atof(line.c_str());
 						returnMatrix.at<float>(j, i) = val;
 					} else if (type == CV_8UC1) {
 						int val = ::atoi(line.c_str());
@@ -130,18 +130,72 @@ namespace Debug
 		return returnMatrix;
 	}
 
-	void printFeatures(vector<Patch*> features, const char* fileName)
+	void printFeatures(vector<Patch*> features, const char* feature)
 	{
-		string path = OUTPUT_FOLDER;
-		path += fileName;
-		char* full_path = (char*)path.c_str();
-    
-		cout << "Printing features to path: " << full_path << endl;
-		ofstream out_file;
-		out_file.open(full_path);
-    
-		if (!out_file) {
-			cerr << "Can't open output file!" << endl;
-		}
+        vector<Patch*>::const_iterator it = features.begin();
+        for (; it != features.end(); it++)
+        {
+            Patch* p = *it;
+            bool orig = strncmp(feature, "origPatch", sizeof(char*));
+            bool geom = strncmp(feature, "geom", sizeof(char*));
+            bool phi = strncmp(feature, "phi", sizeof(char*));
+            bool binPatch = strncmp(feature, "binPatch", sizeof(char*));
+            cv::Mat mat;
+            
+            if (orig)
+            {
+                mat = p->getPatch();
+            } else if (geom) {
+                mat = p->getGeom();
+            } else if (phi) {
+                mat = p->getPhi();
+            } else if (binPatch) {
+                mat = *p->getBinPatch();
+            } else {
+                cout << "Didn't recognize feature: " << feature << endl;
+                return;
+            }
+            
+            
+            stringstream row_ss;
+            row_ss << p->getRow();
+            string row = row_ss.str();
+
+            stringstream col_ss;
+            col_ss << p->getCol();
+            string col = col_ss.str();
+
+            
+            string path = FEATURES_OUTPUT_FOLDER;
+            path = path + row + "_" + col + "_" + feature + ".txt";
+            char* full_path = (char*)path.c_str();
+            
+            cout << "Printing features to path: " << full_path << endl;
+            ofstream out_file;
+            out_file.open(full_path);
+            
+            if (!out_file) {
+                cerr << "Can't open output file!" << endl;
+            }
+            
+            for (int i = 0; i < mat.cols; i++) {
+                for (int j = 0; j < mat.rows; j++) {
+                    if (mat.type() == CV_8UC1) {
+                        int val = (int) mat.at<unsigned char>(j, i);
+                        out_file << val << ",";
+                    } else if (mat.type() == CV_32F) {
+                        float val = (float) mat.at<float>(j, i);
+                        out_file << val << ",";
+                    } else if (mat.type() == CV_64F) {
+                        double val = (double) mat.at<double>(j, i);
+                        out_file << val << ",";
+                    } else {
+                        cout << "Didn't understand matrix type! Type: " << mat.type() << endl;
+                    }
+                }
+            }
+            
+            out_file.close();
+        }
 	}
 }

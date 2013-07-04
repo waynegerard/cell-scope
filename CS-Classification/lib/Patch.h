@@ -15,6 +15,10 @@ class Patch {
         Patch (int,int,cv::Mat);
         ~Patch ();
         void calculateBinarizedPatch();
+        int getRow();
+        int getCol();
+        cv::Mat getGeom();
+        cv::Mat getPhi();
         cv::Mat getPatch();
         cv::Mat* getBinPatch();
         void setPhi(const cv::Mat);

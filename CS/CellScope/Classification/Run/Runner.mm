@@ -6,14 +6,43 @@
 //  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
 //
 
+#include "lassifier.h"
 #import "Runner.h"
-
-#import "DataInteractor.h"
-#import "ImageRunner.h"
 #import "Globals.h"
-#import "svm.h"
 
 @implementation Runner
+
+- (Mat)cvMatWithImage:(UIImage *)image
+{
+    CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
+    CGFloat cols = image.size.width;
+    CGFloat rows = image.size.height;
+    Mat cvMat;
+    
+    if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelRGB) { // 3 channels
+        cvMat = Mat(rows, cols, CV_8UC3);
+    } else if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelMonochrome) { // 1 channel
+        cvMat = Mat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
+    } else {
+        CSLog(@"Didnt understand colorspace! %@", colorSpace);
+    }
+    
+    CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to data
+                                                    cols,                       // Width of bitmap
+                                                    rows,                       // Height of bitmap
+                                                    8,                          // Bits per component
+                                                    cvMat.step[0],              // Bytes per row
+                                                    colorSpace,                 // Colorspace
+                                                    kCGImageAlphaNone |
+                                                    kCGBitmapByteOrderDefault); // Bitmap info flags
+    
+    CGContextDrawImage(contextRef, CGRectMake(0, 0, cols, rows), image.CGImage);
+    CGContextRelease(contextRef);
+    CGColorSpaceRelease(colorSpace);
+    
+    return cvMat;
+}
+
 
 - (void) runWithHogFeatures:(BOOL) hogFeatures wthPatchSize:(int) patchSz {
     
@@ -21,16 +50,6 @@
     // Handle incorrect parameters //
     /////////////////////////////////
     int patchSize  = (patchSz % 2 != 0) ? 24 : patchSz;
-    
-    ////////////////////
-    // Load the model //
-    ////////////////////
-    svm_model* model;
-    if (hogFeatures) {
-        // TODO: Load the model without HoG features
-    } else {
-        model = [DataInteractor loadSVMModelWithPathName:@"model_without"];
-    }
     
     NSDate *start = [NSDate date];
     
@@ -51,12 +70,9 @@
     for (int i = 0; i < count; i++) {
         CSLog(@"Processing image %d of %d", i, count);
         UIImage* ui_img = [images objectAtIndex:i];
+        Mat converted_img = [self cvMatWithImage:ui_img];
         
-        ImageRunner* imgRunner = [[ImageRunner alloc] init];
-        [imgRunner setPatchSize:patchSize];
-        [imgRunner setHogFeatures:hogFeatures];
-        [imgRunner setModel:model];
-        [imgRunner runWithImage:ui_img];
+        Classifier::runWithImage(converted_img);
     }
     
     NSDate *end = [NSDate date];

@@ -28,6 +28,27 @@ void Patch::calculateBinarizedPatch()
     cv::threshold(*origPatch,*binPatch,0,255,CV_THRESH_BINARY|CV_THRESH_OTSU);
 }
 
+int Patch::getRow()
+{
+    return *row;
+}
+
+int Patch::getCol()
+{
+    return *col;
+}
+
+cv::Mat Patch::getGeom()
+{
+    return *geom;
+}
+
+cv::Mat Patch::getPhi()
+{
+    return *phi;
+}
+
+
 cv::Mat Patch::getPatch()
 {
     return *origPatch;
