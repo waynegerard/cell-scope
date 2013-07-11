@@ -93,116 +93,110 @@ namespace Classifier
 
     cv::Mat loadCSV(const char* file_path)
     {
-        Vector<float> vec;
+        Vector<double> vec;
         
 		ifstream inFile(file_path);
         string value;
         while ( inFile.good() )
         {
             getline (inFile, value, ',');
-            value = string(value, 1, value.length()-2); // Remove quotes
-            float val = atof((char*)value.c_str());
+            double val = atof((char*)value.c_str());
             vec.push_back(val);
         }
         
-        cv::Mat returnMatrix = cv::Mat(1, (int)vec.size(), CV_32F);
+        cv::Mat returnMatrix = cv::Mat(1, (int)vec.size(), CV_64F);
         
-        Vector<float>::iterator it = vec.begin();
+        Vector<double>::iterator it = vec.begin();
         int i = 0;
 		for(; it != vec.end(); it++)
 		{
-            returnMatrix.at<float>(0, i) = *it;
+            returnMatrix.at<double>(0, i) = *it;
             i++;
 		}
 
         return returnMatrix;
     }
     
-    void prepareFeatures()
+    cv::Mat repMat(cv::Mat matrix, int multiplier)
     {
-     
-        // Prepare features
-        cv::Mat zeroMatrix = cv::Mat::zeros(PATCH_SIZE, 1, CV_8UC1);
-        /*
-         for t = 1:data.NumObjects
-         ctrs(t,:) = [data.stats(t).row data.stats(t).col];
-         
-         if dohog
-         feats(t,:) = [data.stats(t).phi data.stats(t).geom data.stats(t).hog];
-         else
-         feats(t,:) = [data.stats(t).phi data.stats(t).geom];
-         end
-         binpatches{1,t} = data.stats(t).binpatch;
-         patches{1,t} = data.stats(t).patch;
-         end
-         
-         % Prepare features and run object-level classifier
-         Xtest = feats;
-         ytest_dummy = zeros(size(Xtest,1),1);
-         
-         % Minmax normalization of features
-         maxmat = repmat(train_max,size(ytest_dummy));
-         minmat = repmat(train_min,size(ytest_dummy));
-         Xtest = (Xtest-minmat)./(maxmat-minmat);
-         */
-        
-        
-        // WAYNE:
-        // Two problems: repMat is not respecting the rows
-        // features should not have 0 columns
-
-        // Minmax normalization of features
-        Mat train_max = loadCSV(TRAIN_MAX_PATH);
-        Mat train_min = loadCSV(TRAIN_MIN_PATH);
-        
-        int rows = _features->rows;
-        int cols = _features->cols;
-        Mat maxMatrix = [MatrixOperations repMat:train_max withRows:rows withCols:cols];
-        Mat minMatrix = [MatrixOperations repMat:train_min withRows:rows withCols:cols];
-        
-        Mat FeaturesMinusMin;
-        Mat MaxMinusMin;
-        subtract(maxMatrix, minMatrix, MaxMinusMin);
-        subtract(*_features, minMatrix, FeaturesMinusMin);
-        
-        
-        Mat featuresMatrix = Mat(FeaturesMinusMin.rows, FeaturesMinusMin.cols, CV_8UC1);
-        divide(FeaturesMinusMin, MaxMinusMin, featuresMatrix);
-        
-        return featuresMatrix;
-    
+        cv::Mat returnMatrix = cv::Mat(multiplier, matrix.cols, matrix.type());
+        for (int i = 0; i < returnMatrix.rows; i++)
+        {
+            for (int j = 0; j < returnMatrix.cols; j++)
+            {
+                returnMatrix.at<double>(i, j) = matrix.at<double>(0, j);
+            }
+        }
+        return returnMatrix;
     }
     
-    void classifyObjects()
+    vector<double> classifyObjects(vector<Patch*> features)
     {
         
         // Load the SVM
         svm_model *model = svm_load_model(MODEL_PATH);
-        
+        Mat train_max = loadCSV(TRAIN_MAX_PATH);
+        Mat train_min = loadCSV(TRAIN_MIN_PATH);
 
-        Mat train_max;
-        Mat train_min;
+        /*
+        // Combine the features and make the zeros matrix
+        cv::Mat featuresMatrix = cv::Mat((int)features.size(), 21, CV_32F);
         
-        // Classify Objects with LibSVM IKSVM classifier
-        //svm_predict(<#const struct svm_model *model#>, <#const struct svm_node *x#>);
-        //*** NOT WORKING - Waiting on test data*** [pltest, accutest, dvtest] = svmpredict(double(yTest),double(Xtest),model,'-b 1');
-        NSMutableArray* dvtest = [NSMutableArray array];
-        //*** NOT WORKING  - Waiting on test data*** dvtest = dvtest(:,model.Label==1);
-        NSMutableArray* scoreDictionaryArray = [NSMutableArray array];
+        vector<Patch*>::const_iterator it = features.begin();
+        int row = 0;
+        for (; it != features.end(); it++)
+        {
+            Patch* patch = *it;
+            cv::Mat geom = patch->getGeom();
+            cv::Mat phi = patch->getPhi();
+            int i = 0;
+            for (; i < phi.rows; i++)
+            {
+                featuresMatrix.at<float>(row, i) = phi.at<float>(i, 1);
+            }
+            for (; i < geom.rows; i++)
+            {
+                featuresMatrix.at<float>(row, i) = geom.at<float>(i, 1);
+            }
+            row++;
+        }
+         */
         
-        // Sort Scores and Centroids
-        _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
+        // Should intercept here and add a loading for the entire featuresMatrix
+        cv::Mat featuresMatrix = Debug::loadMatrix("xtest.txt", 120, 22, CV_64F);
+    
+        // minmax normalization of features
+        cv::Mat maxMatrix = repMat(train_max, featuresMatrix.rows);
+        cv::Mat minMatrix = repMat(train_min, featuresMatrix.rows);
+                
+        cv::Mat testMatrix = cv::Mat(featuresMatrix.rows, featuresMatrix.cols, featuresMatrix.type());
+        cv::Mat numerator = cv::Mat(featuresMatrix.rows, featuresMatrix.cols, featuresMatrix.type());
+        cv::Mat denominator = cv::Mat(featuresMatrix.rows, featuresMatrix.cols, featuresMatrix.type());
+        cv::subtract(featuresMatrix, minMatrix, numerator);
+        cv::subtract(maxMatrix, minMatrix, denominator);
+        cv::divide(numerator, denominator, testMatrix);
         
-        // Drop Low-confidence Patches
-        Patch* patch = [[Patch alloc] init];
-        NSMutableIndexSet* lowConfidencePatches = [patch findLowConfidencePatches];
-        [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
-        [_centroids removeObjectsAtIndexes:lowConfidencePatches];
+        // Classify objects and get probabilities
+        vector<double> prob_results;
         
-        // Non-max Suppression Based on Scores
-        NSMutableIndexSet* suppressedPatches = [patch findSuppressedPatches];
-        [_sortedScores removeObjectsAtIndexes:suppressedPatches];
-        [_centroids removeObjectsAtIndexes:suppressedPatches];        
+        for (int i = 0; i < testMatrix.rows; i++) {
+
+            svm_node *node = new svm_node[testMatrix.cols + 2];
+            for (int j = 0; j < testMatrix.cols; j++) {
+                double d = testMatrix.at<double>(i, j);
+                node[j].index = j+1;
+                node[j].value = d;
+            }
+            node[testMatrix.cols].index = -1;
+            node[testMatrix.cols].value = 0;
+            
+            double *probabilities = new double[2];
+            double result_prob = svm_predict_probability(model, node, probabilities);
+            prob_results.push_back(probabilities[0]);
+        }
+        
+        cout << "Finished classifying features" << endl;
+        return prob_results;
     }
     
     
@@ -218,14 +212,31 @@ namespace Classifier
 		//cv::Mat imageBw = objectIdentification(normalizedImage);
 		
 		// Feature detection
-		cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
-        cv::vector<Patch*> features = featureDetection(imageBw);
-        Debug::printFeatures(features, "origPatch");
+		//cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
+        //vector<Patch*> features = featureDetection(imageBw);
+        //Debug::printFeatures(features, "origPatch");
 
         // Classify Objects
+        vector<Patch*> features;
+        vector<double> prob_results = classifyObjects(features);
+        Debug::printVector(prob_results, "dvtest.txt");
         
+        /*
+        // Sort Scores and Centroids
+        _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
         
+        // Drop Low-confidence Patches
+        Patch* patch = [[Patch alloc] init];
+        NSMutableIndexSet* lowConfidencePatches = [patch findLowConfidencePatches];
+        [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
+        [_centroids removeObjectsAtIndexes:lowConfidencePatches];
         
+        // Non-max Suppression Based on Scores
+        NSMutableIndexSet* suppressedPatches = [patch findSuppressedPatches];
+        [_sortedScores removeObjectsAtIndexes:suppressedPatches];
+        [_centroids removeObjectsAtIndexes:suppressedPatches];
+        */
+
 		return true;
 	}
 }

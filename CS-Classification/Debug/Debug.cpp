@@ -53,6 +53,30 @@ namespace Debug
 
 		out_file.close();
 	}
+    
+    void printVector(vector<double> vec, const char* name)
+    {
+		string path = OUTPUT_FOLDER;
+		path += name;
+		char* full_path = (char*)path.c_str();
+        
+		cout << "Print to file: " << name << " Length: " << vec.size() << endl;
+		cout << "Fullpath: " << full_path << endl;
+		ofstream out_file;
+		out_file.open(full_path);
+        
+        if (!out_file) {
+			cerr << "Can't open output file!" << endl;
+		}
+        
+        vector<double>::iterator it = vec.begin();
+        
+        for (; it != vec.end(); it++)
+        {
+            out_file << *it << ",";
+        }
+        
+    }
 
 	void print(cv::Mat mat, const char* name)
 	{
@@ -117,7 +141,10 @@ namespace Debug
 					} else if (type == CV_8UC1) {
 						int val = ::atoi(line.c_str());
 						returnMatrix.at<uchar>(j, i) = (uchar)val;
-					} else {
+					} else if (type == CV_64F) {
+						double val = ::atof(line.c_str());
+						returnMatrix.at<double>(j, i) = val;
+                    } else {
 						cout << "Didnt understand type: " << type << endl;
 					}
 				}

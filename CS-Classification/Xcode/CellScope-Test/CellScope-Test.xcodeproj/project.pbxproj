@@ -20,6 +20,10 @@
 		ACADFFDE176976F50072908F /* libopencv_core.2.4.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ACADFFDB176976F50072908F /* libopencv_core.2.4.5.dylib */; };
 		ACADFFDF176976F50072908F /* libopencv_highgui.2.4.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ACADFFDC176976F50072908F /* libopencv_highgui.2.4.5.dylib */; };
 		ACADFFE0176976F50072908F /* libopencv_imgproc.2.4.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ACADFFDD176976F50072908F /* libopencv_imgproc.2.4.5.dylib */; };
+		ACEAA216178BA41A006D5BE2 /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = ACEAA212178BA41A006D5BE2 /* svm-predict.c */; };
+		ACEAA217178BA41A006D5BE2 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACEAA213178BA41A006D5BE2 /* svm-scale.c */; };
+		ACEAA218178BA41A006D5BE2 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACEAA214178BA41A006D5BE2 /* svm-train.c */; };
+		ACEAA219178BA41A006D5BE2 /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACEAA215178BA41A006D5BE2 /* svm.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,6 +66,10 @@
 		ACADFFDC176976F50072908F /* libopencv_highgui.2.4.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_highgui.2.4.5.dylib; path = ../../../../../Downloads/OpenCV/build/lib/libopencv_highgui.2.4.5.dylib; sourceTree = "<group>"; };
 		ACADFFDD176976F50072908F /* libopencv_imgproc.2.4.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_imgproc.2.4.5.dylib; path = ../../../../../Downloads/OpenCV/build/lib/libopencv_imgproc.2.4.5.dylib; sourceTree = "<group>"; };
 		ACADFFE1176977410072908F /* libopencv_calib3d.2.4.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_calib3d.2.4.5.dylib; path = ../../../../../Downloads/OpenCV/build/lib/libopencv_calib3d.2.4.5.dylib; sourceTree = "<group>"; };
+		ACEAA212178BA41A006D5BE2 /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "../../LibSVM/svm-predict.c"; sourceTree = "<group>"; };
+		ACEAA213178BA41A006D5BE2 /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "../../LibSVM/svm-scale.c"; sourceTree = "<group>"; };
+		ACEAA214178BA41A006D5BE2 /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "../../LibSVM/svm-train.c"; sourceTree = "<group>"; };
+		ACEAA215178BA41A006D5BE2 /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = ../../LibSVM/svm.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +119,7 @@
 		ACADFF1217694E3D0072908F /* CS-Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				ACEAA211178BA40E006D5BE2 /* LibSVM */,
 				AC39DAAA17794CF500845E8D /* Contour.cpp */,
 				AC39DAAB17794CF500845E8D /* Contour.h */,
 				AC39DAA717794CD000845E8D /* Region.cpp */,
@@ -133,6 +142,17 @@
 				ACADFF1F17694E5A0072908F /* MatrixOperations.h */,
 			);
 			name = "CS-Classifier";
+			sourceTree = "<group>";
+		};
+		ACEAA211178BA40E006D5BE2 /* LibSVM */ = {
+			isa = PBXGroup;
+			children = (
+				ACEAA212178BA41A006D5BE2 /* svm-predict.c */,
+				ACEAA213178BA41A006D5BE2 /* svm-scale.c */,
+				ACEAA214178BA41A006D5BE2 /* svm-train.c */,
+				ACEAA215178BA41A006D5BE2 /* svm.cpp */,
+			);
+			name = LibSVM;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -196,6 +216,10 @@
 				AC39DAA61779428300845E8D /* Debug.cpp in Sources */,
 				AC39DAA917794CD000845E8D /* Region.cpp in Sources */,
 				AC39DAAC17794CF500845E8D /* Contour.cpp in Sources */,
+				ACEAA216178BA41A006D5BE2 /* svm-predict.c in Sources */,
+				ACEAA217178BA41A006D5BE2 /* svm-scale.c in Sources */,
+				ACEAA218178BA41A006D5BE2 /* svm-train.c in Sources */,
+				ACEAA219178BA41A006D5BE2 /* svm.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +257,7 @@
 					"~/",
 					"~/Dev/opencv/**/**",
 					"~/Downloads/opencv/**",
+					"~/Dev/opencv/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"~/Dev/opencv/**/**",
@@ -270,6 +295,7 @@
 					"~/",
 					"~/Dev/opencv/**/**",
 					"~/Downloads/opencv/**",
+					"~/Dev/opencv/",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"~/Dev/opencv/**/**",
