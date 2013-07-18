@@ -58,11 +58,10 @@ namespace Features
 
 	Patch* makePatch(int row, int col, Mat original)
 	{
-		// Indices in matlab are 1 based
-		int row_start = (row - PATCH_SIZE / 2) - 1;
-		int row_end = row + (PATCH_SIZE / 2 - 1) - 1;
-		int col_start = col - PATCH_SIZE / 2 - 1;
-		int col_end = col + (PATCH_SIZE / 2 - 1) - 1;
+		int row_start = (row - PATCH_SIZE / 2);
+		int row_end = row + (PATCH_SIZE / 2);
+		int col_start = (col - PATCH_SIZE / 2);
+		int col_end = col + (PATCH_SIZE / 2);
 		Range rows = Range(row_start, row_end);
 		Range cols = Range(col_start, col_end);
     
@@ -72,7 +71,26 @@ namespace Features
     
 		return patch;
 	}
-
+    
+    double momentpq(Mat image, int p, int q, double xc, double yc)
+    {
+        double sum = 0;
+        for (int i = 0; i < image.rows; i++)
+        {
+            for (int j = 0; j < image.cols; j++)
+            {
+                // x = i, y = j
+                double val = image.at<double>(i, j);
+                double colVal = pow((j - yc), q);
+                double rowVal = pow((i - xc), p);
+                double next = rowVal * colVal * val;
+                sum += next;
+                
+            }
+        }
+        return sum;
+    }
+    
 
     void calculateFeatures(vector<Patch*> blobs)
     {
@@ -87,16 +105,31 @@ namespace Features
 			Moments m = cv::moments(patch);
             double huMomentsArr[7];
 			HuMoments(m, huMomentsArr);
-            cv::Mat* huMoments = new cv::Mat(7,1,CV_64F);
+            cv::Mat* huMoments = new cv::Mat(8,1,CV_64F);
             for (int j = 0; j < 7; j++)
             {
                huMoments->at<double>(j, 0) = huMomentsArr[j];
             }
         
+            // Phi_11 moment
+            double xc = m.m10 / m.m00;
+            double yc = m.m01 / m.m00;
+            
+            double mu40 = momentpq(patch, 4, 0, xc, yc);
+            double mu22 = momentpq(patch, 2, 2, xc, yc);
+            double mu04 = momentpq(patch, 0, 4, xc, yc);
+            
+            double nu40 = mu40 / pow(m.m00, 3);
+            double nu22 = mu22 / pow(m.m00, 3);
+            double nu04 = mu04 / pow(m.m00, 3);
+            
+            huMoments->at<double>(7, 0) = nu40 - 2 * nu22 + nu04;
+            
+            
 			// Grab the geometric features and return
-            Mat* binPatch = p->getBinPatch();
-            Mat* geom = new Mat(geometricFeatures(binPatch));
-            p->setGeom(*geom);
+            //Mat* binPatch = p->getBinPatch();
+            //Mat* geom = new Mat(geometricFeatures(binPatch));
+            //p->setGeom(*geom);
             p->setPhi(*huMoments);
         }
     }

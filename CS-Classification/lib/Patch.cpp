@@ -25,7 +25,39 @@ void Patch::calculateBinarizedPatch()
 {
     // Calculate binarized patch using Otsu threshold.
     
-    cv::threshold(*origPatch,*binPatch,0,255,CV_THRESH_BINARY|CV_THRESH_OTSU);
+    // set center pixel value to be the maximum intensity val
+    
+    /*
+    maxval = patch(round(size(patch,1)/2),round(size(patch,1)/2));
+    patch = min(patch,maxval*ones(size(patch)));
+    prethresh = patch/maxval;
+    
+    level = graythresh(prethresh);
+    binpatch = im2bw(prethresh,level);
+    
+    cc = bwconncomp(binpatch);
+    */
+    
+    ContourContainerType contours;
+    vector<Point> allCenters = MatrixOperations::findWeightedCentroids(contours, *origPatch);
+    
+    /*
+    allctrs = regionprops(cc,patch,'WeightedCentroid');
+    
+    int patchRows = *origPatch.rows;
+    
+    // Identify object that is closest to the center of the patch
+    if(length(allctrs)>1) % if multiple objects
+        for m = 1:length(allctrs)
+            allctrs(m).dist = dist(allctrs(m).WeightedCentroid, repmat(patchRows/2+0.5,1,2)); %this assumes patch size is even
+    end
+    [mindist,Igood] = min(vertcat(allctrs(:).dist));
+    
+    // Erase objects that are not the closest to center
+    allI = 1:length(allctrs);
+    Ibad = allI(~ismember(allI,Igood));
+    binpatch(vertcat(cc.PixelIdxList{Ibad})) = 0;
+    */
 }
 
 int Patch::getRow()

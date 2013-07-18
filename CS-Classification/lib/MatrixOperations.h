@@ -2,6 +2,8 @@
 #define MATRIXOPERATIONS_H
 
 #include "Globals.h"
+
+
 namespace MatrixOperations
 {
 	/**
@@ -14,5 +16,7 @@ namespace MatrixOperations
 		@return           Returns a copy of |mat|, with all values > val as 1 and all values <= val as 0.
 	 */
 	cv::Mat greaterThanValue(float compareVal, cv::Mat mat);
+    
+    std::vector<Point> findWeightedCentroids(ContourContainerType contours, cv::Mat mat);
 }
 #endif

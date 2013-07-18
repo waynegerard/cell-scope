@@ -30,16 +30,19 @@ namespace Classifier
 		return imageBw;
 	}
 
-	vector<Patch*> featureDetection(cv::Mat imageBw)
+	vector<Patch*> featureDetection(cv::Mat imageBw, cv::Mat original)
 	{
+        /*
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
-		cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_NONE);
+		cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+        Debug::printContours(contours);
+        
 		unsigned long numObjects = contours.size();
         cout << "Found " << numObjects << " Contours in image" << endl;
         
 		// Get the Hu moments
-        cout << "Calculating Hu moments..." << endl;
+        cout << "Calculating moments..." << endl;
 		cv::vector<Moments> mu;
         
         ContourContainerType::iterator c_it = contours.begin();
@@ -51,7 +54,7 @@ namespace Classifier
     
 		//  Get the mass centers
         cout << "Calculating mass centers..." << endl;
-        cv::vector<Point> centroids;
+        vector<Point> centroids;
         cv::vector<Moments>::iterator m_it = mu.begin();
 		for (; m_it != mu.end(); m_it++) {
             Moments val = *m_it;
@@ -63,7 +66,11 @@ namespace Classifier
                 centroids.push_back(pt);
             }
 		}
-    
+        
+        Debug::printCentroids(centroids);
+        exit(0);
+        */
+        vector<Point> centroids = Debug::loadCentroids();
 		int patchCount = 0;
 		
 		// Remove partial patches
@@ -72,20 +79,20 @@ namespace Classifier
         
         vector<Point>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
-			Point2d pt = *it;
-            int col = (int)pt.x;
-			int row = (int)pt.y;
+			Point pt = *it;
+			int row = (int)pt.x;
+            int col = (int)pt.y;
 			
 			bool partial = Features::checkPartialPatch(row, col, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
-                Patch* p = Features::makePatch(row, col, imageBw);
+                Patch* p = Features::makePatch(row, col, original);
 				patchCount++;
 				stats.push_back(p);
 			}
 		}
         cout << "Final patch count: " << patchCount << endl;
-   
+        
 		// Calculate features
 		Features::calculateFeatures(stats);
         return stats;
@@ -138,9 +145,8 @@ namespace Classifier
         Mat train_max = loadCSV(TRAIN_MAX_PATH);
         Mat train_min = loadCSV(TRAIN_MIN_PATH);
 
-        /*
-        // Combine the features and make the zeros matrix
-        cv::Mat featuresMatrix = cv::Mat((int)features.size(), 21, CV_32F);
+        // Combine the features
+        cv::Mat featuresMatrix = cv::Mat((int)features.size(), 22, CV_64F);
         
         vector<Patch*>::const_iterator it = features.begin();
         int row = 0;
@@ -152,18 +158,17 @@ namespace Classifier
             int i = 0;
             for (; i < phi.rows; i++)
             {
-                featuresMatrix.at<float>(row, i) = phi.at<float>(i, 1);
+                featuresMatrix.at<double>(row, i) = phi.at<double>(i, 1);
             }
             for (; i < geom.rows; i++)
             {
-                featuresMatrix.at<float>(row, i) = geom.at<float>(i, 1);
+                featuresMatrix.at<double>(row, i) = geom.at<double>(i, 1);
             }
             row++;
         }
-         */
         
-        // Should intercept here and add a loading for the entire featuresMatrix
-        cv::Mat featuresMatrix = Debug::loadMatrix("xtest.txt", 120, 22, CV_64F);
+        //Debug::print(featuresMatrix, "xtest.txt");
+        
     
         // minmax normalization of features
         cv::Mat maxMatrix = repMat(train_max, featuresMatrix.rows);
@@ -175,6 +180,8 @@ namespace Classifier
         cv::subtract(featuresMatrix, minMatrix, numerator);
         cv::subtract(maxMatrix, minMatrix, denominator);
         cv::divide(numerator, denominator, testMatrix);
+        
+        Debug::print(featuresMatrix, "xtest_final.txt");
         
         // Classify objects and get probabilities
         vector<double> prob_results;
@@ -191,7 +198,7 @@ namespace Classifier
             node[testMatrix.cols].value = 0;
             
             double *probabilities = new double[2];
-            double result_prob = svm_predict_probability(model, node, probabilities);
+            svm_predict_probability(model, node, probabilities);
             prob_results.push_back(probabilities[0]);
         }
         
@@ -199,6 +206,9 @@ namespace Classifier
         return prob_results;
     }
     
+    bool comparator ( const pair<double, int>& l, const pair<double, int>& r)
+    { return l.first < r.first; };
+
     
 	bool runWithImage(cv::Mat image)
 	{
@@ -208,23 +218,31 @@ namespace Classifier
 			return false;
 		}
 
-		//cv::Mat normalizedImaged = initializeImage(image);
+		cv::Mat normalizedImage = initializeImage(image);
 		//cv::Mat imageBw = objectIdentification(normalizedImage);
 		
 		// Feature detection
-		//cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
-        //vector<Patch*> features = featureDetection(imageBw);
-        //Debug::printFeatures(features, "origPatch");
-
+		cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
+        vector<Patch*> features = featureDetection(imageBw, normalizedImage);
+        Debug::printFeatures(features, "phi");
+        
         // Classify Objects
-        vector<Patch*> features;
         vector<double> prob_results = classifyObjects(features);
-        Debug::printVector(prob_results, "dvtest.txt");
+
+        // Sort scores, keeping index
+        vector<pair<double, int> > prob_results_with_index;
+        vector<double>::iterator it = prob_results.begin();
+        int index = 0;
+        for (; it != prob_results.end(); it++)
+        {
+            prob_results_with_index.push_back(make_pair(*it, index));
+            index++;
+        }
+        
+        sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
+        Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
         
         /*
-        // Sort Scores and Centroids
-        _sortedScores = [self sortScoresWithArray:scoreDictionaryArray];
-        
         // Drop Low-confidence Patches
         Patch* patch = [[Patch alloc] init];
         NSMutableIndexSet* lowConfidencePatches = [patch findLowConfidencePatches];

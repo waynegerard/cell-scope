@@ -30,6 +30,15 @@ namespace Debug
 	void printFeatures(vector<Patch*> features, const char* feature);
     
     void printVector(vector<double> vec, const char* name);
+    
+    void printPairVector(vector<pair<double, int> > vec, const char* name);
+
+    void printContours(ContourContainerType contours);
+    
+    void printCentroids(vector<Point> centroids);
 
 	Mat loadMatrix(const char* fileName, int rows, int cols, int type);
+    
+    vector<Point> loadCentroids();
+
 }

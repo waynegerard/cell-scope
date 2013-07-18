@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 #define DEBUG 1
-#define PATCH_SIZE 16
+#define PATCH_SIZE 24
 
 typedef std::vector<cv::Point> ContourType;
 typedef std::vector<ContourType> ContourContainerType;
