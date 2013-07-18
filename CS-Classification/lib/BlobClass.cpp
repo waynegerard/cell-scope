@@ -1,10 +1,10 @@
-#include "Blob.h"
+#include "BlobClass.h"
 #include "MatrixOperations.h"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "Debug.h"
 
-namespace Blob 
+namespace BlobClass
 {
 	cv::Mat crossCorrelateWithGaussian(cv::Mat matrix) 
 	{

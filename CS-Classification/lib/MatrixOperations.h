@@ -17,6 +17,6 @@ namespace MatrixOperations
 	 */
 	cv::Mat greaterThanValue(float compareVal, cv::Mat mat);
     
-    std::vector<Point> findWeightedCentroids(ContourContainerType contours, cv::Mat mat);
+    std::vector<cv::Point2d> findWeightedCentroids(ContourContainerType contours, cv::Mat thresholdImage, cv::Mat originalImage);
 }
 #endif

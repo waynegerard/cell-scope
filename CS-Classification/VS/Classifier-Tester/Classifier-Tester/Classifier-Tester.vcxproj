@@ -79,19 +79,29 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Debug\Debug.h" />
     <ClInclude Include="..\..\..\LibSVM\svm.h" />
-    <ClInclude Include="..\..\..\lib\Blob.h" />
+    <ClInclude Include="..\..\..\lib\BlobClass.h" />
     <ClInclude Include="..\..\..\lib\Classifier.h" />
+    <ClInclude Include="..\..\..\lib\Contour.h" />
+    <ClInclude Include="..\..\..\lib\Features.h" />
     <ClInclude Include="..\..\..\lib\Globals.h" />
     <ClInclude Include="..\..\..\lib\ImageTools.h" />
     <ClInclude Include="..\..\..\lib\MatrixOperations.h" />
+    <ClInclude Include="..\..\..\lib\Patch.h" />
+    <ClInclude Include="..\..\..\lib\Region.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Debug\Debug.cpp" />
-    <ClCompile Include="..\..\..\lib\Blob.cpp" />
+    <ClCompile Include="..\..\..\LibSVM\svm-predict.c" />
+    <ClCompile Include="..\..\..\LibSVM\svm.cpp" />
+    <ClCompile Include="..\..\..\lib\BlobClass.cpp" />
     <ClCompile Include="..\..\..\lib\Classifier.cpp" />
+    <ClCompile Include="..\..\..\lib\Contour.cpp" />
+    <ClCompile Include="..\..\..\lib\Features.cpp" />
     <ClCompile Include="..\..\..\lib\ImageTools.cpp" />
     <ClCompile Include="..\..\..\lib\MatrixOperations.cpp" />
+    <ClCompile Include="..\..\..\lib\Patch.cpp" />
+    <ClCompile Include="..\..\..\lib\Region.cpp" />
     <ClCompile Include="Classifier-Tester.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

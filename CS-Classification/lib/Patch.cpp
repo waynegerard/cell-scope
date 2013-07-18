@@ -1,4 +1,5 @@
 #include "Patch.h"
+#include "MatrixOperations.h"
 
 Patch::Patch (int a, int b, cv::Mat c) {
     row = new int;
@@ -38,8 +39,9 @@ void Patch::calculateBinarizedPatch()
     cc = bwconncomp(binpatch);
     */
     
+	cv::Mat binpatch;
     ContourContainerType contours;
-    vector<Point> allCenters = MatrixOperations::findWeightedCentroids(contours, *origPatch);
+    std::vector<cv::Point2d> allCenters = MatrixOperations::findWeightedCentroids(contours, binpatch, *origPatch);
     
     /*
     allctrs = regionprops(cc,patch,'WeightedCentroid');

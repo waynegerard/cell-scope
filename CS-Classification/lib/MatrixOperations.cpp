@@ -28,28 +28,49 @@ namespace MatrixOperations
 		return parsedMatrix;
 	}
     
-    std::vector<cv::Point> findWeightedCentroids(ContourContainerType contours, cv::Mat mat)
+    std::vector<cv::Point2d> findWeightedCentroids(ContourContainerType contours, cv::Mat thresholdImage, cv::Mat originalImage)
     {
-        std::vector<cv::Point> pts;
+        std::vector<cv::Point2d> pts;
 
         for (int i = 0; i < contours.size(); i++)
         {
-            cv::Mat filledImage = cv::Mat::zeros(mat.rows, mat.cols, mat.type());
-            cv::drawContours(filledImage, contours, i, 255, -1);
+            cv::Mat filledImage = cv::Mat::zeros(thresholdImage.rows, thresholdImage.cols, CV_8UC1);
+            cv::Scalar color = cv::Scalar(255, 255, 255);
+			cv::drawContours(filledImage, contours, i, color, -1);
+			std::vector<cv::Point> pixelIdxList;
+			std::vector<cv::Point> pixelList;
 
-            /*
-             //FilledImage: draw the region on in white
-             cv2.drawContours( filledI, cs, i, color=255, thickness=-1 )
-             //calculate indices of that region..
-             regionMask    = (filledI==255)
-             
-             //PixelIdxList : indices of region.
-             //(np.array of xvals, np.array of yvals)
-             PixelIdxList  = regionMask.nonzero()
-             //pixel values
-             PixelValues   = img[regionMask]
-             */
+			double sumRegion = 0;
+			double weightedXSum = 0;
+			double weightedYSum = 0;
+			int pixelCount = 0;
 
+			for (int j = 0; j < filledImage.rows; j++)
+			{
+				for (int k = 0; k < filledImage.cols; k++)
+				{
+					int val = filledImage.at<uchar>(j, k);
+					if (val != 0)
+					{
+						double original_val = 0;
+						if (originalImage.type() == CV_8UC1) {
+							original_val = (double)originalImage.at<uchar>(j, k);
+						} else if (originalImage.type() == CV_64F) {
+							original_val = originalImage.at<double>(j,k);
+						}
+
+						pixelCount++;
+						sumRegion += original_val;
+					    weightedXSum += ((double)j * original_val);
+						weightedYSum += ((double)k * original_val);
+					}
+				}
+			}
+
+			double xbar = weightedXSum / sumRegion;
+			double ybar = weightedYSum / sumRegion;
+			cv::Point2d new_pt = cv::Point2d(xbar, ybar);
+			pts.push_back(new_pt);
         }
         
         

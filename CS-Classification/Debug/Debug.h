@@ -11,7 +11,7 @@
     #define TRAIN_MIN_PATH "/Users/wgerard/Dropbox/CS_Comparisons/train_min.csv"
 #else // Assumed to be windows
     #define OUTPUT_FOLDER "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\cpp\\"
-    #define FEAUTRES_OUTPUT_FOLDER "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\cpp\\features\\"
+    #define FEATURES_OUTPUT_FOLDER "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\cpp\\features\\"
 	#define MATLAB_FOLDER "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\matlab\\"
     #define MODEL_PATH "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\model_out.txt"
     #define TRAIN_MAX_PATH "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\train_max.csv"

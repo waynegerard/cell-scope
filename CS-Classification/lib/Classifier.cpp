@@ -1,4 +1,4 @@
-#include "Blob.h"
+#include "BlobClass.h"
 #include "Classifier.h"
 #include "Features.h"
 #include "ImageTools.h"
@@ -26,7 +26,7 @@ namespace Classifier
 	cv::Mat objectIdentification(cv::Mat image)
 	{
 		cout << "Performing object identification\n";
-		cv::Mat imageBw = Blob::blobIdentification(image);
+		cv::Mat imageBw = BlobClass::blobIdentification(image);
 		return imageBw;
 	}
 

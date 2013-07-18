@@ -7,6 +7,11 @@
 #define DEBUG 1
 #define PATCH_SIZE 24
 
+#if __APPLE__
+#else // Assumed to be windows
+#define M_PI 3.1415926
+#endif
+
 typedef std::vector<cv::Point> ContourType;
 typedef std::vector<ContourType> ContourContainerType;
 

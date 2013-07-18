@@ -1,8 +1,8 @@
-#ifndef BLOB_H
-#define BLOB_H
+#ifndef BLOBCLASS_H
+#define BLOBCLASS_H
 
 #include "Globals.h"
-namespace Blob 
+namespace BlobClass
 {
 	/**
 		Cross correlates the given matrix with a generated gaussian kernel
