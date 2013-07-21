@@ -85,18 +85,21 @@ namespace Classifier
 			bool partial = Features::checkPartialPatch(row, col, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
-				cv::Mat rowMat = cv::Mat(1, 1, CV_8UC1);
-				cv::Mat colMat = cv::Mat(1, 1, CV_8UC1);
-				rowMat.at<uchar>(0, 0) = row;
-				colMat.at<uchar>(0, 0) = col;
-                cv::Mat patch = Features::makePatch(row, col, original);
-                cv::Mat binPatch = Features::calculateBinarizedPatch(patch);
+				cv::Mat *rowMat = new cv::Mat(1, 1, CV_8UC1);
+				cv::Mat *colMat = new cv::Mat(1, 1, CV_8UC1);
+				rowMat->at<uchar>(0, 0) = row;
+				colMat->at<uchar>(0, 0) = col;
+                cv::Mat *patch = new cv::Mat(Features::makePatch(row, col, original));
+                //cv::Mat patchClone = patch.clone();
+                cv::Mat *binPatch = new cv::Mat(Features::makePatch(row, col, original));
+                binPatch->convertTo(*binPatch, CV_8UC1);
+                //cv::Mat binPatch = *new cv::Mat(Features::calculateBinarizedPatch(patchClone));
 				MatDict data;
 
-				data.insert(std::make_pair<const char*, cv::Mat>("row", rowMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("col", colMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("patch", patch));
-				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", binPatch));
+				data.insert(std::make_pair<const char*, cv::Mat>("row", *rowMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("col", *colMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("patch", *patch));
+				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", *binPatch));
 				patchCount++;
 				stats.push_back(data);
 			}

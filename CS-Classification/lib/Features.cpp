@@ -94,12 +94,10 @@ namespace Features
         int rows = origPatch.rows;
         int cols = origPatch.cols;
         
-        cv::Mat binPatchNew = cv::Mat(rows, cols, CV_32F);
-        cv::Mat preThresh = cv::Mat(rows, cols, CV_8UC1);
-        cv::Mat junk = cv::Mat(rows, cols, CV_8UC1);
+        cv::Mat binPatchNew = *new cv::Mat(rows, cols, CV_32F);
+        cv::Mat preThresh = *new cv::Mat(rows, cols, CV_8UC1);
+        cv::Mat junk = *new cv::Mat(rows, cols, CV_8UC1);
         
-		bool is_float = origPatch.type() == CV_32F;
-
         float maxVal = origPatch.at<float>(rows/2, cols/2);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -116,7 +114,7 @@ namespace Features
         // apply threshold
         cv::threshold(preThresh,binPatchNew,thresh,255,CV_THRESH_BINARY_INV);
         
-        ContourContainerType newContours;
+        ContourContainerType newContours = *new ContourContainerType;
         
         cv::findContours(binPatchNew, newContours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
         std::vector<cv::Point2d> allCenters = MatrixOperations::findWeightedCentroids(newContours, binPatchNew, origPatch);
@@ -189,41 +187,46 @@ namespace Features
     {
         vector<MatDict >::const_iterator it = blobs.begin();
         
-        for (; it != blobs.end(); ++it)
+        Mat *patch;
+        Mat *geom;
+        Mat *binPatch;
+        Mat *huMoments;
+        
+        for (; it != blobs.end(); it++)
         {
             MatDict p = *it;
-			Mat patch = p.find("patch")->second;
+            patch = new cv::Mat(p.find("patch")->second);
         
 			// Calculate the hu moments
-			Moments m = cv::moments(patch);
+			Moments m = cv::moments(*patch);
             double huMomentsArr[7];
 			HuMoments(m, huMomentsArr);
-            cv::Mat huMoments = cv::Mat(8,1,CV_64F);
+            huMoments = new cv::Mat(8,1,CV_64F);
             for (int j = 0; j < 7; j++)
             {
-               huMoments.at<double>(j, 0) = huMomentsArr[j];
+               huMoments->at<double>(j, 0) = huMomentsArr[j];
             }
         
             // Phi_11 moment
             double xc = m.m10 / m.m00;
             double yc = m.m01 / m.m00;
             
-            double mu40 = momentpq(patch, 4, 0, xc, yc);
-            double mu22 = momentpq(patch, 2, 2, xc, yc);
-            double mu04 = momentpq(patch, 0, 4, xc, yc);
+            double mu40 = momentpq(*patch, 4, 0, xc, yc);
+            double mu22 = momentpq(*patch, 2, 2, xc, yc);
+            double mu04 = momentpq(*patch, 0, 4, xc, yc);
             
             double nu40 = mu40 / pow(m.m00, 3);
             double nu22 = mu22 / pow(m.m00, 3);
             double nu04 = mu04 / pow(m.m00, 3);
             
-            huMoments.at<double>(7, 0) = nu40 - 2 * nu22 + nu04;
+            huMoments->at<double>(7, 0) = nu40 - 2 * nu22 + nu04;
             
             
 			// Grab the geometric features and return
-            Mat binPatch = p.find("binPatch")->second;
-            Mat geom = geometricFeatures(binPatch);
-			p["geom"] = geom;
-			p["phi"] = huMoments;
+            binPatch = new cv::Mat(p.find("binPatch")->second);
+            geom = new cv::Mat(geometricFeatures(*binPatch));
+            p.insert(std::make_pair<const char*, cv::Mat>("geom", *geom));
+            p.insert(std::make_pair<const char*, cv::Mat>("phi", *huMoments));
         }
     }
 

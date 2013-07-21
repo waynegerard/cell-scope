@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AC39DAA21779427700845E8D /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DA9E1779427700845E8D /* Features.cpp */; };
-		AC39DAA31779427700845E8D /* Patch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA01779427700845E8D /* Patch.cpp */; };
 		AC39DAA61779428300845E8D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA41779428300845E8D /* Debug.cpp */; };
 		AC39DAA917794CD000845E8D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA717794CD000845E8D /* Region.cpp */; };
 		AC39DAAC17794CF500845E8D /* Contour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAAA17794CF500845E8D /* Contour.cpp */; };
@@ -41,8 +40,6 @@
 /* Begin PBXFileReference section */
 		AC39DA9E1779427700845E8D /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Features.cpp; path = ../../lib/Features.cpp; sourceTree = "<group>"; };
 		AC39DA9F1779427700845E8D /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Features.h; path = ../../lib/Features.h; sourceTree = "<group>"; };
-		AC39DAA01779427700845E8D /* Patch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Patch.cpp; path = ../../lib/Patch.cpp; sourceTree = "<group>"; };
-		AC39DAA11779427700845E8D /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Patch.h; path = ../../lib/Patch.h; sourceTree = "<group>"; };
 		AC39DAA41779428300845E8D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../Debug/Debug.cpp; sourceTree = "<group>"; };
 		AC39DAA51779428300845E8D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../Debug/Debug.h; sourceTree = "<group>"; };
 		AC39DAA717794CD000845E8D /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Region.cpp; path = ../../lib/Region.cpp; sourceTree = "<group>"; };
@@ -130,8 +127,6 @@
 				AC39DAA51779428300845E8D /* Debug.h */,
 				AC39DA9E1779427700845E8D /* Features.cpp */,
 				AC39DA9F1779427700845E8D /* Features.h */,
-				AC39DAA01779427700845E8D /* Patch.cpp */,
-				AC39DAA11779427700845E8D /* Patch.h */,
 				ACADFFCC176973930072908F /* svm.h */,
 				ACADFF1517694E5A0072908F /* Classifier.cpp */,
 				ACADFF1617694E5A0072908F /* Classifier.h */,
@@ -211,7 +206,6 @@
 				ACADFF2817694E5A0072908F /* ImageTools.cpp in Sources */,
 				ACADFF2917694E5A0072908F /* MatrixOperations.cpp in Sources */,
 				AC39DAA21779427700845E8D /* Features.cpp in Sources */,
-				AC39DAA31779427700845E8D /* Patch.cpp in Sources */,
 				AC39DAA61779428300845E8D /* Debug.cpp in Sources */,
 				AC39DAA917794CD000845E8D /* Region.cpp in Sources */,
 				AC39DAAC17794CF500845E8D /* Contour.cpp in Sources */,
