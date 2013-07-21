@@ -9,5 +9,5 @@ namespace Features
 	bool checkPartialPatch(int row, int col, int maxRow, int maxCol);
 	Mat geometricFeatures(Mat* binPatch);
 	Patch* makePatch(int row, int col, Mat original);
-
+    cv::Mat calculateBinarizedPatch(Patch* p);
 }

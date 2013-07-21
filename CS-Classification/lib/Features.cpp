@@ -1,4 +1,5 @@
 #include "Features.h"
+#include "MatrixOperations.h"
 #include "Region.h"
 
 namespace Features 
@@ -11,7 +12,7 @@ namespace Features
 		ContourContainerType contours;
 		cv::vector<Vec4i> hierarchy;
 
-		findContours(*binPatch, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
+		findContours(*binPatch, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
     
 		if (contours.size() == 0) {
 			return cv::Mat::zeros(14, 1, CV_8UC3);
@@ -64,10 +65,10 @@ namespace Features
 		int col_end = col + (PATCH_SIZE / 2);
 		Range rows = Range(row_start, row_end);
 		Range cols = Range(col_start, col_end);
-    
-		Mat patchMatrix = *new Mat(original.operator()(rows, cols));
+        
+		Mat patchMatrix = original.operator()(rows, cols);
+        
 		Patch* patch = new Patch(row, col, patchMatrix);
-        patch->calculateBinarizedPatch();
     
 		return patch;
 	}
@@ -91,6 +92,103 @@ namespace Features
         return sum;
     }
     
+    cv::Mat calculateBinarizedPatch(Patch* p)
+    {
+        cv::Mat origPatch = p->getPatch();
+        
+        // Calculate binarized patch using Otsu threshold.
+        std::cout << "Calculating binarize patch" << std::endl;
+        int rows = origPatch.rows;
+        int cols = origPatch.cols;
+        
+        cv::Mat binPatchNew = cv::Mat(rows, cols, CV_32F);
+        cv::Mat preThresh = cv::Mat(rows, cols, CV_8UC1);
+        cv::Mat junk = cv::Mat(rows, cols, CV_8UC1);
+        
+        double maxVal = origPatch.at<double>(rows/2, cols/2);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                double matVal = origPatch.at<double>(i, j);
+                double val = MIN(matVal, maxVal);
+                val = matVal / maxVal;
+                preThresh.at<uchar>(i, j) = (int)val;
+            }
+        }
+        
+        // compute optimal Otsu threshold
+        double thresh = cv::threshold(preThresh,junk,0,255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        
+        // apply threshold
+        cv::threshold(preThresh,binPatchNew,thresh,255,CV_THRESH_BINARY_INV);
+        
+        ContourContainerType newContours;
+        
+        cv::findContours(binPatchNew, newContours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+        std::vector<cv::Point2d> allCenters = MatrixOperations::findWeightedCentroids(newContours, binPatchNew, origPatch);
+        
+        std::vector<cv::Point2d>::const_iterator it = allCenters.begin();
+        std::vector<double> distances;
+        
+        double minDist = 1E10;
+        int index = 0;
+        std::vector<int> patchIndices;
+        
+        for (; it != allCenters.end(); it++) {
+            cv::Point2d center = *it;
+            double patchValue = (rows / 2) + 0.5;
+            double x = pow((it->x - patchValue), 2);
+            double y = pow((it->y - patchValue), 2);
+            
+            double distance = pow(x + y, 0.5);
+            
+            if (distance < minDist) {
+                minDist = distance;
+            }
+            
+        }
+        
+        for (it = allCenters.begin(); it != allCenters.end(); it++) {
+            double patchValue = (rows / 2) + 0.5;
+            double x = pow((it->x - patchValue), 2);
+            double y = pow((it->y - patchValue), 2);
+            
+            double distance = pow(x + y, 0.5);
+            
+            if (distance == minDist) {
+                patchIndices.push_back(index);
+            }
+            
+            index++;
+        }
+        
+        index = 0;
+        ContourContainerType::const_iterator cit = newContours.begin();
+        for (; cit != newContours.end(); cit++) {
+            ContourType contour = *cit;
+            
+            std::vector<int>::const_iterator pit = patchIndices.begin();
+            bool inIndices = false;
+            for (; pit != patchIndices.end(); pit++) {
+                if (inIndices) {
+                    break;
+                }
+                if (*pit == index) {
+                    inIndices = true;
+                }
+            }
+            if (!inIndices) {
+                ContourType::const_iterator rit = contour.begin();
+                for (; rit != contour.end(); rit++) {
+                    cv::Point pt = *rit;
+                    binPatchNew.at<float>(pt.x, pt.y) = 0;
+                }
+            }
+            
+            index++;
+        }
+        
+        return binPatchNew;
+    }
 
     void calculateFeatures(vector<Patch*> blobs)
     {
@@ -127,9 +225,9 @@ namespace Features
             
             
 			// Grab the geometric features and return
-            //Mat* binPatch = p->getBinPatch();
-            //Mat* geom = new Mat(geometricFeatures(binPatch));
-            //p->setGeom(*geom);
+            Mat* binPatch = p->getBinPatch();
+            Mat* geom = new Mat(geometricFeatures(binPatch));
+            p->setGeom(*geom);
             p->setPhi(*huMoments);
         }
     }

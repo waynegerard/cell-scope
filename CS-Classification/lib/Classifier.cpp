@@ -87,6 +87,8 @@ namespace Classifier
 			if (!partial)
 			{
                 Patch* p = Features::makePatch(row, col, original);
+                cv::Mat binPatch = Features::calculateBinarizedPatch(p);
+                p->setBinPatch(binPatch);
 				patchCount++;
 				stats.push_back(p);
 			}

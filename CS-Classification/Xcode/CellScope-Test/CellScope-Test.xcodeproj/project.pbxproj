@@ -12,8 +12,8 @@
 		AC39DAA61779428300845E8D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA41779428300845E8D /* Debug.cpp */; };
 		AC39DAA917794CD000845E8D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA717794CD000845E8D /* Region.cpp */; };
 		AC39DAAC17794CF500845E8D /* Contour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAAA17794CF500845E8D /* Contour.cpp */; };
+		AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC7F487D179BA1700017CE9D /* BlobClass.cpp */; };
 		ACADFF0A17694E2F0072908F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF0917694E2F0072908F /* main.cpp */; };
-		ACADFF2417694E5A0072908F /* Blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1317694E5A0072908F /* Blob.cpp */; };
 		ACADFF2517694E5A0072908F /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1517694E5A0072908F /* Classifier.cpp */; };
 		ACADFF2817694E5A0072908F /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1C17694E5A0072908F /* ImageTools.cpp */; };
 		ACADFF2917694E5A0072908F /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1E17694E5A0072908F /* MatrixOperations.cpp */; };
@@ -49,11 +49,11 @@
 		AC39DAA817794CD000845E8D /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Region.h; path = ../../lib/Region.h; sourceTree = "<group>"; };
 		AC39DAAA17794CF500845E8D /* Contour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Contour.cpp; path = ../../lib/Contour.cpp; sourceTree = "<group>"; };
 		AC39DAAB17794CF500845E8D /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contour.h; path = ../../lib/Contour.h; sourceTree = "<group>"; };
+		AC7F487D179BA1700017CE9D /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../../lib/BlobClass.cpp; sourceTree = "<group>"; };
+		AC7F487E179BA1700017CE9D /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../../lib/BlobClass.h; sourceTree = "<group>"; };
 		AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
 		ACADFF0617694E2F0072908F /* CellScope-Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "CellScope-Test"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACADFF0917694E2F0072908F /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		ACADFF1317694E5A0072908F /* Blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blob.cpp; path = ../../lib/Blob.cpp; sourceTree = "<group>"; };
-		ACADFF1417694E5A0072908F /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = ../../lib/Blob.h; sourceTree = "<group>"; };
 		ACADFF1517694E5A0072908F /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Classifier.cpp; path = ../../lib/Classifier.cpp; sourceTree = "<group>"; };
 		ACADFF1617694E5A0072908F /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Classifier.h; path = ../../lib/Classifier.h; sourceTree = "<group>"; };
 		ACADFF1B17694E5A0072908F /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = ../../lib/Globals.h; sourceTree = "<group>"; };
@@ -121,6 +121,8 @@
 			children = (
 				ACEAA211178BA40E006D5BE2 /* LibSVM */,
 				AC39DAAA17794CF500845E8D /* Contour.cpp */,
+				AC7F487D179BA1700017CE9D /* BlobClass.cpp */,
+				AC7F487E179BA1700017CE9D /* BlobClass.h */,
 				AC39DAAB17794CF500845E8D /* Contour.h */,
 				AC39DAA717794CD000845E8D /* Region.cpp */,
 				AC39DAA817794CD000845E8D /* Region.h */,
@@ -131,8 +133,6 @@
 				AC39DAA01779427700845E8D /* Patch.cpp */,
 				AC39DAA11779427700845E8D /* Patch.h */,
 				ACADFFCC176973930072908F /* svm.h */,
-				ACADFF1317694E5A0072908F /* Blob.cpp */,
-				ACADFF1417694E5A0072908F /* Blob.h */,
 				ACADFF1517694E5A0072908F /* Classifier.cpp */,
 				ACADFF1617694E5A0072908F /* Classifier.h */,
 				ACADFF1B17694E5A0072908F /* Globals.h */,
@@ -207,7 +207,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				ACADFF0A17694E2F0072908F /* main.cpp in Sources */,
-				ACADFF2417694E5A0072908F /* Blob.cpp in Sources */,
 				ACADFF2517694E5A0072908F /* Classifier.cpp in Sources */,
 				ACADFF2817694E5A0072908F /* ImageTools.cpp in Sources */,
 				ACADFF2917694E5A0072908F /* MatrixOperations.cpp in Sources */,
@@ -220,6 +219,7 @@
 				ACEAA217178BA41A006D5BE2 /* svm-scale.c in Sources */,
 				ACEAA218178BA41A006D5BE2 /* svm-train.c in Sources */,
 				ACEAA219178BA41A006D5BE2 /* svm.cpp in Sources */,
+				AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -37,8 +37,6 @@ namespace MatrixOperations
             cv::Mat filledImage = cv::Mat::zeros(thresholdImage.rows, thresholdImage.cols, CV_8UC1);
             cv::Scalar color = cv::Scalar(255, 255, 255);
 			cv::drawContours(filledImage, contours, i, color, -1);
-			std::vector<cv::Point> pixelIdxList;
-			std::vector<cv::Point> pixelList;
 
 			double sumRegion = 0;
 			double weightedXSum = 0;

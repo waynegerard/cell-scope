@@ -14,7 +14,7 @@ class Patch {
     public:
         Patch (int,int,cv::Mat);
         ~Patch ();
-        void calculateBinarizedPatch();
+        cv::Mat calculateBinarizedPatch();
         int getRow();
         int getCol();
         cv::Mat getGeom();
