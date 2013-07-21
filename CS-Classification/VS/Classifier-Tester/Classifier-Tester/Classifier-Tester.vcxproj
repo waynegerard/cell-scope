@@ -86,7 +86,6 @@
     <ClInclude Include="..\..\..\lib\Globals.h" />
     <ClInclude Include="..\..\..\lib\ImageTools.h" />
     <ClInclude Include="..\..\..\lib\MatrixOperations.h" />
-    <ClInclude Include="..\..\..\lib\Patch.h" />
     <ClInclude Include="..\..\..\lib\Region.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
@@ -100,7 +99,6 @@
     <ClCompile Include="..\..\..\lib\Features.cpp" />
     <ClCompile Include="..\..\..\lib\ImageTools.cpp" />
     <ClCompile Include="..\..\..\lib\MatrixOperations.cpp" />
-    <ClCompile Include="..\..\..\lib\Patch.cpp" />
     <ClCompile Include="..\..\..\lib\Region.cpp" />
     <ClCompile Include="Classifier-Tester.cpp" />
   </ItemGroup>

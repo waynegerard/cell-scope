@@ -1,5 +1,4 @@
 #include "Globals.h"
-#include "Patch.h"
 #include <string>
 
 #if __APPLE__
@@ -27,7 +26,7 @@ namespace Debug
 
     void printStats(Mat mat, const char* fileName);
 
-	void printFeatures(vector<Patch*> features, const char* feature);
+	void printFeatures(vector<MatDict > features, const char* feature);
     
     void printVector(vector<double> vec, const char* name);
     

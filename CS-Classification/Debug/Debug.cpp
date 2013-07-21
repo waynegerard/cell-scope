@@ -258,12 +258,12 @@ namespace Debug
         out_file_cols.close();
     }
 
-	void printFeatures(vector<Patch*> features, const char* feature)
+	void printFeatures(vector<MatDict > features, const char* feature)
 	{
-        vector<Patch*>::const_iterator it = features.begin();
+        vector<MatDict >::const_iterator it = features.begin();
         for (; it != features.end(); it++)
         {
-            Patch* p = *it;
+            MatDict p = *it;
             bool orig = strncmp(feature, "origPatch", sizeof(char*)) == 0;
             bool geom = strncmp(feature, "geom", sizeof(char*)) == 0;
             bool phi = strncmp(feature, "phi", sizeof(char*)) == 0;
@@ -272,13 +272,13 @@ namespace Debug
             
             if (orig)
             {
-                mat = p->getPatch();
+                mat = p.find("patch")->second;
             } else if (geom) {
-                mat = p->getGeom();
+                mat = p.find("geom")->second;
             } else if (phi) {
-                mat = p->getPhi();
+                mat = p.find("phi")->second;
             } else if (binPatch) {
-                mat = *p->getBinPatch();
+                mat = p.find("binPatch")->second;
             } else {
                 cout << "Didn't recognize feature: " << feature << endl;
                 return;
@@ -286,11 +286,13 @@ namespace Debug
             
             
             stringstream row_ss;
-            row_ss << p->getRow() + 1;
+			cv::Mat rowMat = p.find("row")->second;
+            row_ss << rowMat.at<int>(0, 0) + 1;
             string row = row_ss.str();
 
             stringstream col_ss;
-            col_ss << p->getCol() + 1;
+			cv::Mat colMat = p.find("col")->second;
+            col_ss << colMat.at<int>(0, 0) + 1;
             string col = col_ss.str();
 
             

@@ -12,6 +12,7 @@
 #define M_PI 3.1415926
 #endif
 
+typedef std::map<const char*, cv::Mat> MatDict;
 typedef std::vector<cv::Point> ContourType;
 typedef std::vector<ContourType> ContourContainerType;
 

@@ -2,7 +2,6 @@
 #include "Classifier.h"
 #include "Features.h"
 #include "ImageTools.h"
-#include "Patch.h"
 #include <fstream>
 
 #include "Debug.h"
@@ -30,7 +29,7 @@ namespace Classifier
 		return imageBw;
 	}
 
-	vector<Patch*> featureDetection(cv::Mat imageBw, cv::Mat original)
+	vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original)
 	{
         /*
 		ContourContainerType contours;
@@ -75,7 +74,7 @@ namespace Classifier
 		
 		// Remove partial patches
         cout << "Removing partial patches..." << endl;
-		vector<Patch*> stats;
+		vector<MatDict > stats;
         
         vector<Point>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
@@ -86,11 +85,20 @@ namespace Classifier
 			bool partial = Features::checkPartialPatch(row, col, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
-                Patch* p = Features::makePatch(row, col, original);
-                cv::Mat binPatch = Features::calculateBinarizedPatch(p);
-                p->setBinPatch(binPatch);
+				cv::Mat rowMat = cv::Mat(1, 1, CV_8UC1);
+				cv::Mat colMat = cv::Mat(1, 1, CV_8UC1);
+				rowMat.at<uchar>(0, 0) = row;
+				colMat.at<uchar>(0, 0) = col;
+                cv::Mat patch = Features::makePatch(row, col, original);
+                cv::Mat binPatch = Features::calculateBinarizedPatch(patch);
+				MatDict data;
+
+				data.insert(std::make_pair<const char*, cv::Mat>("row", rowMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("col", colMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("patch", patch));
+				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", binPatch));
 				patchCount++;
-				stats.push_back(p);
+				stats.push_back(data);
 			}
 		}
         cout << "Final patch count: " << patchCount << endl;
@@ -139,7 +147,7 @@ namespace Classifier
         return returnMatrix;
     }
     
-    vector<double> classifyObjects(vector<Patch*> features)
+    vector<double> classifyObjects(vector<MatDict > features)
     {
         
         // Load the SVM
@@ -150,13 +158,13 @@ namespace Classifier
         // Combine the features
         cv::Mat featuresMatrix = cv::Mat((int)features.size(), 22, CV_64F);
         
-        vector<Patch*>::const_iterator it = features.begin();
+        vector<MatDict >::const_iterator it = features.begin();
         int row = 0;
         for (; it != features.end(); it++)
         {
-            Patch* patch = *it;
-            cv::Mat geom = patch->getGeom();
-            cv::Mat phi = patch->getPhi();
+            MatDict patch = *it;
+            cv::Mat geom = patch.find("geom")->second;
+            cv::Mat phi = patch.find("phi")->second;
             int i = 0;
             for (; i < phi.rows; i++)
             {
@@ -225,7 +233,7 @@ namespace Classifier
 		
 		// Feature detection
 		cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
-        vector<Patch*> features = featureDetection(imageBw, normalizedImage);
+        vector<MatDict > features = featureDetection(imageBw, normalizedImage);
         Debug::printFeatures(features, "phi");
         
         // Classify Objects
