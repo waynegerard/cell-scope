@@ -258,7 +258,7 @@ namespace Debug
         out_file_cols.close();
     }
 
-	void printFeatures(vector<MatDict > features, const char* feature)
+	void printFeatures(const vector<MatDict > features, const char* feature)
 	{
         vector<MatDict >::const_iterator it = features.begin();
         for (; it != features.end(); it++)
@@ -287,12 +287,14 @@ namespace Debug
             
             stringstream row_ss;
 			cv::Mat rowMat = p.find("row")->second;
-            row_ss << rowMat.at<int>(0, 0) + 1;
+			int row_num = (int)rowMat.at<float>(0,0);
+            row_ss << row_num + 1;
             string row = row_ss.str();
 
             stringstream col_ss;
 			cv::Mat colMat = p.find("col")->second;
-            col_ss << colMat.at<int>(0, 0) + 1;
+			int col_num = (int)colMat.at<float>(0,0);
+            col_ss << col_num + 1;
             string col = col_ss.str();
 
             

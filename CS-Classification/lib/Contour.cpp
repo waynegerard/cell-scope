@@ -43,12 +43,14 @@ Contour::~Contour () {
 
 void Contour::calculateAreaProperties()
 {
+	float area_val = cv::contourArea(*contour);
     *area = (float)cv::contourArea(*contour);
     
     cv::Mat hull;
     cv::convexHull(*contour, hull);
-    *convexArea = (float)contourArea(hull);
-    *solidity = *area / *convexArea;
+	float convex_area = (float)contourArea(hull); 
+    *convexArea = convex_area;
+    *solidity = area_val / convex_area;
     
     *equivDiameter = (float)pow((4.0 * M_PI * (*area)), 0.5);
 }

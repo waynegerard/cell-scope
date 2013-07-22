@@ -28,7 +28,7 @@ namespace MatrixOperations
 		return parsedMatrix;
 	}
     
-    std::vector<cv::Point2d> findWeightedCentroids(ContourContainerType contours, cv::Mat thresholdImage, cv::Mat originalImage)
+    std::vector<cv::Point2d> findWeightedCentroids(const ContourContainerType contours, const cv::Mat thresholdImage, const cv::Mat originalImage)
     {
         std::vector<cv::Point2d> pts;
 
@@ -55,6 +55,8 @@ namespace MatrixOperations
 							original_val = (double)originalImage.at<uchar>(j, k);
 						} else if (originalImage.type() == CV_64F) {
 							original_val = originalImage.at<double>(j,k);
+						} else if (originalImage.type() == CV_32F) {
+							original_val = (double)originalImage.at<float>(j, k);
 						}
 
 						pixelCount++;

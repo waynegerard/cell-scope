@@ -81,7 +81,6 @@
     <ClInclude Include="..\..\..\LibSVM\svm.h" />
     <ClInclude Include="..\..\..\lib\BlobClass.h" />
     <ClInclude Include="..\..\..\lib\Classifier.h" />
-    <ClInclude Include="..\..\..\lib\Contour.h" />
     <ClInclude Include="..\..\..\lib\Features.h" />
     <ClInclude Include="..\..\..\lib\Globals.h" />
     <ClInclude Include="..\..\..\lib\ImageTools.h" />
@@ -95,7 +94,6 @@
     <ClCompile Include="..\..\..\LibSVM\svm.cpp" />
     <ClCompile Include="..\..\..\lib\BlobClass.cpp" />
     <ClCompile Include="..\..\..\lib\Classifier.cpp" />
-    <ClCompile Include="..\..\..\lib\Contour.cpp" />
     <ClCompile Include="..\..\..\lib\Features.cpp" />
     <ClCompile Include="..\..\..\lib\ImageTools.cpp" />
     <ClCompile Include="..\..\..\lib\MatrixOperations.cpp" />

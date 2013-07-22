@@ -26,7 +26,7 @@ namespace Debug
 
     void printStats(Mat mat, const char* fileName);
 
-	void printFeatures(vector<MatDict > features, const char* feature);
+	void printFeatures(const vector<MatDict > features, const char* feature);
     
     void printVector(vector<double> vec, const char* name);
     

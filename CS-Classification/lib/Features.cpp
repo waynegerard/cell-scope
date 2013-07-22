@@ -1,3 +1,4 @@
+#include "Debug.h"
 #include "Features.h"
 #include "MatrixOperations.h"
 #include "Region.h"
@@ -5,30 +6,33 @@
 namespace Features 
 {
 
-	Mat geometricFeatures(Mat binPatch)  
+	Mat geometricFeatures(const Mat binPatch, const Mat patch)  
 	{
-		Mat geometricFeatures = Mat(14, 1, CV_8UC3);
+		Mat geometricFeatures = Mat(14, 1, CV_32F);
 
 		ContourContainerType contours;
 		cv::vector<Vec4i> hierarchy;
 
-		findContours(binPatch, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+		std::cout << "Finding contours in binary patch" << std::endl;
+		findContours(binPatch.clone(), contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
     
 		if (contours.size() == 0) {
-			return cv::Mat::zeros(14, 1, CV_8UC3);
+			return cv::Mat::zeros(14, 1, CV_32F);
 		}
     
-		std::map<const char*, float> regionProperties = Region::getProperties(contours, binPatch);
+		std::cout << "Grabbing region properties for patch" << std::endl;
+		std::map<const char*, float> regionProperties = Region::getProperties(contours, binPatch, patch);
         
         int key_count = 14;
 		const char* keys[] = {"area", "convexArea", "eccentricity", "equivDiameter", "extent", "filledArea",
-            "minorAxisLength", "majorAxisLength", "maxIntensity", "minIntensity",
+            "majorAxisLength", "minorAxisLength", "maxIntensity", "minIntensity",
             "meanIntensity", "perimeter", "solidity", "eulerNumber"};
 
+		std::cout << "Dumping props into geom matrix" << std::endl;
 		for (int i = 0; i < key_count; i++) {
             const char* key = keys[i];
-            float val = regionProperties.at(key);
-			geometricFeatures.at<float>(0, i) = val;
+            float val = regionProperties.find(key)->second;
+			geometricFeatures.at<float>(i, 0) = val;
 		}
     
     
@@ -57,7 +61,7 @@ namespace Features
 		return partial;
 	}
 
-	double momentpq(Mat image, int p, int q, double xc, double yc)
+	double momentpq(const Mat image, int p, int q, double xc, double yc)
     {
         double sum = 0;
         for (int i = 0; i < image.rows; i++)
@@ -65,7 +69,7 @@ namespace Features
             for (int j = 0; j < image.cols; j++)
             {
                 // x = i, y = j
-                double val = image.at<double>(i, j);
+                double val = (double) image.at<float>(i, j);
                 double colVal = pow((j - yc), q);
                 double rowVal = pow((i - xc), p);
                 double next = rowVal * colVal * val;
@@ -76,7 +80,7 @@ namespace Features
         return sum;
     }
 
-	cv::Mat makePatch(int row, int col, Mat original)
+	cv::Mat makePatch(const int row, const int col, const Mat original)
 	{
 		int row_start = (row - PATCH_SIZE / 2);
 		int row_end = row + (PATCH_SIZE / 2);
@@ -87,147 +91,179 @@ namespace Features
 		return patchMatrix;
 	}
     
-    cv::Mat calculateBinarizedPatch(cv::Mat origPatch)
+    cv::Mat calculateBinarizedPatch(const cv::Mat origPatch)
     {   
         // Calculate binarized patch using Otsu threshold.
         std::cout << "Calculating binarize patch" << std::endl;
         int rows = origPatch.rows;
         int cols = origPatch.cols;
         
-        cv::Mat binPatchNew = *new cv::Mat(rows, cols, CV_32F);
-        cv::Mat preThresh = *new cv::Mat(rows, cols, CV_8UC1);
+        cv::Mat binPatchNew = cv::Mat(rows, cols, CV_32F);
+        cv::Mat preThresh = *new cv::Mat(rows, cols, CV_32F);
         cv::Mat junk = *new cv::Mat(rows, cols, CV_8UC1);
         
-        float maxVal = origPatch.at<float>(rows/2, cols/2);
+		float init_val = origPatch.at<float>(0, 0);
+
+        float maxVal = origPatch.at<float>((rows/2) - 1, (cols/2) - 1);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 float matVal = origPatch.at<float>(i, j);
                 float val = MIN(matVal, maxVal);
-                val = matVal / maxVal;
-                preThresh.at<uchar>(i, j) = (int)val;
+                val = val / maxVal;
+                preThresh.at<float>(i, j) = val;
             }
         }
-        
-        // compute optimal Otsu threshold
-        double thresh = cv::threshold(preThresh,junk,0,255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        
+
+		cv::Mat preThreshConverted;
+		preThresh.clone().convertTo(preThreshConverted, CV_8UC1, 255);
+		// compute optimal Otsu threshold
+        double thresh = cv::threshold(preThreshConverted,junk,0,255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+		thresh = thresh / 255.0;
+
+		int count = 0;
         // apply threshold
-        cv::threshold(preThresh,binPatchNew,thresh,255,CV_THRESH_BINARY_INV);
-        
-        ContourContainerType newContours = *new ContourContainerType;
-        
-        cv::findContours(binPatchNew, newContours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+		for (int i = 0; i < preThresh.rows; i++) {
+			for (int j = 0; j < preThresh.cols; j++) {
+				float val = preThresh.at<float>(i, j);
+				float newVal = 0;
+				if (val > thresh) {
+					newVal = 1;
+				}
+				binPatchNew.at<float>(i, j) = newVal;
+				count++;
+			}
+		}
+        //cv::threshold(preThresh,binPatchNew,(thresh/255.0),1,CV_THRESH_BINARY);
+		Debug::print(preThresh, "prethresh.txt");
+		Debug::print(binPatchNew, "bin_patch_init.txt");
+
+		binPatchNew.convertTo(binPatchNew, CV_8UC1);
+        ContourContainerType newContours;
+
+	    
+        cv::findContours(binPatchNew.clone(), newContours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
         std::vector<cv::Point2d> allCenters = MatrixOperations::findWeightedCentroids(newContours, binPatchNew, origPatch);
+
+		if (allCenters.size() > 1) {
+			std::vector<cv::Point2d>::const_iterator it = allCenters.begin();
+			std::vector<double> distances;
         
-        std::vector<cv::Point2d>::const_iterator it = allCenters.begin();
-        std::vector<double> distances;
+			double minDist = 1E10;
+			int index = 0;
+			std::vector<int> patchIndices;
         
-        double minDist = 1E10;
-        int index = 0;
-        std::vector<int> patchIndices;
+			for (; it != allCenters.end(); it++) {
+				cv::Point2d center = *it;
+				double patchValue = (rows / 2) + 0.5;
+				double x = pow((it->x - patchValue), 2);
+				double y = pow((it->y - patchValue), 2);
+            
+				double distance = pow(x + y, 0.5);
+            
+				if (distance < minDist) {
+					minDist = distance;
+				}
+            
+			}
         
-        for (; it != allCenters.end(); it++) {
-            cv::Point2d center = *it;
-            double patchValue = (rows / 2) + 0.5;
-            double x = pow((it->x - patchValue), 2);
-            double y = pow((it->y - patchValue), 2);
+			for (it = allCenters.begin(); it != allCenters.end(); it++) {
+				double patchValue = (rows / 2) + 0.5;
+				double x = pow((it->x - patchValue), 2);
+				double y = pow((it->y - patchValue), 2);
             
-            double distance = pow(x + y, 0.5);
+				double distance = pow(x + y, 0.5);
             
-            if (distance < minDist) {
-                minDist = distance;
-            }
+				if (distance == minDist) {
+					patchIndices.push_back(index);
+				}
             
-        }
+				index++;
+			}
         
-        for (it = allCenters.begin(); it != allCenters.end(); it++) {
-            double patchValue = (rows / 2) + 0.5;
-            double x = pow((it->x - patchValue), 2);
-            double y = pow((it->y - patchValue), 2);
+			index = 0;
+			ContourContainerType::const_iterator cit = newContours.begin();
+			for (; cit != newContours.end(); cit++) {
+				ContourType contour = *cit;
             
-            double distance = pow(x + y, 0.5);
+				std::vector<int>::const_iterator pit = patchIndices.begin();
+				bool inIndices = false;
+				for (; pit != patchIndices.end(); pit++) {
+					if (inIndices) {
+						break;
+					}
+					if (*pit == index) {
+						inIndices = true;
+					}
+				}
+				if (!inIndices) {
+					std::vector<cv::Point>::const_iterator rit = contour.begin();
+					for (; rit != contour.end(); rit++) {
+						cv::Point pt = *rit;
+						bool is_float = binPatchNew.type() == CV_32F;
+						bool is_int = binPatchNew.type() == CV_8UC1;
+						binPatchNew.at<unsigned char>(pt.x, pt.y) = 0;
+					}
+				}
             
-            if (distance == minDist) {
-                patchIndices.push_back(index);
-            }
-            
-            index++;
-        }
-        
-        index = 0;
-        ContourContainerType::const_iterator cit = newContours.begin();
-        for (; cit != newContours.end(); cit++) {
-            ContourType contour = *cit;
-            
-            std::vector<int>::const_iterator pit = patchIndices.begin();
-            bool inIndices = false;
-            for (; pit != patchIndices.end(); pit++) {
-                if (inIndices) {
-                    break;
-                }
-                if (*pit == index) {
-                    inIndices = true;
-                }
-            }
-            if (!inIndices) {
-                ContourType::const_iterator rit = contour.begin();
-                for (; rit != contour.end(); rit++) {
-                    cv::Point pt = *rit;
-                    binPatchNew.at<float>(pt.x, pt.y) = 0;
-                }
-            }
-            
-            index++;
-        }
+				index++;
+			}
+		}
         
         return binPatchNew;
     }
 
-    void calculateFeatures(vector<MatDict > blobs)
+    vector<MatDict > calculateFeatures(const vector<MatDict > blobs)
     {
         vector<MatDict >::const_iterator it = blobs.begin();
-        
-        Mat *patch;
-        Mat *geom;
-        Mat *binPatch;
-        Mat *huMoments;
-        
+        vector<MatDict > patchedBlobs;
+
+        std::cout << "calculating features... " << std::endl;
         for (; it != blobs.end(); it++)
         {
             MatDict p = *it;
-            patch = new cv::Mat(p.find("patch")->second);
+            Mat patch = p.find("patch")->second;
         
+			std::cout << "Calculating moments..." << std::endl;
 			// Calculate the hu moments
-			Moments m = cv::moments(*patch);
+			Moments m = cv::moments(patch);
             double huMomentsArr[7];
 			HuMoments(m, huMomentsArr);
-            huMoments = new cv::Mat(8,1,CV_64F);
+            Mat huMoments = Mat(8,1,CV_64F);
             for (int j = 0; j < 7; j++)
             {
-               huMoments->at<double>(j, 0) = huMomentsArr[j];
+               huMoments.at<double>(j, 0) = huMomentsArr[j];
             }
         
             // Phi_11 moment
             double xc = m.m10 / m.m00;
             double yc = m.m01 / m.m00;
             
-            double mu40 = momentpq(*patch, 4, 0, xc, yc);
-            double mu22 = momentpq(*patch, 2, 2, xc, yc);
-            double mu04 = momentpq(*patch, 0, 4, xc, yc);
+			double mu40 = momentpq(patch, 4, 0, xc, yc);
+            double mu22 = momentpq(patch, 2, 2, xc, yc);
+            double mu04 = momentpq(patch, 0, 4, xc, yc);
             
             double nu40 = mu40 / pow(m.m00, 3);
             double nu22 = mu22 / pow(m.m00, 3);
             double nu04 = mu04 / pow(m.m00, 3);
             
-            huMoments->at<double>(7, 0) = nu40 - 2 * nu22 + nu04;
-            
+			double last_moment = nu40 - 2 * nu22 + nu04;
+            huMoments.at<double>(7, 0) = last_moment;
+            std::cout << "Done calculating moments" << std::endl;
             
 			// Grab the geometric features and return
-            binPatch = new cv::Mat(p.find("binPatch")->second);
-            geom = new cv::Mat(geometricFeatures(*binPatch));
-            p.insert(std::make_pair<const char*, cv::Mat>("geom", *geom));
-            p.insert(std::make_pair<const char*, cv::Mat>("phi", *huMoments));
+			std::cout << "Grabbing binpatch" << std::endl;
+            Mat binPatch = p.find("binPatch")->second;
+			std::cout << "Calculating geometric features..." << std::endl;
+            Mat geom = geometricFeatures(binPatch.clone(), patch.clone());
+			std::cout << "Done calculating geometric features" << std::endl;
+            p.insert(std::make_pair<const char*, cv::Mat>("geom", geom));
+            p.insert(std::make_pair<const char*, cv::Mat>("phi", huMoments));
+			patchedBlobs.push_back(p);
         }
+		std::cout << "Done calculating features" << std::endl;
+
+		return patchedBlobs;
     }
 
 }

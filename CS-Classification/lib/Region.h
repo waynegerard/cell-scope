@@ -8,5 +8,5 @@ namespace Region
         @param img      The image to look within
         @return         Returns a dictionary of region properties, calculated using matlab.
     */
-    std::map<const char*, float> getProperties(ContourContainerType contours, cv::Mat img);
+    std::map<const char*, float> getProperties(const ContourContainerType contours, const cv::Mat img, const cv::Mat orig);
 }

@@ -2,6 +2,7 @@
 #include "Classifier.h"
 #include "Features.h"
 #include "ImageTools.h"
+#include "MatrixOperations.h"
 #include <fstream>
 
 #include "Debug.h"
@@ -31,52 +32,24 @@ namespace Classifier
 
 	vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original)
 	{
-        /*
+        
 		ContourContainerType contours;
 		cv::vector<cv::Vec4i> hierarchy;
-		cv::findContours(imageBw, contours, hierarchy, CV_RETR_LIST, CV_CHAIN_APPROX_SIMPLE);
-        Debug::printContours(contours);
+		cv::findContours(imageBw, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
         
 		unsigned long numObjects = contours.size();
         cout << "Found " << numObjects << " Contours in image" << endl;
         
-		// Get the Hu moments
-        cout << "Calculating moments..." << endl;
-		cv::vector<Moments> mu;
-        
-        ContourContainerType::iterator c_it = contours.begin();
-		for(; c_it != contours.end(); c_it++)
-		{
-            ContourType ctr = *c_it;
-			mu.push_back(cv::moments(ctr, false));
-		}
-    
-		//  Get the mass centers
-        cout << "Calculating mass centers..." << endl;
-        vector<Point> centroids;
-        cv::vector<Moments>::iterator m_it = mu.begin();
-		for (; m_it != mu.end(); m_it++) {
-            Moments val = *m_it;
-            if (val.m00 != 0)
-            {
-                int x = (int) (val.m10 / val.m00);
-                int y = (int) (val.m01 / val.m00);
-                Point pt = *new Point(x, y);
-                centroids.push_back(pt);
-            }
-		}
-        
-        Debug::printCentroids(centroids);
-        exit(0);
-        */
-        vector<Point> centroids = Debug::loadCentroids();
+		vector<cv::Point2d> centroids = MatrixOperations::findWeightedCentroids(contours,imageBw,original);
+   
+        //vector<Point> centroids = Debug::loadCentroids();
 		int patchCount = 0;
 		
 		// Remove partial patches
         cout << "Removing partial patches..." << endl;
 		vector<MatDict > stats;
         
-        vector<Point>::iterator it = centroids.begin();
+        vector<cv::Point2d>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
 			Point pt = *it;
 			int row = (int)pt.x;
@@ -85,29 +58,28 @@ namespace Classifier
 			bool partial = Features::checkPartialPatch(row, col, imageBw.rows, imageBw.cols);
 			if (!partial)
 			{
-				cv::Mat *rowMat = new cv::Mat(1, 1, CV_8UC1);
-				cv::Mat *colMat = new cv::Mat(1, 1, CV_8UC1);
-				rowMat->at<uchar>(0, 0) = row;
-				colMat->at<uchar>(0, 0) = col;
-                cv::Mat *patch = new cv::Mat(Features::makePatch(row, col, original));
-                //cv::Mat patchClone = patch.clone();
-                cv::Mat *binPatch = new cv::Mat(Features::makePatch(row, col, original));
-                binPatch->convertTo(*binPatch, CV_8UC1);
-                //cv::Mat binPatch = *new cv::Mat(Features::calculateBinarizedPatch(patchClone));
+				cv::Mat rowMat = cv::Mat(1, 1, CV_32F);
+				cv::Mat colMat = cv::Mat(1, 1, CV_32F);
+				rowMat.at<float>(0, 0) = (float)row;
+				colMat.at<float>(0, 0) = (float)col;
+				
+                cv::Mat patch = *new cv::Mat(Features::makePatch(row, col, original));
+                cv::Mat binPatch = *new cv::Mat(Features::calculateBinarizedPatch(patch));
 				MatDict data;
 
-				data.insert(std::make_pair<const char*, cv::Mat>("row", *rowMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("col", *colMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("patch", *patch));
-				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", *binPatch));
+				data.insert(std::make_pair<const char*, cv::Mat>("row", rowMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("col", colMat));
+				data.insert(std::make_pair<const char*, cv::Mat>("patch", patch));
+				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", binPatch));
 				patchCount++;
+
 				stats.push_back(data);
 			}
 		}
         cout << "Final patch count: " << patchCount << endl;
         
 		// Calculate features
-		Features::calculateFeatures(stats);
+		stats = Features::calculateFeatures(stats);
         return stats;
 	}
 
@@ -168,20 +140,37 @@ namespace Classifier
             MatDict patch = *it;
             cv::Mat geom = patch.find("geom")->second;
             cv::Mat phi = patch.find("phi")->second;
-            int i = 0;
-            for (; i < phi.rows; i++)
+            int index = 0;
+            for (int i = 0; i < phi.rows; i++)
             {
-                featuresMatrix.at<double>(row, i) = phi.at<double>(i, 1);
+				double val = phi.at<double>(i, 0);
+                featuresMatrix.at<double>(row, index) = val;
+				index++;
             }
-            for (; i < geom.rows; i++)
+            for (int i = 0; i < geom.rows; i++)
             {
-                featuresMatrix.at<double>(row, i) = geom.at<double>(i, 1);
+				cv::Mat rowMat = patch.find("row")->second;
+				cv::Mat colMat = patch.find("col")->second;
+				float patchrow = rowMat.at<float>(0,0);
+				float patchcol = colMat.at<float>(0,0);
+				bool is_float = geom.type() == CV_32F;
+				bool is_double = geom.type() == CV_64F;
+				float geom_val = geom.at<float>(i, 0);
+				double val = (double) geom_val;
+				bool debug = false;
+				if (geom_val < 0.01) {
+					debug = true;
+				}
+				if (debug) {
+					int x = 1;
+				}
+                featuresMatrix.at<double>(row, index) = (double) geom_val;
+				index++;
             }
             row++;
         }
         
-        //Debug::print(featuresMatrix, "xtest.txt");
-        
+        Debug::print(featuresMatrix, "xtest.txt");
     
         // minmax normalization of features
         cv::Mat maxMatrix = repMat(train_max, featuresMatrix.rows);
@@ -194,7 +183,8 @@ namespace Classifier
         cv::subtract(maxMatrix, minMatrix, denominator);
         cv::divide(numerator, denominator, testMatrix);
         
-        Debug::print(featuresMatrix, "xtest_final.txt");
+		Debug::print(numerator, "numerator.txt");
+        Debug::print(testMatrix, "xtest_final.txt");
         
         // Classify objects and get probabilities
         vector<double> prob_results;
@@ -216,11 +206,12 @@ namespace Classifier
         }
         
         cout << "Finished classifying features" << endl;
+		Debug::printVector(prob_results, "dvtest.txt");
         return prob_results;
     }
     
     bool comparator ( const pair<double, int>& l, const pair<double, int>& r)
-    { return l.first < r.first; };
+    { return l.first > r.first; };
 
     
 	bool runWithImage(cv::Mat image)
@@ -232,13 +223,16 @@ namespace Classifier
 		}
 
 		cv::Mat normalizedImage = initializeImage(image);
-		//cv::Mat imageBw = objectIdentification(normalizedImage);
+		cv::Mat imageBw = objectIdentification(normalizedImage);
 		
 		// Feature detection
-		cv::Mat imageBw = Debug::loadMatrix("imbw.txt", 1944, 2592, CV_8UC1);
-        vector<MatDict > features = featureDetection(imageBw, normalizedImage);
+		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
+		
         Debug::printFeatures(features, "phi");
-        
+		Debug::printFeatures(features, "origPatch");
+		Debug::printFeatures(features, "binPatch");
+		Debug::printFeatures(features, "geom");
+
         // Classify Objects
         vector<double> prob_results = classifyObjects(features);
 

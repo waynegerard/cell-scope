@@ -4,9 +4,9 @@ using namespace cv;
 
 namespace Features
 {
-    void calculateFeatures(vector<MatDict > blobs);
+    vector<MatDict > calculateFeatures(const vector<MatDict > blobs);
 	bool checkPartialPatch(int row, int col, int maxRow, int maxCol);
-	Mat geometricFeatures(Mat* binPatch);
-	Mat makePatch(int row, int col, Mat original);
-    Mat calculateBinarizedPatch(Mat origPatch);
+	Mat geometricFeatures(const Mat binPatch);
+	Mat makePatch(const int row, const int col, const Mat original);
+    Mat calculateBinarizedPatch(const Mat origPatch);
 }
