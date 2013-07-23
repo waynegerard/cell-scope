@@ -17,7 +17,6 @@
     #define TRAIN_MIN_PATH "C:\\Users\\Wayne\\Dropbox\\CS_Comparisons\\train_min.csv"
 #endif
 
-using namespace cv;
 using namespace std;
 
 namespace Debug

@@ -6,26 +6,24 @@
 //  Copyright (c) 2013 Matthew Bakalar. All rights reserved.
 //
 
-#include "lassifier.h"
+#include "Classifier.h"
 #import "Runner.h"
 #import "Globals.h"
 
 @implementation Runner
 
-- (Mat)cvMatWithImage:(UIImage *)image
+- (cv::Mat)cvMatWithImage:(UIImage *)image
 {
     CGColorSpaceRef colorSpace = CGImageGetColorSpace(image.CGImage);
     CGFloat cols = image.size.width;
     CGFloat rows = image.size.height;
-    Mat cvMat;
+    cv::Mat cvMat;
     
     if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelRGB) { // 3 channels
-        cvMat = Mat(rows, cols, CV_8UC3);
+        cvMat = cv::Mat(rows, cols, CV_8UC3);
     } else if (CGColorSpaceGetModel(colorSpace) == kCGColorSpaceModelMonochrome) { // 1 channel
-        cvMat = Mat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
-    } else {
-        CSLog(@"Didnt understand colorspace! %@", colorSpace);
-    }
+        cvMat = cv::Mat(rows, cols, CV_8UC1); // 8 bits per component, 1 channels
+    } 
     
     CGContextRef contextRef = CGBitmapContextCreate(cvMat.data,                 // Pointer to data
                                                     cols,                       // Width of bitmap
@@ -44,12 +42,11 @@
 }
 
 
-- (void) runWithHogFeatures:(BOOL) hogFeatures wthPatchSize:(int) patchSz {
+- (void) run {
     
     /////////////////////////////////
     // Handle incorrect parameters //
     /////////////////////////////////
-    int patchSize  = (patchSz % 2 != 0) ? 24 : patchSz;
     
     NSDate *start = [NSDate date];
     
@@ -68,16 +65,16 @@
     ////////////////////
     
     for (int i = 0; i < count; i++) {
-        CSLog(@"Processing image %d of %d", i, count);
+        NSLog(@"Processing image %d of %d", i, count);
         UIImage* ui_img = [images objectAtIndex:i];
-        Mat converted_img = [self cvMatWithImage:ui_img];
+        cv::Mat converted_img = [self cvMatWithImage:ui_img];
         
-        Classifier::runWithImage(converted_img);
+        cv::Mat results = Classifier::runWithImage(converted_img);
     }
     
     NSDate *end = [NSDate date];
     NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
-    CSLog(@"Execution Time: %f", executionTime);
+    NSLog(@"Execution Time: %f", executionTime);
     
 }
 

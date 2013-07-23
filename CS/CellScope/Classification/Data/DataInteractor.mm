@@ -29,9 +29,7 @@
         col = 0;
         for (int j = 0; j < [splitRow count]; j++) {
             NSString* item = [splitRow objectAtIndex:j];
-            CSLog(@"Trying to add item %@", item);
             csvMat.at<float>(row, col) = [item floatValue];
-            CSLog(@"Added item: %@", item);
             col++;
         }
         row++;
@@ -58,7 +56,6 @@
     
     NSError *error;
     [context save:&error];
-    CSLog(@"Saving down to core data, error: %@", error);
 }
 
 + (NSString*) tknKeyHelper: (NSString*) str {

@@ -20,10 +20,8 @@
 
 /**
     Main runner function. Prompts the user to choose a series of images, and then
-    Instantiates an ImageRunner for each image.
-    @param hog Whether to do HoG features or not
-    @param patchSz The patch size
+    classifies the image
  */
-- (void) runWithHogFeatures:(BOOL) hog wthPatchSize:(int) patchSz;
+- (void) run;
 
 @end

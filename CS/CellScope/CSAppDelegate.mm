@@ -28,7 +28,7 @@
     // 2) This needs to be integrated with the main app
     // 3) These settings should come fro ma menu or something
     Runner* runner = [[Runner alloc] init];
-    [runner runWithHogFeatures:NO wthPatchSize:16];
+    [runner run];
     return YES;
     
     LoginViewController *rootView = (LoginViewController *)self.window.rootViewController;

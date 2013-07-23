@@ -72,28 +72,32 @@
 		AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC024C5617013AAC0071DD14 /* DataInteractor.mm */; };
 		AC024C59170143880071DD14 /* white.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC024C58170143880071DD14 /* white.jpg */; };
 		AC0353A8178610AF001AE3FA /* lib in Resources */ = {isa = PBXBuildFile; fileRef = AC0353A7178610AF001AE3FA /* lib */; };
+		AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
+		AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
+		AC1CF6A8179E52DB007FA438 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69B179E52DB007FA438 /* Classifier.cpp */; };
+		AC1CF6A9179E52DB007FA438 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69B179E52DB007FA438 /* Classifier.cpp */; };
+		AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
+		AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
+		AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */; };
+		AC1CF6AD179E52DB007FA438 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */; };
+		AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */; };
+		AC1CF6AF179E52DB007FA438 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */; };
+		AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A4179E52DB007FA438 /* Region.cpp */; };
+		AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A4179E52DB007FA438 /* Region.cpp */; };
 		AC24EF3A1738742800B50B36 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC24EF391738742800B50B36 /* model_out.txt */; };
 		AC3B06A016F50EFA00A90983 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */; };
-		AC523DCE1746AFFD003E9A73 /* Patch.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC523DCD1746AFFD003E9A73 /* Patch.mm */; };
-		AC56072516D30055002ADF9C /* Debug.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC56072416D30055002ADF9C /* Debug.mm */; };
-		AC57045A1674252F0071225E /* ImageRunner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC5704591674252F0071225E /* ImageRunner.mm */; };
-		AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC7B129F16DC3A1B002AB47A /* Region.mm */; };
 		ACA1287A16FEA72000E2D03A /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1283C16FD241C00E2D03A /* libopencv_highgui.a */; };
 		ACA1287B16FEA72500E2D03A /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282216FD241C00E2D03A /* libopencv_core.a */; };
 		ACA1287C16FEA72A00E2D03A /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282A16FD241C00E2D03A /* libopencv_imgproc.a */; };
 		ACAD722E16F6B58B00D557BC /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722D16F6B58B00D557BC /* train_max.csv */; };
 		ACAD723016F6B59200D557BC /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722F16F6B59200D557BC /* train_min.csv */; };
 		ACAD723216F6B59700D557BC /* 1350_Clay_Fluor_Yes.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */; };
-		ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641DC16842434006B7B41 /* ImageTools.mm */; };
-		ACB641FB1686D760006B7B41 /* Blob.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACB641FA1686D760006B7B41 /* Blob.mm */; };
 		ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B416C209DB00D7A384 /* svm-predict.c */; };
 		ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B516C209DB00D7A384 /* svm-scale.c */; };
 		ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B616C209DB00D7A384 /* svm-train.c */; };
 		ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B716C209DB00D7A384 /* svm.cpp */; };
 		ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
 		ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
-		ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACD3255D16E6E96B0027FB50 /* Contour.mm */; };
-		ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACEF530D169557AF00348916 /* MatrixOperations.mm */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
 /* End PBXBuildFile section */
 
@@ -364,35 +368,31 @@
 		AC024C5617013AAC0071DD14 /* DataInteractor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DataInteractor.mm; path = Classification/Data/DataInteractor.mm; sourceTree = "<group>"; };
 		AC024C58170143880071DD14 /* white.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = white.jpg; path = CellScope/resources/testing/white.jpg; sourceTree = "<group>"; };
 		AC0353A7178610AF001AE3FA /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = "../../CS-Classification/lib"; sourceTree = "<group>"; };
+		AC1CF699179E52DB007FA438 /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobClass.cpp; sourceTree = "<group>"; };
+		AC1CF69A179E52DB007FA438 /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClass.h; sourceTree = "<group>"; };
+		AC1CF69B179E52DB007FA438 /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Classifier.cpp; sourceTree = "<group>"; };
+		AC1CF69C179E52DB007FA438 /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Classifier.h; sourceTree = "<group>"; };
+		AC1CF69D179E52DB007FA438 /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Features.cpp; sourceTree = "<group>"; };
+		AC1CF69E179E52DB007FA438 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Features.h; sourceTree = "<group>"; };
+		AC1CF69F179E52DB007FA438 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
+		AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageTools.cpp; sourceTree = "<group>"; };
+		AC1CF6A1179E52DB007FA438 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageTools.h; sourceTree = "<group>"; };
+		AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixOperations.cpp; sourceTree = "<group>"; };
+		AC1CF6A3179E52DB007FA438 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixOperations.h; sourceTree = "<group>"; };
+		AC1CF6A4179E52DB007FA438 /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Region.cpp; sourceTree = "<group>"; };
+		AC1CF6A5179E52DB007FA438 /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Region.h; sourceTree = "<group>"; };
 		AC24EF391738742800B50B36 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_out.txt; path = Resources/model_out.txt; sourceTree = "<group>"; };
 		AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		AC523DCC1746AFFD003E9A73 /* Patch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Patch.h; path = Classification/Features/Patch.h; sourceTree = "<group>"; };
-		AC523DCD1746AFFD003E9A73 /* Patch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Patch.mm; path = Classification/Features/Patch.mm; sourceTree = "<group>"; };
-		AC56072316D30055002ADF9C /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = Classification/Data/Debug.h; sourceTree = "<group>"; };
-		AC56072416D30055002ADF9C /* Debug.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Debug.mm; path = Classification/Data/Debug.mm; sourceTree = "<group>"; };
-		AC5704581674252F0071225E /* ImageRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageRunner.h; path = Classification/Run/ImageRunner.h; sourceTree = "<group>"; };
-		AC5704591674252F0071225E /* ImageRunner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageRunner.mm; path = Classification/Run/ImageRunner.mm; sourceTree = "<group>"; };
-		AC7B129E16DC3A1B002AB47A /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Region.h; path = Classification/Features/Region.h; sourceTree = "<group>"; };
-		AC7B129F16DC3A1B002AB47A /* Region.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Region.mm; path = Classification/Features/Region.mm; sourceTree = "<group>"; };
 		ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OpenCV-iOS.xcodeproj"; path = "../OpenCV-iOS/OpenCV-iOS/OpenCV-iOS.xcodeproj"; sourceTree = "<group>"; };
 		ACAD722D16F6B58B00D557BC /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_max.csv; path = CellScope/resources/train_max.csv; sourceTree = "<group>"; };
 		ACAD722F16F6B59200D557BC /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_min.csv; path = CellScope/resources/train_min.csv; sourceTree = "<group>"; };
 		ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1350_Clay_Fluor_Yes.png; path = CellScope/resources/testing/1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
-		ACB641DB16842434006B7B41 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = Classification/Objects/ImageTools.h; sourceTree = "<group>"; };
-		ACB641DC16842434006B7B41 /* ImageTools.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ImageTools.mm; path = Classification/Objects/ImageTools.mm; sourceTree = "<group>"; };
-		ACB641F91686D75F006B7B41 /* Blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blob.h; path = Classification/Objects/Blob.h; sourceTree = "<group>"; };
-		ACB641FA1686D760006B7B41 /* Blob.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Blob.mm; path = Classification/Objects/Blob.mm; sourceTree = "<group>"; };
-		ACB641FC16876AE3006B7B41 /* Globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = Classification/Globals.h; sourceTree = "<group>"; };
 		ACB705B416C209DB00D7A384 /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "LibSVM/svm-predict.c"; sourceTree = "<group>"; };
 		ACB705B516C209DB00D7A384 /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "LibSVM/svm-scale.c"; sourceTree = "<group>"; };
 		ACB705B616C209DB00D7A384 /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "LibSVM/svm-train.c"; sourceTree = "<group>"; };
 		ACB705B716C209DB00D7A384 /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = LibSVM/svm.cpp; sourceTree = "<group>"; };
 		ACB705B816C209DB00D7A384 /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = LibSVM/svm.h; sourceTree = "<group>"; };
 		ACC23A21176241C000C6BF9D /* algorithm_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = algorithm_settings.plist; path = ../Resources/algorithm_settings.plist; sourceTree = "<group>"; };
-		ACD3255A16E6E5B20027FB50 /* Contour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Contour.h; path = Classification/Features/Contour.h; sourceTree = "<group>"; };
-		ACD3255D16E6E96B0027FB50 /* Contour.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Contour.mm; path = Classification/Features/Contour.mm; sourceTree = "<group>"; };
-		ACEF530D169557AF00348916 /* MatrixOperations.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = MatrixOperations.mm; path = Classification/Data/MatrixOperations.mm; sourceTree = "<group>"; };
-		ACEF530E169557AF00348916 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = Classification/Data/MatrixOperations.h; sourceTree = "<group>"; };
 		ACFC05AD1698D13500411641 /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = Classification/Run/Runner.h; sourceTree = "<group>"; };
 		ACFC05AE1698D13500411641 /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = Classification/Run/Runner.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -593,7 +593,6 @@
 			isa = PBXGroup;
 			children = (
 				AC0353A61786106D001AE3FA /* Classifier */,
-				AC03539717861054001AE3FA /* OLD CODE */,
 				ACB705B216C2097900D7A384 /* LibSVM */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */,
@@ -671,72 +670,29 @@
 			path = CellScope/Images;
 			sourceTree = "<group>";
 		};
-		AC03539717861054001AE3FA /* OLD CODE */ = {
-			isa = PBXGroup;
-			children = (
-				AC7B129D16DC385E002AB47A /* Features */,
-				AC7B129C16DC384C002AB47A /* Other */,
-				AC7B129B16DC3841002AB47A /* Matrix Operations */,
-				AC7B129A16DC3827002AB47A /* Main */,
-			);
-			name = "OLD CODE";
-			sourceTree = "<group>";
-		};
 		AC0353A61786106D001AE3FA /* Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				AC1CF699179E52DB007FA438 /* BlobClass.cpp */,
+				AC1CF69A179E52DB007FA438 /* BlobClass.h */,
+				AC1CF69B179E52DB007FA438 /* Classifier.cpp */,
+				AC1CF69C179E52DB007FA438 /* Classifier.h */,
+				AC1CF69D179E52DB007FA438 /* Features.cpp */,
+				AC1CF69E179E52DB007FA438 /* Features.h */,
+				AC1CF69F179E52DB007FA438 /* Globals.h */,
+				AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */,
+				AC1CF6A1179E52DB007FA438 /* ImageTools.h */,
+				AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */,
+				AC1CF6A3179E52DB007FA438 /* MatrixOperations.h */,
+				AC1CF6A4179E52DB007FA438 /* Region.cpp */,
+				AC1CF6A5179E52DB007FA438 /* Region.h */,
+				AC024C5517013AAC0071DD14 /* DataInteractor.h */,
+				AC024C5617013AAC0071DD14 /* DataInteractor.mm */,
 				AC0353A7178610AF001AE3FA /* lib */,
 				ACFC05AD1698D13500411641 /* Runner.h */,
 				ACFC05AE1698D13500411641 /* Runner.mm */,
 			);
 			name = Classifier;
-			sourceTree = "<group>";
-		};
-		AC7B129A16DC3827002AB47A /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				AC5704581674252F0071225E /* ImageRunner.h */,
-				AC5704591674252F0071225E /* ImageRunner.mm */,
-			);
-			name = Main;
-			sourceTree = "<group>";
-		};
-		AC7B129B16DC3841002AB47A /* Matrix Operations */ = {
-			isa = PBXGroup;
-			children = (
-				ACEF530D169557AF00348916 /* MatrixOperations.mm */,
-				ACEF530E169557AF00348916 /* MatrixOperations.h */,
-			);
-			name = "Matrix Operations";
-			sourceTree = "<group>";
-		};
-		AC7B129C16DC384C002AB47A /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				ACB641FC16876AE3006B7B41 /* Globals.h */,
-				ACB641DB16842434006B7B41 /* ImageTools.h */,
-				ACB641DC16842434006B7B41 /* ImageTools.mm */,
-				AC56072316D30055002ADF9C /* Debug.h */,
-				AC56072416D30055002ADF9C /* Debug.mm */,
-				AC024C5517013AAC0071DD14 /* DataInteractor.h */,
-				AC024C5617013AAC0071DD14 /* DataInteractor.mm */,
-			);
-			name = Other;
-			sourceTree = "<group>";
-		};
-		AC7B129D16DC385E002AB47A /* Features */ = {
-			isa = PBXGroup;
-			children = (
-				ACB641F91686D75F006B7B41 /* Blob.h */,
-				ACB641FA1686D760006B7B41 /* Blob.mm */,
-				AC7B129E16DC3A1B002AB47A /* Region.h */,
-				AC7B129F16DC3A1B002AB47A /* Region.mm */,
-				ACD3255A16E6E5B20027FB50 /* Contour.h */,
-				ACD3255D16E6E96B0027FB50 /* Contour.mm */,
-				AC523DCC1746AFFD003E9A73 /* Patch.h */,
-				AC523DCD1746AFFD003E9A73 /* Patch.mm */,
-			);
-			name = Features;
 			sourceTree = "<group>";
 		};
 		ACA1280C16FD241C00E2D03A /* Products */ = {
@@ -1086,20 +1042,18 @@
 				9B5632CD15FAADD90035AEBC /* UIImage+Alpha.m in Sources */,
 				9B5632CE15FAADD90035AEBC /* UIImage+Resize.m in Sources */,
 				9B5632CF15FAADD90035AEBC /* UIImage+RoundedCorner.m in Sources */,
-				AC57045A1674252F0071225E /* ImageRunner.mm in Sources */,
-				ACB641DD16842434006B7B41 /* ImageTools.mm in Sources */,
-				ACB641FB1686D760006B7B41 /* Blob.mm in Sources */,
-				ACEF530F169557AF00348916 /* MatrixOperations.mm in Sources */,
 				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
 				ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */,
 				ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */,
 				ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */,
 				ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */,
-				AC56072516D30055002ADF9C /* Debug.mm in Sources */,
-				AC7B12A016DC3A1B002AB47A /* Region.mm in Sources */,
-				ACD3255E16E6E96B0027FB50 /* Contour.mm in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
-				AC523DCE1746AFFD003E9A73 /* Patch.mm in Sources */,
+				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
+				AC1CF6A8179E52DB007FA438 /* Classifier.cpp in Sources */,
+				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
+				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
+				AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
+				AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1108,6 +1062,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B6BF0E415E19ACD002834C5 /* CellScopeTests.m in Sources */,
+				AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */,
+				AC1CF6A9179E52DB007FA438 /* Classifier.cpp in Sources */,
+				AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */,
+				AC1CF6AD179E52DB007FA438 /* ImageTools.cpp in Sources */,
+				AC1CF6AF179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
+				AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1166,6 +1126,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1180,6 +1141,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1195,6 +1157,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1202,6 +1165,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
