@@ -8,6 +8,9 @@ namespace Debug
     
     vector<Point> loadCentroids()
     {
+		if (!DEBUG) {
+			return *new vector<Point>;
+		}
         vector<Point> *centroids = new vector<Point>();
         
         string row_path = MATLAB_FOLDER;
@@ -36,6 +39,10 @@ namespace Debug
     
     Mat loadMatrix(const char* fileName, int rows, int cols, int type)
 	{
+		if (!DEBUG) {
+			return cv::Mat(1, 1, CV_8UC1);
+		}
+
 		Mat returnMatrix = Mat(rows, cols, type);
         
 		string path = MATLAB_FOLDER;
@@ -78,6 +85,10 @@ namespace Debug
 
 	void printStats(cv::Mat mat, const char* fileName)
 	{
+		if (!DEBUG) {
+			return;
+		}
+
 		string path = OUTPUT_FOLDER;
 		path += fileName;
 		char* full_path = (char*)path.c_str();
@@ -126,6 +137,10 @@ namespace Debug
     
     void printVector(vector<double> vec, const char* name)
     {
+		if (!DEBUG) {
+			return;
+		}
+
 		string path = OUTPUT_FOLDER;
 		path += name;
 		char* full_path = (char*)path.c_str();
@@ -150,6 +165,10 @@ namespace Debug
     
     void printPairVector(vector<pair<double, int> > vec, const char* name)
     {
+		if (!DEBUG) {
+			return;
+		}
+
 		string path = OUTPUT_FOLDER;
 		path += name;
 		char* full_path = (char*)path.c_str();
@@ -174,6 +193,10 @@ namespace Debug
 
 	void print(cv::Mat mat, const char* name)
 	{
+		if (!DEBUG) {
+			return;
+		}
+
 		string path = OUTPUT_FOLDER;
 		path += name;
 		char* full_path = (char*)path.c_str();
@@ -211,6 +234,10 @@ namespace Debug
     
     void printContours(ContourContainerType contours)
     {
+		if (!DEBUG) {
+			return;
+		}
+
         ContourContainerType::iterator c_it = contours.begin();
 		for(; c_it != contours.end(); c_it++)
 		{
@@ -229,6 +256,10 @@ namespace Debug
     
     void printCentroids(vector<Point> centroids)
     {
+		if (!DEBUG) {
+			return;
+		}
+
         sort(centroids.begin(), centroids.end(), centroid_comparator);
         
         string path = OUTPUT_FOLDER;
@@ -260,6 +291,10 @@ namespace Debug
 
 	void printFeatures(const vector<MatDict > features, const char* feature)
 	{
+		if (!DEBUG) {
+			return;
+		}
+
         vector<MatDict >::const_iterator it = features.begin();
         for (; it != features.end(); it++)
         {

@@ -14,7 +14,7 @@ namespace BlobClass
 
 		int kernelSize = 17;               // Size of Gaussian kernel // 16 + 1
 		float kernelStdDev  = 1.5f;         // StdDev of Gaussian kernel
-		double correlationThreshold = 0.122;  // Threshold on normalized cross-correlation
+		double correlationThreshold = 0.125;//0.130;  // Threshold on normalized cross-correlation
 
 		cv::GaussianBlur(matrix, correlationMatrix, cv::Size(kernelSize, kernelSize), kernelStdDev, kernelStdDev); 
 		cv::threshold(correlationMatrix, binarizedMatrix, correlationThreshold, 1.0, CV_THRESH_BINARY);
@@ -23,7 +23,7 @@ namespace BlobClass
 		int type = cv::MORPH_RECT;
 		cv::Mat element = getStructuringElement(type, cv::Size(2,2));
 		cv::morphologyEx(binarizedMatrix, result, cv::MORPH_CLOSE, element);
-    
+		
 		return result;
 	}
 

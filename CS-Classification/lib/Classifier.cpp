@@ -185,6 +185,8 @@ namespace Classifier
         
 		Debug::print(numerator, "numerator.txt");
         Debug::print(testMatrix, "xtest_final.txt");
+
+		//testMatrix = Debug::loadMatrix("xtest_final.txt", 120, 22, CV_64F);
         
         // Classify objects and get probabilities
         vector<double> prob_results;
@@ -214,17 +216,19 @@ namespace Classifier
     { return l.first > r.first; };
 
     
-	bool runWithImage(cv::Mat image)
+	cv::Mat runWithImage(const cv::Mat image)
 	{
         cout << "Running with image\n";
 		if(!image.data) {
             cout << "Image has no data! Returning.\n";
-			return false;
+			return cv::Mat::zeros(1,1,CV_8UC1);
 		}
 
 		cv::Mat normalizedImage = initializeImage(image);
 		cv::Mat imageBw = objectIdentification(normalizedImage);
-		
+		//Debug::print(imageBw, "imbw.txt");
+		//cv::Mat imageBw = Debug::loadMatrix("imbw.txt", normalizedImage.rows, normalizedImage.cols, CV_8UC1);
+
 		// Feature detection
 		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
 		
@@ -248,20 +252,72 @@ namespace Classifier
         
         sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
         Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
-        
-        /*
-        // Drop Low-confidence Patches
-        Patch* patch = [[Patch alloc] init];
-        NSMutableIndexSet* lowConfidencePatches = [patch findLowConfidencePatches];
-        [_sortedScores removeObjectsAtIndexes:lowConfidencePatches];
-        [_centroids removeObjectsAtIndexes:lowConfidencePatches];
-        
-        // Non-max Suppression Based on Scores
-        NSMutableIndexSet* suppressedPatches = [patch findSuppressedPatches];
-        [_sortedScores removeObjectsAtIndexes:suppressedPatches];
-        [_centroids removeObjectsAtIndexes:suppressedPatches];
-        */
 
-		return true;
+		int too_close = 0;
+		int too_low = 0;
+		index = 0;
+		cv::Mat scores_and_centers;
+		vector<pair<double, int> >::const_iterator pit = prob_results_with_index.begin();
+
+		float max_distance = pow(pow(normalizedImage.rows, 2.0) + pow(normalizedImage.cols, 2.0), 0.5);
+		for (; pit != prob_results_with_index.end(); pit++) {
+			pair<double, int> score_with_index = *pit;
+			double score = score_with_index.first;
+			int score_index = score_with_index.second;
+
+			if (score > 1E-6) {
+				MatDict feature = features[score_index];
+				cv::Mat rowMat = feature.find("row")->second;
+				cv::Mat colMat = feature.find("col")->second;
+				int row = (int) rowMat.at<float>(0, 0);
+				int col = (int) colMat.at<float>(0, 0);
+
+				float min_distance = max_distance;
+				int min_index = 0;
+				int counter = 0;
+
+				vector<MatDict >::const_iterator fit = features.begin();
+				for (; fit != features.end(); fit++) {
+					MatDict other_feature = *fit;
+					
+					cv::Mat other_row_mat = other_feature.find("row")->second;
+					cv::Mat other_col_mat = other_feature.find("col")->second;
+					int other_row = (int) other_row_mat.at<float>(0, 0);
+					int other_col = (int) other_col_mat.at<float>(0, 0);
+
+					if (other_row != row || other_col != col) {
+						float distance = pow(pow(row - other_row, 2.0) + pow(col - other_col, 2.0), 0.5);
+						if (distance < min_distance) {
+							min_distance = distance;
+							min_index = counter;
+						}
+					}
+					counter++;
+				}
+
+				float too_close = 0.75 * PATCH_SIZE;
+				if (min_distance <= too_close) {
+					MatDict feature = features[min_index];
+					cv::Mat close_feature_row = feature.find("row")->second;
+					cv::Mat close_feature_col = feature.find("col")->second;
+					close_feature_row.at<float>(0, 0) = -1 * normalizedImage.rows;
+					close_feature_col.at<float>(0, 0) = -1 * normalizedImage.cols;
+					feature.insert(std::pair<const char*, cv::Mat>("row", close_feature_row));
+					feature.insert(std::pair<const char*, cv::Mat>("col", close_feature_col));
+					features[min_index] = feature;
+					too_close++;
+				} else {
+					scores_and_centers.create(index + 1, 3, CV_32F);
+					scores_and_centers.at<float>(index, 0) = (float) score;
+					scores_and_centers.at<float>(index, 1) = (float) row;
+					scores_and_centers.at<float>(index, 2) = (float) col;
+				}
+			} else {
+				too_low++;
+			}
+			index++;
+		} 
+        
+		return scores_and_centers;
 	}
 }
