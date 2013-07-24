@@ -1,0 +1,288 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AC4BB20B17A092FC0012855D /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB1FD17A092FC0012855D /* BlobClass.cpp */; };
+		AC4BB20C17A092FC0012855D /* BlobClass.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB1FE17A092FC0012855D /* BlobClass.h */; };
+		AC4BB20D17A092FC0012855D /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB1FF17A092FC0012855D /* Classifier.cpp */; };
+		AC4BB20E17A092FC0012855D /* Classifier.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20017A092FC0012855D /* Classifier.h */; };
+		AC4BB20F17A092FC0012855D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20117A092FC0012855D /* Debug.cpp */; };
+		AC4BB21017A092FC0012855D /* Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20217A092FC0012855D /* Debug.h */; };
+		AC4BB21117A092FC0012855D /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20317A092FC0012855D /* Features.cpp */; };
+		AC4BB21217A092FC0012855D /* Features.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20417A092FC0012855D /* Features.h */; };
+		AC4BB21317A092FC0012855D /* Globals.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20517A092FC0012855D /* Globals.h */; };
+		AC4BB21417A092FC0012855D /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20617A092FC0012855D /* ImageTools.cpp */; };
+		AC4BB21517A092FC0012855D /* ImageTools.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20717A092FC0012855D /* ImageTools.h */; };
+		AC4BB21617A092FC0012855D /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20817A092FC0012855D /* MatrixOperations.cpp */; };
+		AC4BB21717A092FC0012855D /* MatrixOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20917A092FC0012855D /* MatrixOperations.h */; };
+		AC4BB21817A092FC0012855D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20A17A092FC0012855D /* Region.cpp */; };
+		AC4BB22D17A0991C0012855D /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22817A0991C0012855D /* svm-predict.c */; };
+		AC4BB22E17A0991C0012855D /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22917A0991C0012855D /* svm-scale.c */; };
+		AC4BB22F17A0991C0012855D /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22A17A0991C0012855D /* svm-train.c */; };
+		AC4BB23017A0991C0012855D /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22B17A0991C0012855D /* svm.cpp */; };
+		AC4BB23117A0991C0012855D /* svm.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB22C17A0991C0012855D /* svm.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		AC4BB1FD17A092FC0012855D /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../BlobClass.cpp; sourceTree = "<group>"; };
+		AC4BB1FE17A092FC0012855D /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../BlobClass.h; sourceTree = "<group>"; };
+		AC4BB1FF17A092FC0012855D /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Classifier.cpp; path = ../Classifier.cpp; sourceTree = "<group>"; };
+		AC4BB20017A092FC0012855D /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Classifier.h; path = ../Classifier.h; sourceTree = "<group>"; };
+		AC4BB20117A092FC0012855D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../Debug.cpp; sourceTree = "<group>"; };
+		AC4BB20217A092FC0012855D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../Debug.h; sourceTree = "<group>"; };
+		AC4BB20317A092FC0012855D /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Features.cpp; path = ../Features.cpp; sourceTree = "<group>"; };
+		AC4BB20417A092FC0012855D /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Features.h; path = ../Features.h; sourceTree = "<group>"; };
+		AC4BB20517A092FC0012855D /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = ../Globals.h; sourceTree = "<group>"; };
+		AC4BB20617A092FC0012855D /* ImageTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageTools.cpp; path = ../ImageTools.cpp; sourceTree = "<group>"; };
+		AC4BB20717A092FC0012855D /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = ../ImageTools.h; sourceTree = "<group>"; };
+		AC4BB20817A092FC0012855D /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatrixOperations.cpp; path = ../MatrixOperations.cpp; sourceTree = "<group>"; };
+		AC4BB20917A092FC0012855D /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = ../MatrixOperations.h; sourceTree = "<group>"; };
+		AC4BB20A17A092FC0012855D /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Region.cpp; path = ../Region.cpp; sourceTree = "<group>"; };
+		AC4BB22817A0991C0012855D /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "../../LibSVM/svm-predict.c"; sourceTree = "<group>"; };
+		AC4BB22917A0991C0012855D /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "../../LibSVM/svm-scale.c"; sourceTree = "<group>"; };
+		AC4BB22A17A0991C0012855D /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "../../LibSVM/svm-train.c"; sourceTree = "<group>"; };
+		AC4BB22B17A0991C0012855D /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = ../../LibSVM/svm.cpp; sourceTree = "<group>"; };
+		AC4BB22C17A0991C0012855D /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = ../../LibSVM/svm.h; sourceTree = "<group>"; };
+		ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libCellScope-Classifier.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		ACB29B64179F94B00001220C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		ACB29B5E179F94B00001220C = {
+			isa = PBXGroup;
+			children = (
+				AC4BB22817A0991C0012855D /* svm-predict.c */,
+				AC4BB22917A0991C0012855D /* svm-scale.c */,
+				AC4BB22A17A0991C0012855D /* svm-train.c */,
+				AC4BB22B17A0991C0012855D /* svm.cpp */,
+				AC4BB22C17A0991C0012855D /* svm.h */,
+				AC4BB1FD17A092FC0012855D /* BlobClass.cpp */,
+				AC4BB1FE17A092FC0012855D /* BlobClass.h */,
+				AC4BB1FF17A092FC0012855D /* Classifier.cpp */,
+				AC4BB20017A092FC0012855D /* Classifier.h */,
+				AC4BB20117A092FC0012855D /* Debug.cpp */,
+				AC4BB20217A092FC0012855D /* Debug.h */,
+				AC4BB20317A092FC0012855D /* Features.cpp */,
+				AC4BB20417A092FC0012855D /* Features.h */,
+				AC4BB20517A092FC0012855D /* Globals.h */,
+				AC4BB20617A092FC0012855D /* ImageTools.cpp */,
+				AC4BB20717A092FC0012855D /* ImageTools.h */,
+				AC4BB20817A092FC0012855D /* MatrixOperations.cpp */,
+				AC4BB20917A092FC0012855D /* MatrixOperations.h */,
+				AC4BB20A17A092FC0012855D /* Region.cpp */,
+				ACB29B68179F94B00001220C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		ACB29B68179F94B00001220C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		ACB29B65179F94B00001220C /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC4BB20C17A092FC0012855D /* BlobClass.h in Headers */,
+				AC4BB20E17A092FC0012855D /* Classifier.h in Headers */,
+				AC4BB21017A092FC0012855D /* Debug.h in Headers */,
+				AC4BB21217A092FC0012855D /* Features.h in Headers */,
+				AC4BB21317A092FC0012855D /* Globals.h in Headers */,
+				AC4BB21517A092FC0012855D /* ImageTools.h in Headers */,
+				AC4BB21717A092FC0012855D /* MatrixOperations.h in Headers */,
+				AC4BB23117A0991C0012855D /* svm.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		ACB29B66179F94B00001220C /* CellScope-Classifier */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = ACB29B6B179F94B00001220C /* Build configuration list for PBXNativeTarget "CellScope-Classifier" */;
+			buildPhases = (
+				ACB29B63179F94B00001220C /* Sources */,
+				ACB29B64179F94B00001220C /* Frameworks */,
+				ACB29B65179F94B00001220C /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "CellScope-Classifier";
+			productName = "CellScope-Classifier";
+			productReference = ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		ACB29B5F179F94B00001220C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = CellScope;
+			};
+			buildConfigurationList = ACB29B62179F94B00001220C /* Build configuration list for PBXProject "CellScope-Classifier" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ACB29B5E179F94B00001220C;
+			productRefGroup = ACB29B68179F94B00001220C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				ACB29B66179F94B00001220C /* CellScope-Classifier */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		ACB29B63179F94B00001220C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AC4BB20B17A092FC0012855D /* BlobClass.cpp in Sources */,
+				AC4BB20D17A092FC0012855D /* Classifier.cpp in Sources */,
+				AC4BB20F17A092FC0012855D /* Debug.cpp in Sources */,
+				AC4BB21117A092FC0012855D /* Features.cpp in Sources */,
+				AC4BB21417A092FC0012855D /* ImageTools.cpp in Sources */,
+				AC4BB21617A092FC0012855D /* MatrixOperations.cpp in Sources */,
+				AC4BB21817A092FC0012855D /* Region.cpp in Sources */,
+				AC4BB22D17A0991C0012855D /* svm-predict.c in Sources */,
+				AC4BB22E17A0991C0012855D /* svm-scale.c in Sources */,
+				AC4BB22F17A0991C0012855D /* svm-train.c in Sources */,
+				AC4BB23017A0991C0012855D /* svm.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		ACB29B69179F94B00001220C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
+				LIBRARY_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		ACB29B6A179F94B00001220C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**/**";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
+				LIBRARY_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ACB29B6C179F94B00001220C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		ACB29B6D179F94B00001220C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		ACB29B62179F94B00001220C /* Build configuration list for PBXProject "CellScope-Classifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB29B69179F94B00001220C /* Debug */,
+				ACB29B6A179F94B00001220C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		ACB29B6B179F94B00001220C /* Build configuration list for PBXNativeTarget "CellScope-Classifier" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACB29B6C179F94B00001220C /* Debug */,
+				ACB29B6D179F94B00001220C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = ACB29B5F179F94B00001220C /* Project object */;
+}

@@ -21,9 +21,9 @@ using namespace std;
 
 namespace Debug
 {
-    void print(Mat mat, const char* name);
+    void print(cv::Mat mat, const char* name);
 
-    void printStats(Mat mat, const char* fileName);
+    void printStats(cv::Mat mat, const char* fileName);
 
 	void printFeatures(const vector<MatDict > features, const char* feature);
     
@@ -33,10 +33,10 @@ namespace Debug
 
     void printContours(ContourContainerType contours);
     
-    void printCentroids(vector<Point> centroids);
+    void printCentroids(vector<cv::Point> centroids);
 
-	Mat loadMatrix(const char* fileName, int rows, int cols, int type);
+	cv::Mat loadMatrix(const char* fileName, int rows, int cols, int type);
     
-    vector<Point> loadCentroids();
+    vector<cv::Point> loadCentroids();
 
 }

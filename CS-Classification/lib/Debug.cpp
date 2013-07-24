@@ -6,12 +6,12 @@
 namespace Debug
 {
     
-    vector<Point> loadCentroids()
+    vector<cv::Point> loadCentroids()
     {
 		if (!DEBUG) {
-			return *new vector<Point>;
+			return *new vector<cv::Point>;
 		}
-        vector<Point> *centroids = new vector<Point>();
+        vector<cv::Point> *centroids = new vector<cv::Point>();
         
         string row_path = MATLAB_FOLDER;
         row_path += "/centroid_rows.txt";
@@ -30,20 +30,20 @@ namespace Debug
         {
             int row = ::atoi(rowLine.c_str()) - 1;
             int col = ::atoi(colLine.c_str()) - 1;
-            Point p = Point(row, col);
+            cv::Point p = cv::Point(row, col);
             centroids->push_back(p);
         }
 
         return *centroids;
     }
     
-    Mat loadMatrix(const char* fileName, int rows, int cols, int type)
+    cv::Mat loadMatrix(const char* fileName, int rows, int cols, int type)
 	{
 		if (!DEBUG) {
 			return cv::Mat(1, 1, CV_8UC1);
 		}
 
-		Mat returnMatrix = Mat(rows, cols, type);
+        cv::Mat returnMatrix = cv::Mat(rows, cols, type);
         
 		string path = MATLAB_FOLDER;
 		path += fileName;
@@ -251,10 +251,10 @@ namespace Debug
 		}
     }
     
-    bool centroid_comparator ( const Point& l, const Point& r)
+    bool centroid_comparator ( const cv::Point& l, const cv::Point& r)
     { return l.y < r.y; };
     
-    void printCentroids(vector<Point> centroids)
+    void printCentroids(vector<cv::Point> centroids)
     {
 		if (!DEBUG) {
 			return;
@@ -277,7 +277,7 @@ namespace Debug
 			cerr << "Can't open output file!" << endl;
 		}
         
-        vector<Point>::iterator it = centroids.begin();
+        vector<cv::Point>::iterator it = centroids.begin();
         
         for (; it != centroids.end(); it++)
         {
