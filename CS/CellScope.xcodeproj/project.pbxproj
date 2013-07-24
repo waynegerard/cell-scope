@@ -74,8 +74,6 @@
 		AC0353A8178610AF001AE3FA /* lib in Resources */ = {isa = PBXBuildFile; fileRef = AC0353A7178610AF001AE3FA /* lib */; };
 		AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
 		AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
-		AC1CF6A8179E52DB007FA438 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69B179E52DB007FA438 /* Classifier.cpp */; };
-		AC1CF6A9179E52DB007FA438 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69B179E52DB007FA438 /* Classifier.cpp */; };
 		AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
 		AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
 		AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */; };
@@ -86,16 +84,28 @@
 		AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A4179E52DB007FA438 /* Region.cpp */; };
 		AC24EF3A1738742800B50B36 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC24EF391738742800B50B36 /* model_out.txt */; };
 		AC3B06A016F50EFA00A90983 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */; };
+		AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E748B179F3DA700BDC4EB /* Debug.cpp */; };
+		AC5E748E179F3DA700BDC4EB /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E748B179F3DA700BDC4EB /* Debug.cpp */; };
+		AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E749D179F3F3200BDC4EB /* Classifier.cpp */; };
+		AC5E74A0179F3F3200BDC4EB /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E749D179F3F3200BDC4EB /* Classifier.cpp */; };
+		AC5E74A2179F41F000BDC4EB /* LibSVM in Resources */ = {isa = PBXBuildFile; fileRef = AC5E74A1179F41F000BDC4EB /* LibSVM */; };
+		AC5E74A3179F41F000BDC4EB /* LibSVM in Resources */ = {isa = PBXBuildFile; fileRef = AC5E74A1179F41F000BDC4EB /* LibSVM */; };
+		AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A4179F421900BDC4EB /* svm-predict.c */; };
+		AC5E74AA179F421900BDC4EB /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A4179F421900BDC4EB /* svm-predict.c */; };
+		AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A5179F421900BDC4EB /* svm-scale.c */; };
+		AC5E74AC179F421900BDC4EB /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A5179F421900BDC4EB /* svm-scale.c */; };
+		AC5E74AD179F421900BDC4EB /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A6179F421900BDC4EB /* svm-train.c */; };
+		AC5E74AE179F421900BDC4EB /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A6179F421900BDC4EB /* svm-train.c */; };
+		AC5E74AF179F421900BDC4EB /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A7179F421900BDC4EB /* svm.cpp */; };
+		AC5E74B0179F421900BDC4EB /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A7179F421900BDC4EB /* svm.cpp */; };
+		AC5E74B4179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */; };
+		AC5E74B5179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */; };
 		ACA1287A16FEA72000E2D03A /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1283C16FD241C00E2D03A /* libopencv_highgui.a */; };
 		ACA1287B16FEA72500E2D03A /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282216FD241C00E2D03A /* libopencv_core.a */; };
 		ACA1287C16FEA72A00E2D03A /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282A16FD241C00E2D03A /* libopencv_imgproc.a */; };
 		ACAD722E16F6B58B00D557BC /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722D16F6B58B00D557BC /* train_max.csv */; };
 		ACAD723016F6B59200D557BC /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722F16F6B59200D557BC /* train_min.csv */; };
 		ACAD723216F6B59700D557BC /* 1350_Clay_Fluor_Yes.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */; };
-		ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B416C209DB00D7A384 /* svm-predict.c */; };
-		ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B516C209DB00D7A384 /* svm-scale.c */; };
-		ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B616C209DB00D7A384 /* svm-train.c */; };
-		ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACB705B716C209DB00D7A384 /* svm.cpp */; };
 		ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
 		ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
 		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
@@ -370,8 +380,6 @@
 		AC0353A7178610AF001AE3FA /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = "../../CS-Classification/lib"; sourceTree = "<group>"; };
 		AC1CF699179E52DB007FA438 /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobClass.cpp; sourceTree = "<group>"; };
 		AC1CF69A179E52DB007FA438 /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClass.h; sourceTree = "<group>"; };
-		AC1CF69B179E52DB007FA438 /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Classifier.cpp; sourceTree = "<group>"; };
-		AC1CF69C179E52DB007FA438 /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Classifier.h; sourceTree = "<group>"; };
 		AC1CF69D179E52DB007FA438 /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Features.cpp; sourceTree = "<group>"; };
 		AC1CF69E179E52DB007FA438 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Features.h; sourceTree = "<group>"; };
 		AC1CF69F179E52DB007FA438 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
@@ -383,15 +391,23 @@
 		AC1CF6A5179E52DB007FA438 /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Region.h; sourceTree = "<group>"; };
 		AC24EF391738742800B50B36 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_out.txt; path = Resources/model_out.txt; sourceTree = "<group>"; };
 		AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		AC5E748B179F3DA700BDC4EB /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
+		AC5E748C179F3DA700BDC4EB /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		AC5E749D179F3F3200BDC4EB /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Classifier.cpp; sourceTree = "<group>"; };
+		AC5E749E179F3F3200BDC4EB /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Classifier.h; sourceTree = "<group>"; };
+		AC5E74A1179F41F000BDC4EB /* LibSVM */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LibSVM; path = "../../CS-Classification/LibSVM"; sourceTree = "<group>"; };
+		AC5E74A4179F421900BDC4EB /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-predict.c"; sourceTree = "<group>"; };
+		AC5E74A5179F421900BDC4EB /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-scale.c"; sourceTree = "<group>"; };
+		AC5E74A6179F421900BDC4EB /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-train.c"; sourceTree = "<group>"; };
+		AC5E74A7179F421900BDC4EB /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svm.cpp; sourceTree = "<group>"; };
+		AC5E74A8179F421900BDC4EB /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = svm.h; sourceTree = "<group>"; };
+		AC5E74B1179F50C600BDC4EB /* ClassifierGlobals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ClassifierGlobals.h; path = Classification/ClassifierGlobals.h; sourceTree = "<group>"; };
+		AC5E74B2179F525E00BDC4EB /* ScoresAndCentroids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoresAndCentroids.h; path = CellScope/ScoresAndCentroids.h; sourceTree = "<group>"; };
+		AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoresAndCentroids.m; path = CellScope/ScoresAndCentroids.m; sourceTree = "<group>"; };
 		ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OpenCV-iOS.xcodeproj"; path = "../OpenCV-iOS/OpenCV-iOS/OpenCV-iOS.xcodeproj"; sourceTree = "<group>"; };
 		ACAD722D16F6B58B00D557BC /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_max.csv; path = CellScope/resources/train_max.csv; sourceTree = "<group>"; };
 		ACAD722F16F6B59200D557BC /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_min.csv; path = CellScope/resources/train_min.csv; sourceTree = "<group>"; };
 		ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1350_Clay_Fluor_Yes.png; path = CellScope/resources/testing/1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
-		ACB705B416C209DB00D7A384 /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "LibSVM/svm-predict.c"; sourceTree = "<group>"; };
-		ACB705B516C209DB00D7A384 /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "LibSVM/svm-scale.c"; sourceTree = "<group>"; };
-		ACB705B616C209DB00D7A384 /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "LibSVM/svm-train.c"; sourceTree = "<group>"; };
-		ACB705B716C209DB00D7A384 /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = LibSVM/svm.cpp; sourceTree = "<group>"; };
-		ACB705B816C209DB00D7A384 /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = LibSVM/svm.h; sourceTree = "<group>"; };
 		ACC23A21176241C000C6BF9D /* algorithm_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = algorithm_settings.plist; path = ../Resources/algorithm_settings.plist; sourceTree = "<group>"; };
 		ACFC05AD1698D13500411641 /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = Classification/Run/Runner.h; sourceTree = "<group>"; };
 		ACFC05AE1698D13500411641 /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = Classification/Run/Runner.mm; sourceTree = "<group>"; };
@@ -656,6 +672,8 @@
 				9BD352B015FAABE800E331E9 /* Users.h */,
 				9BD352B115FAABE800E331E9 /* Users.m */,
 				9B6BF0CC15E19ACD002834C5 /* CellScope.xcdatamodeld */,
+				AC5E74B2179F525E00BDC4EB /* ScoresAndCentroids.h */,
+				AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */,
 			);
 			name = "Code Data";
 			sourceTree = "<group>";
@@ -673,10 +691,13 @@
 		AC0353A61786106D001AE3FA /* Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				AC5E74A1179F41F000BDC4EB /* LibSVM */,
 				AC1CF699179E52DB007FA438 /* BlobClass.cpp */,
 				AC1CF69A179E52DB007FA438 /* BlobClass.h */,
-				AC1CF69B179E52DB007FA438 /* Classifier.cpp */,
-				AC1CF69C179E52DB007FA438 /* Classifier.h */,
+				AC5E749D179F3F3200BDC4EB /* Classifier.cpp */,
+				AC5E749E179F3F3200BDC4EB /* Classifier.h */,
+				AC5E748B179F3DA700BDC4EB /* Debug.cpp */,
+				AC5E748C179F3DA700BDC4EB /* Debug.h */,
 				AC1CF69D179E52DB007FA438 /* Features.cpp */,
 				AC1CF69E179E52DB007FA438 /* Features.h */,
 				AC1CF69F179E52DB007FA438 /* Globals.h */,
@@ -691,6 +712,7 @@
 				AC0353A7178610AF001AE3FA /* lib */,
 				ACFC05AD1698D13500411641 /* Runner.h */,
 				ACFC05AE1698D13500411641 /* Runner.mm */,
+				AC5E74B1179F50C600BDC4EB /* ClassifierGlobals.h */,
 			);
 			name = Classifier;
 			sourceTree = "<group>";
@@ -749,11 +771,11 @@
 		ACB705B216C2097900D7A384 /* LibSVM */ = {
 			isa = PBXGroup;
 			children = (
-				ACB705B416C209DB00D7A384 /* svm-predict.c */,
-				ACB705B516C209DB00D7A384 /* svm-scale.c */,
-				ACB705B616C209DB00D7A384 /* svm-train.c */,
-				ACB705B716C209DB00D7A384 /* svm.cpp */,
-				ACB705B816C209DB00D7A384 /* svm.h */,
+				AC5E74A4179F421900BDC4EB /* svm-predict.c */,
+				AC5E74A5179F421900BDC4EB /* svm-scale.c */,
+				AC5E74A6179F421900BDC4EB /* svm-train.c */,
+				AC5E74A7179F421900BDC4EB /* svm.cpp */,
+				AC5E74A8179F421900BDC4EB /* svm.h */,
 			);
 			name = LibSVM;
 			sourceTree = "<group>";
@@ -967,6 +989,7 @@
 				AC24EF3A1738742800B50B36 /* model_out.txt in Resources */,
 				ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */,
 				AC0353A8178610AF001AE3FA /* lib in Resources */,
+				AC5E74A2179F41F000BDC4EB /* LibSVM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -976,6 +999,7 @@
 			files = (
 				9B6BF0E115E19ACD002834C5 /* InfoPlist.strings in Resources */,
 				ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */,
+				AC5E74A3179F41F000BDC4EB /* LibSVM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1043,17 +1067,19 @@
 				9B5632CE15FAADD90035AEBC /* UIImage+Resize.m in Sources */,
 				9B5632CF15FAADD90035AEBC /* UIImage+RoundedCorner.m in Sources */,
 				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
-				ACB705B916C209DB00D7A384 /* svm-predict.c in Sources */,
-				ACB705BA16C209DB00D7A384 /* svm-scale.c in Sources */,
-				ACB705BB16C209DB00D7A384 /* svm-train.c in Sources */,
-				ACB705BC16C209DB00D7A384 /* svm.cpp in Sources */,
 				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
 				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
-				AC1CF6A8179E52DB007FA438 /* Classifier.cpp in Sources */,
 				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
 				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
 				AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
 				AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */,
+				AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */,
+				AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */,
+				AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */,
+				AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */,
+				AC5E74AD179F421900BDC4EB /* svm-train.c in Sources */,
+				AC5E74AF179F421900BDC4EB /* svm.cpp in Sources */,
+				AC5E74B4179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1063,11 +1089,17 @@
 			files = (
 				9B6BF0E415E19ACD002834C5 /* CellScopeTests.m in Sources */,
 				AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */,
-				AC1CF6A9179E52DB007FA438 /* Classifier.cpp in Sources */,
 				AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */,
 				AC1CF6AD179E52DB007FA438 /* ImageTools.cpp in Sources */,
 				AC1CF6AF179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
 				AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */,
+				AC5E748E179F3DA700BDC4EB /* Debug.cpp in Sources */,
+				AC5E74A0179F3F3200BDC4EB /* Classifier.cpp in Sources */,
+				AC5E74AA179F421900BDC4EB /* svm-predict.c in Sources */,
+				AC5E74AC179F421900BDC4EB /* svm-scale.c in Sources */,
+				AC5E74AE179F421900BDC4EB /* svm-train.c in Sources */,
+				AC5E74B0179F421900BDC4EB /* svm.cpp in Sources */,
+				AC5E74B5179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,6 +1,7 @@
 #ifndef CLASSIFIER_H
 #define CLASSIFIER_H
 
+#include "ClassifierGlobals.h"
 #include "Globals.h"
 #include "svm.h"
 

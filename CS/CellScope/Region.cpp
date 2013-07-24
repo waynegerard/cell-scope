@@ -46,7 +46,7 @@ namespace Region
 		meanIntensity = meanIntensity / area; 
 
 		//  convex area
-		vector<vector<Point> >hull( contours.size() );
+		vector<vector<cv::Point> >hull( contours.size() );
 		for( int i = 0; i < contours.size(); i++ )
 		{  convexHull( Mat(contours[i]), hull[i], false ); }
 

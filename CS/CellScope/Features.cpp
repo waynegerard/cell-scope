@@ -1,6 +1,7 @@
 #include "Features.h"
 #include "MatrixOperations.h"
 #include "Region.h"
+#include "ClassifierGlobals.h"
 
 namespace Features 
 {
@@ -43,15 +44,15 @@ namespace Features
 		bool partial = false;
     
 		// Lower bounds checking
-		int lowerC = col - PATCH_SIZE / 2;
-		int lowerR = row - PATCH_SIZE / 2;
+		int lowerC = col - PATCHSZ / 2;
+		int lowerR = row - PATCHSZ / 2;
 		if (lowerC <= 0 || lowerR <= 0) {
 			partial = true;
 		}
     
 		// Higher bounds checking
-		int higherC = (col + (PATCH_SIZE / 2 - 1));
-		int higherR = (row + (PATCH_SIZE / 2 - 1));
+		int higherC = (col + (PATCHSZ / 2 - 1));
+		int higherR = (row + (PATCHSZ / 2 - 1));
     
 		if ((higherC > maxCol) || (higherR  > maxRow)) {
 			partial = true;
@@ -81,10 +82,10 @@ namespace Features
 
 	cv::Mat makePatch(const int row, const int col, const Mat original)
 	{
-		int row_start = (row - PATCH_SIZE / 2);
-		int row_end = row + (PATCH_SIZE / 2);
-		int col_start = (col - PATCH_SIZE / 2);
-		int col_end = col + (PATCH_SIZE / 2);
+		int row_start = (row - PATCHSZ / 2);
+		int row_end = row + (PATCHSZ / 2);
+		int col_start = (col - PATCHSZ / 2);
+		int col_end = col + (PATCHSZ / 2);
         
 		Mat patchMatrix = original(cv::Range(row_start, row_end), cv::Range(col_start, col_end));
 		return patchMatrix;

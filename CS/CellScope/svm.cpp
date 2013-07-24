@@ -5,9 +5,8 @@
 #include <float.h>
 #include <string.h>
 #include <stdarg.h>
-#include <limits.h>
-#include <locale.h>
 #include "svm.h"
+
 int libsvm_version = LIBSVM_VERSION;
 typedef float Qfloat;
 typedef signed char schar;
@@ -17,6 +16,7 @@ template <class T> static inline T min(T x,T y) { return (x<y)?x:y; }
 #ifndef max
 template <class T> static inline T max(T x,T y) { return (x>y)?x:y; }
 #endif
+
 template <class T> static inline void swap(T& x, T& y) { T t=x; x=y; y=t; }
 template <class S, class T> static inline void clone(T*& dst, S* src, int n)
 {
@@ -228,6 +228,11 @@ private:
 	const double coef0;
 
 	static double dot(const svm_node *px, const svm_node *py);
+	//three new additive kernel functions
+	static double intersection(const svm_node *px, const svm_node *py);
+	static double chisquared(const svm_node *px, const svm_node *py);
+	static double js(const svm_node *px, const svm_node *py);
+	
 	double kernel_linear(int i, int j) const
 	{
 		return dot(x[i],x[j]);
@@ -247,6 +252,18 @@ private:
 	double kernel_precomputed(int i, int j) const
 	{
 		return x[i][(int)(x[j][0].value)].value;
+	}
+	double kernel_intersection(int i, int j) const
+	{
+		return intersection(x[i],x[j]);
+	}
+	double kernel_chisquared(int i, int j) const
+	{
+		return chisquared(x[i],x[j]);
+	}
+	double kernel_js(int i, int j) const
+	{
+		return js(x[i],x[j]);
 	}
 };
 
@@ -268,11 +285,16 @@ Kernel::Kernel(int l, svm_node * const * x_, const svm_parameter& param)
 		case SIGMOID:
 			kernel_function = &Kernel::kernel_sigmoid;
 			break;
-		case PRECOMPUTED:
-			kernel_function = &Kernel::kernel_precomputed;
+		case INTERSECTION:
+			kernel_function = &Kernel::kernel_intersection;
+			break;
+		case CHISQUARED:
+			kernel_function = &Kernel::kernel_chisquared;
+			break;
+		case JS:
+			kernel_function = &Kernel::kernel_js;
 			break;
 	}
-
 	clone(x,x_,l);
 
 	if(kernel_type == RBF)
@@ -310,6 +332,74 @@ double Kernel::dot(const svm_node *px, const svm_node *py)
 				++px;
 		}			
 	}
+	
+	return sum;
+}
+// histogram interesction
+double Kernel::intersection(const svm_node *px, const svm_node *py)
+{
+	double sum = 0;
+	while(px->index != -1 && py->index != -1)
+	{
+		if(px->index == py->index)
+		{
+			sum += min (px->value, py->value);
+			++px;
+			++py;
+		}
+		else
+		{
+			if(px->index > py->index)
+				++py;
+			else
+				++px;
+		}			
+	}
+	return sum;
+}
+
+// chi-squared kernel
+double Kernel::chisquared(const svm_node *px, const svm_node *py)
+{
+	double sum = 0;
+	while(px->index != -1 && py->index != -1)
+	{
+		if(px->index == py->index)
+		{
+			sum += 2*(px->value*py->value)/(px->value + py->value);
+			++px;
+			++py;
+		}
+		else
+		{
+			if(px->index > py->index)
+				++py;
+			else
+				++px;
+		}			
+	}
+	return sum;
+}
+// Jensen-Shannon's Kernel
+double Kernel::js(const svm_node *px, const svm_node *py)
+{
+	double sum = 0;
+	while(px->index != -1 && py->index != -1)
+	{
+		if(px->index == py->index)
+		{
+			sum+= px->value/2*log((px->value+py->value)/px->value) + py->value/2*log((px->value+py->value)/py->value);
+			++px;
+			++py;
+		}
+		else
+		{
+			if(px->index > py->index)
+				++py;
+			else
+				++px;
+		}			
+	}
 	return sum;
 }
 
@@ -320,6 +410,12 @@ double Kernel::k_function(const svm_node *x, const svm_node *y,
 	{
 		case LINEAR:
 			return dot(x,y);
+		case INTERSECTION:
+			return intersection(x,y);
+		case CHISQUARED: 
+			return chisquared(x,y);
+		case JS:
+			return js(x,y);
 		case POLY:
 			return powi(param.gamma*dot(x,y)+param.coef0,param.degree);
 		case RBF:
@@ -476,7 +572,7 @@ void Solver::reconstruct_gradient()
 			nr_free++;
 
 	if(2*nr_free < active_size)
-		info("\nWARNING: using -h 0 may be faster\n");
+		info("\nWarning: using -h 0 may be faster\n");
 
 	if (nr_free*l > 2*active_size*(l-active_size))
 	{
@@ -558,10 +654,9 @@ void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,
 	// optimization step
 
 	int iter = 0;
-	int max_iter = max(10000000, l>INT_MAX/100 ? INT_MAX : 100*l);
 	int counter = min(l,1000)+1;
-	
-	while(iter < max_iter)
+
+	while(1)
 	{
 		// show progress and do shrinking
 
@@ -726,18 +821,6 @@ void Solver::Solve(int l, const QMatrix& Q, const double *p_, const schar *y_,
 						G_bar[k] += C_j * Q_j[k];
 			}
 		}
-	}
-
-	if(iter >= max_iter)
-	{
-		if(active_size < l)
-		{
-			// reconstruct the whole gradient to calculate objective value
-			reconstruct_gradient();
-			active_size = l;
-			info("*");
-		}
-		fprintf(stderr,"\nWARNING: reaching max number of iterations\n");
 	}
 
 	// calculate rho
@@ -1006,7 +1089,7 @@ double Solver::calculate_rho()
 //
 // additional constraint: e^T \alpha = constant
 //
-class Solver_NU: public Solver
+class Solver_NU : public Solver
 {
 public:
 	Solver_NU() {}
@@ -1377,7 +1460,7 @@ public:
 			index[k] = k;
 			index[k+l] = k;
 			QD[k] = (this->*kernel_function)(k,k);
-			QD[k+l] = QD[k];
+			QD[k+l] =QD[k];
 		}
 		buffer[0] = new Qfloat[2*l];
 		buffer[1] = new Qfloat[2*l];
@@ -1818,7 +1901,6 @@ static void sigmoid_train(
 static double sigmoid_predict(double decision_value, double A, double B)
 {
 	double fApB = decision_value*A+B;
-	// 1-p used later; avoid catastrophic cancellation
 	if (fApB >= 0)
 		return exp(-fApB)/(1.0+exp(-fApB));
 	else
@@ -2107,14 +2189,12 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 		model->l = nSV;
 		model->SV = Malloc(svm_node *,nSV);
 		model->sv_coef[0] = Malloc(double,nSV);
-		model->sv_indices = Malloc(int,nSV);
 		int j = 0;
 		for(i=0;i<prob->l;i++)
 			if(fabs(f.alpha[i]) > 0)
 			{
 				model->SV[j] = prob->x[i];
 				model->sv_coef[0][j] = f.alpha[i];
-				model->sv_indices[j] = i+1;
 				++j;
 			}		
 
@@ -2131,10 +2211,7 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 		int *perm = Malloc(int,l);
 
 		// group training data of the same class
-		svm_group_classes(prob,&nr_class,&label,&start,&count,perm);
-		if(nr_class == 1) 
-			info("WARNING: training data in only one class. See README for details.\n");
-		
+		svm_group_classes(prob,&nr_class,&label,&start,&count,perm);		
 		svm_node **x = Malloc(svm_node *,l);
 		int i;
 		for(i=0;i<l;i++)
@@ -2152,7 +2229,7 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 				if(param->weight_label[i] == label[j])
 					break;
 			if(j == nr_class)
-				fprintf(stderr,"WARNING: class label %d specified in weight is not found\n", param->weight_label[i]);
+				fprintf(stderr,"warning: class label %d specified in weight is not found\n", param->weight_label[i]);
 			else
 				weighted_C[j] *= param->weight[i];
 		}
@@ -2256,14 +2333,9 @@ svm_model *svm_train(const svm_problem *prob, const svm_parameter *param)
 
 		model->l = total_sv;
 		model->SV = Malloc(svm_node *,total_sv);
-		model->sv_indices = Malloc(int,total_sv);
 		p = 0;
 		for(i=0;i<l;i++)
-			if(nonzero[i])
-			{
-				model->SV[p] = x[i];
-				model->sv_indices[p++] = perm[i] + 1;
-			}
+			if(nonzero[i]) model->SV[p++] = x[i];
 
 		int *nz_start = Malloc(int,nr_class);
 		nz_start[0] = 0;
@@ -2451,18 +2523,6 @@ void svm_get_labels(const svm_model *model, int* label)
 			label[i] = model->label[i];
 }
 
-void svm_get_sv_indices(const svm_model *model, int* indices)
-{
-	if (model->sv_indices != NULL)
-		for(int i=0;i<model->l;i++)
-			indices[i] = model->sv_indices[i];
-}
-
-int svm_get_nr_sv(const svm_model *model)
-{
-	return model->l;
-}
-
 double svm_get_svr_probability(const svm_model *model)
 {
 	if ((model->param.svm_type == EPSILON_SVR || model->param.svm_type == NU_SVR) &&
@@ -2477,14 +2537,13 @@ double svm_get_svr_probability(const svm_model *model)
 
 double svm_predict_values(const svm_model *model, const svm_node *x, double* dec_values)
 {
-	int i;
 	if(model->param.svm_type == ONE_CLASS ||
 	   model->param.svm_type == EPSILON_SVR ||
 	   model->param.svm_type == NU_SVR)
 	{
 		double *sv_coef = model->sv_coef[0];
 		double sum = 0;
-		for(i=0;i<model->l;i++)
+		for(int i=0;i<model->l;i++)
 			sum += sv_coef[i] * Kernel::k_function(x,model->SV[i],model->param);
 		sum -= model->rho[0];
 		*dec_values = sum;
@@ -2496,6 +2555,7 @@ double svm_predict_values(const svm_model *model, const svm_node *x, double* dec
 	}
 	else
 	{
+		int i;
 		int nr_class = model->nr_class;
 		int l = model->l;
 		
@@ -2612,16 +2672,13 @@ static const char *svm_type_table[] =
 
 static const char *kernel_type_table[]=
 {
-	"linear","polynomial","rbf","sigmoid","precomputed",NULL
+	"linear","polynomial","rbf","sigmoid","precomputed","intersection", "chisquared", "js", NULL
 };
 
 int svm_save_model(const char *model_file_name, const svm_model *model)
 {
 	FILE *fp = fopen(model_file_name,"w");
 	if(fp==NULL) return -1;
-
-	char *old_locale = strdup(setlocale(LC_ALL, NULL));
-	setlocale(LC_ALL, "C");
 
 	const svm_parameter& param = model->param;
 
@@ -2701,10 +2758,6 @@ int svm_save_model(const char *model_file_name, const svm_model *model)
 			}
 		fprintf(fp, "\n");
 	}
-
-	setlocale(LC_ALL, old_locale);
-	free(old_locale);
-
 	if (ferror(fp) != 0 || fclose(fp) != 0) return -1;
 	else return 0;
 }
@@ -2734,10 +2787,7 @@ svm_model *svm_load_model(const char *model_file_name)
 {
 	FILE *fp = fopen(model_file_name,"rb");
 	if(fp==NULL) return NULL;
-
-	char *old_locale = strdup(setlocale(LC_ALL, NULL));
-	setlocale(LC_ALL, "C");
-
+	
 	// read parameters
 
 	svm_model *model = Malloc(svm_model,1);
@@ -2768,9 +2818,6 @@ svm_model *svm_load_model(const char *model_file_name)
 			if(svm_type_table[i] == NULL)
 			{
 				fprintf(stderr,"unknown svm type.\n");
-				
-				setlocale(LC_ALL, old_locale);
-				free(old_locale);
 				free(model->rho);
 				free(model->label);
 				free(model->nSV);
@@ -2793,9 +2840,6 @@ svm_model *svm_load_model(const char *model_file_name)
 			if(kernel_type_table[i] == NULL)
 			{
 				fprintf(stderr,"unknown kernel function.\n");
-				
-				setlocale(LC_ALL, old_locale);
-				free(old_locale);
 				free(model->rho);
 				free(model->label);
 				free(model->nSV);
@@ -2860,9 +2904,6 @@ svm_model *svm_load_model(const char *model_file_name)
 		else
 		{
 			fprintf(stderr,"unknown text in model file: [%s]\n",cmd);
-			
-			setlocale(LC_ALL, old_locale);
-			free(old_locale);
 			free(model->rho);
 			free(model->label);
 			free(model->nSV);
@@ -2935,9 +2976,6 @@ svm_model *svm_load_model(const char *model_file_name)
 	}
 	free(line);
 
-	setlocale(LC_ALL, old_locale);
-	free(old_locale);
-
 	if (ferror(fp) != 0 || fclose(fp) != 0)
 		return NULL;
 
@@ -2947,47 +2985,33 @@ svm_model *svm_load_model(const char *model_file_name)
 
 void svm_free_model_content(svm_model* model_ptr)
 {
-	if(model_ptr->free_sv && model_ptr->l > 0 && model_ptr->SV != NULL)
+	if(model_ptr->free_sv && model_ptr->l > 0)
 		free((void *)(model_ptr->SV[0]));
-	if(model_ptr->sv_coef)
-	{
-		for(int i=0;i<model_ptr->nr_class-1;i++)
-			free(model_ptr->sv_coef[i]);
-	}
-
+	for(int i=0;i<model_ptr->nr_class-1;i++)
+		free(model_ptr->sv_coef[i]);
 	free(model_ptr->SV);
-	model_ptr->SV = NULL;
-
 	free(model_ptr->sv_coef);
-	model_ptr->sv_coef = NULL;
-
 	free(model_ptr->rho);
-	model_ptr->rho = NULL;
-
 	free(model_ptr->label);
-	model_ptr->label= NULL;
-
 	free(model_ptr->probA);
-	model_ptr->probA = NULL;
-
 	free(model_ptr->probB);
-	model_ptr->probB= NULL;
-
-	free(model_ptr->sv_indices);
-	model_ptr->sv_indices = NULL;
-
 	free(model_ptr->nSV);
-	model_ptr->nSV = NULL;
 }
 
 void svm_free_and_destroy_model(svm_model** model_ptr_ptr)
 {
-	if(model_ptr_ptr != NULL && *model_ptr_ptr != NULL)
+	svm_model* model_ptr = *model_ptr_ptr;
+	if(model_ptr != NULL)
 	{
-		svm_free_model_content(*model_ptr_ptr);
-		free(*model_ptr_ptr);
-		*model_ptr_ptr = NULL;
+		svm_free_model_content(model_ptr);
+		free(model_ptr);
 	}
+}
+
+void svm_destroy_model(svm_model* model_ptr)
+{
+	fprintf(stderr,"warning: svm_destroy_model is deprecated and should not be used. Please use svm_free_and_destroy_model(svm_model **model_ptr_ptr)\n");
+	svm_free_and_destroy_model(&model_ptr);
 }
 
 void svm_destroy_param(svm_parameter* param)
@@ -3015,7 +3039,10 @@ const char *svm_check_parameter(const svm_problem *prob, const svm_parameter *pa
 	   kernel_type != POLY &&
 	   kernel_type != RBF &&
 	   kernel_type != SIGMOID &&
-	   kernel_type != PRECOMPUTED)
+	   kernel_type != PRECOMPUTED &&
+	   kernel_type != INTERSECTION &&
+	   kernel_type != CHISQUARED &&
+	   kernel_type != JS )
 		return "unknown kernel type";
 
 	if(param->gamma < 0)

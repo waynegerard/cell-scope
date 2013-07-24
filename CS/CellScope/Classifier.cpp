@@ -4,6 +4,9 @@
 #include "ImageTools.h"
 #include "MatrixOperations.h"
 #include <fstream>
+#include <CoreFoundation/CoreFoundation.h>
+#include "Debug.h"
+
 
 namespace Classifier 
 {
@@ -15,14 +18,14 @@ namespace Classifier
 			image = ImageTools::getRedChannel(image);
 		}
         
-        std::cout << "Normalizing image\n";
+        cout << "Normalizing image\n";
 		cv::Mat normalizedImage = ImageTools::normalizeImage(image);
 		return normalizedImage;
 	}
 
 	cv::Mat objectIdentification(cv::Mat image)
 	{
-		std::cout << "Performing object identification\n";
+		cout << "Performing object identification\n";
 		cv::Mat imageBw = BlobClass::blobIdentification(image);
 		return imageBw;
 	}
@@ -35,7 +38,7 @@ namespace Classifier
 		cv::findContours(imageBw, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
         
 		unsigned long numObjects = contours.size();
-        std::cout << "Found " << numObjects << " Contours in image" << std::endl;
+        cout << "Found " << numObjects << " Contours in image" << endl;
         
 		vector<cv::Point2d> centroids = MatrixOperations::findWeightedCentroids(contours,imageBw,original);
    
@@ -43,12 +46,12 @@ namespace Classifier
 		int patchCount = 0;
 		
 		// Remove partial patches
-        std::cout << "Removing partial patches..." << std::endl;
+        cout << "Removing partial patches..." << endl;
 		vector<MatDict > stats;
         
         vector<cv::Point2d>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
-			Point pt = *it;
+            cv::Point pt = *it;
 			int row = (int)pt.x;
             int col = (int)pt.y;
 			
@@ -73,7 +76,7 @@ namespace Classifier
 				stats.push_back(data);
 			}
 		}
-        std::cout << "Final patch count: " << patchCount << std::endl;
+        cout << "Final patch count: " << patchCount << endl;
         
 		// Calculate features
 		stats = Features::calculateFeatures(stats);
@@ -84,7 +87,7 @@ namespace Classifier
     {
         Vector<double> vec;
         
-		std::ifstream inFile(file_path);
+		ifstream inFile(file_path);
         string value;
         while ( inFile.good() )
         {
@@ -123,9 +126,41 @@ namespace Classifier
     {
         
         // Load the SVM
-        svm_model *model = svm_load_model(MODEL_PATH);
-        Mat train_max = loadCSV(TRAIN_MAX_PATH);
-        Mat train_min = loadCSV(TRAIN_MIN_PATH);
+        svm_model *model;
+        Mat train_max;
+        Mat train_min;
+        if (DEBUG) {
+            model = svm_load_model(MODEL_PATH);
+            train_max = loadCSV(TRAIN_MAX_PATH);
+            train_min = loadCSV(TRAIN_MIN_PATH);
+        } else {
+            CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                            CFSTR("model_out"), CFSTR("txt"),
+                                                            NULL);
+            CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                         CFSTR("train_max"), CFSTR("csv"),
+                                                         NULL);
+            CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                         CFSTR("train_min"), CFSTR("csv"),
+                                                         NULL);
+            
+            char model_path[1024];
+            char max_path[1024];
+            char min_path[1024];
+            
+            CFURLGetFileSystemRepresentation(model_url, true, (UInt8*)model_path, sizeof(model_path));
+            CFURLGetFileSystemRepresentation(max_url, true, (UInt8*)max_path, sizeof(max_path));
+            CFURLGetFileSystemRepresentation(min_url, true, (UInt8*)min_path, sizeof(min_path));
+
+            CFRelease(model_url);
+            CFRelease(max_url);
+            CFRelease(min_url);
+            
+            model = svm_load_model(model_path);
+            train_max = loadCSV(max_path);
+            train_min = loadCSV(min_path);
+            
+        }
 
         // Combine the features
         cv::Mat featuresMatrix = cv::Mat((int)features.size(), 22, CV_64F);
@@ -148,14 +183,26 @@ namespace Classifier
             {
 				cv::Mat rowMat = patch.find("row")->second;
 				cv::Mat colMat = patch.find("col")->second;
+				float patchrow = rowMat.at<float>(0,0);
+				float patchcol = colMat.at<float>(0,0);
+				bool is_float = geom.type() == CV_32F;
+				bool is_double = geom.type() == CV_64F;
 				float geom_val = geom.at<float>(i, 0);
+				double val = (double) geom_val;
+				bool debug = false;
+				if (geom_val < 0.01) {
+					debug = true;
+				}
+				if (debug) {
+					int x = 1;
+				}
                 featuresMatrix.at<double>(row, index) = (double) geom_val;
 				index++;
             }
             row++;
         }
         
-        //Debug::print(featuresMatrix, "xtest.txt");
+        Debug::print(featuresMatrix, "xtest.txt");
     
         // minmax normalization of features
         cv::Mat maxMatrix = repMat(train_max, featuresMatrix.rows);
@@ -168,8 +215,8 @@ namespace Classifier
         cv::subtract(maxMatrix, minMatrix, denominator);
         cv::divide(numerator, denominator, testMatrix);
         
-		//Debug::print(numerator, "numerator.txt");
-        //Debug::print(testMatrix, "xtest_final.txt");
+		Debug::print(numerator, "numerator.txt");
+        Debug::print(testMatrix, "xtest_final.txt");
 
 		//testMatrix = Debug::loadMatrix("xtest_final.txt", 120, 22, CV_64F);
         
@@ -192,20 +239,20 @@ namespace Classifier
             prob_results.push_back(probabilities[0]);
         }
         
-        std::cout << "Finished classifying features" << std::endl;
-		//Debug::printVector(prob_results, "dvtest.txt");
+        cout << "Finished classifying features" << endl;
+		Debug::printVector(prob_results, "dvtest.txt");
         return prob_results;
     }
     
-    bool comparator ( const std::pair<double, int>& l, const std::pair<double, int>& r)
+    bool comparator ( const pair<double, int>& l, const pair<double, int>& r)
     { return l.first > r.first; };
 
     
 	cv::Mat runWithImage(const cv::Mat image)
 	{
-        std::cout << "Running with image\n";
+        cout << "Running with image\n";
 		if(!image.data) {
-            std::cout << "Image has no data! Returning.\n";
+            cout << "Image has no data! Returning.\n";
 			return cv::Mat::zeros(1,1,CV_8UC1);
 		}
 
@@ -217,38 +264,36 @@ namespace Classifier
 		// Feature detection
 		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
 		
-        /*
         Debug::printFeatures(features, "phi");
 		Debug::printFeatures(features, "origPatch");
 		Debug::printFeatures(features, "binPatch");
 		Debug::printFeatures(features, "geom");
-         */
-        
+
         // Classify Objects
         vector<double> prob_results = classifyObjects(features);
 
         // Sort scores, keeping index
-        vector<std::pair<double, int> > prob_results_with_index;
+        vector<pair<double, int> > prob_results_with_index;
         vector<double>::iterator it = prob_results.begin();
         int index = 0;
         for (; it != prob_results.end(); it++)
         {
-            prob_results_with_index.push_back(std::make_pair(*it, index));
+            prob_results_with_index.push_back(make_pair(*it, index));
             index++;
         }
         
         sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
-        //Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
+        Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
 
 		int too_close = 0;
 		int too_low = 0;
 		index = 0;
 		cv::Mat scores_and_centers;
-		vector<std::pair<double, int> >::const_iterator pit = prob_results_with_index.begin();
+		vector<pair<double, int> >::const_iterator pit = prob_results_with_index.begin();
 
 		float max_distance = pow(pow(normalizedImage.rows, 2.0) + pow(normalizedImage.cols, 2.0), 0.5);
 		for (; pit != prob_results_with_index.end(); pit++) {
-			std::pair<double, int> score_with_index = *pit;
+			pair<double, int> score_with_index = *pit;
 			double score = score_with_index.first;
 			int score_index = score_with_index.second;
 
@@ -282,7 +327,7 @@ namespace Classifier
 					counter++;
 				}
 
-				float too_close = 0.75 * PATCH_SIZE;
+				float too_close = 0.75 * PATCHSZ;
 				if (min_distance <= too_close) {
 					MatDict feature = features[min_index];
 					cv::Mat close_feature_row = feature.find("row")->second;

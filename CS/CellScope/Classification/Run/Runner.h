@@ -16,12 +16,23 @@
  
     @author Wayne Gerard
  */
-@interface Runner : NSObject
+@interface Runner : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate> {
+    UIImagePickerController *picker;
+}
 
 /**
     Main runner function. Prompts the user to choose a series of images, and then
     classifies the image
  */
 - (void) run;
+
+- (void) runWithImage: (UIImage*) img;
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *) Picker;
+
+- (void)imagePickerController:(UIImagePickerController *) Picker didFinishPickingMediaWithInfo:(NSDictionary *)info;
+
+@property(strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 
 @end

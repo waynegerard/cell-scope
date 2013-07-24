@@ -1,5 +1,5 @@
 svm_type c_svc
-kernel_type linear
+kernel_type intersection
 nr_class 2
 total_sv 1654
 rho 3.17932

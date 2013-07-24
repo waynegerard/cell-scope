@@ -1,6 +1,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include <CoreFoundation/CoreFoundation.h>
 #include <opencv2/opencv.hpp>
 #include <stdlib.h>
 
@@ -8,7 +9,6 @@
 #define MODEL_PATH ""
 #define TRAIN_MAX_PATH ""
 #define TRAIN_MIN_PATH ""
-#define PATCH_SIZE 24
 
 #if __APPLE__
 #else // Assumed to be windows

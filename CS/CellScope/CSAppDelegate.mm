@@ -9,6 +9,7 @@
 #import "CSAppDelegate.h"
 #import "Users.h"
 #import "LoginViewController.h"
+#include "ClassifierGlobals.h"
 #import "Runner.h"
 
 @implementation CSAppDelegate
@@ -24,12 +25,14 @@
     
     
     // TODO:
-    // 1) This needs to be dealloced
-    // 2) This needs to be integrated with the main app
-    // 3) These settings should come fro ma menu or something
-    Runner* runner = [[Runner alloc] init];
-    [runner run];
-    return YES;
+    // This needs to be integrated with the main app more smoothly
+    
+    if (CLASSIFIER_ONLY) {
+        Runner* runner = [[Runner alloc] init];
+        runner.managedObjectContext = self.managedObjectContext;
+        self.window.rootViewController = runner;
+        return YES;
+    }
     
     LoginViewController *rootView = (LoginViewController *)self.window.rootViewController;
     rootView.managedObjectContext = self.managedObjectContext;

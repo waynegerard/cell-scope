@@ -126,9 +126,44 @@ namespace Classifier
     {
         
         // Load the SVM
-        svm_model *model = svm_load_model(MODEL_PATH);
-        Mat train_max = loadCSV(TRAIN_MAX_PATH);
-        Mat train_min = loadCSV(TRAIN_MIN_PATH);
+        svm_model *model;
+        Mat train_max;
+        Mat train_min;
+        if (DEBUG) {
+            *model = svm_load_model(MODEL_PATH);
+            train_max = loadCSV(TRAIN_MAX_PATH);
+            train_min = loadCSV(TRAIN_MIN_PATH);
+        } else {
+            CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                            CFSTR("model_out"), CFSTR("txt"),
+                                                            NULL);
+            CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                         CFSTR("train_max"), CFSTR("csv"),
+                                                         NULL);
+            CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                         CFSTR("train_min"), CFSTR("csv"),
+                                                         NULL);
+            
+            char model_path[1024];
+            char max_path[1024];
+            char min_path[1024];
+            
+            CFURLGetFileSystemRepresentation(model_url, true,
+                                             model_path, sizeof(model_path));
+            CFURLGetFileSystemRepresentation(max_url, true,
+                                             max_path, sizeof(max_path));
+            CFURLGetFileSystemRepresentation(min_url, true,
+                                             min_path, sizeof(min_path));
+
+            CFRelease(model_url);
+            CFRelease(max_url);
+            CFRelease(min_url);
+            
+            *model = svm_load_model(model_path);
+            train_max = loadCSV(max_path);
+            train_min = loadCSV(min_path);
+            
+        }
 
         // Combine the features
         cv::Mat featuresMatrix = cv::Mat((int)features.size(), 22, CV_64F);

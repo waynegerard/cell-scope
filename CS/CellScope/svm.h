@@ -1,7 +1,7 @@
 #ifndef _LIBSVM_H
 #define _LIBSVM_H
 
-#define LIBSVM_VERSION 316
+#define LIBSVM_VERSION 300
 
 #ifdef __cplusplus
 extern "C" {
@@ -23,7 +23,8 @@ struct svm_problem
 };
 
 enum { C_SVC, NU_SVC, ONE_CLASS, EPSILON_SVR, NU_SVR };	/* svm_type */
-enum { LINEAR, POLY, RBF, SIGMOID, PRECOMPUTED }; /* kernel_type */
+// added support for interesction, chi-squared, sqrt (Hellinger's) and Jensen-Shannon's kernels	
+enum { LINEAR, POLY, RBF, SIGMOID, PRECOMPUTED, INTERSECTION, CHISQUARED, JS}; /* kernel_type */
 
 struct svm_parameter
 {
@@ -59,7 +60,6 @@ struct svm_model
 	double *rho;		/* constants in decision functions (rho[k*(k-1)/2]) */
 	double *probA;		/* pariwise probability information */
 	double *probB;
-	int *sv_indices;        /* sv_indices[0,...,nSV-1] are values in [1,...,num_traning_data] to indicate SVs in the training set */
 
 	/* for classification only */
 
@@ -80,8 +80,6 @@ struct svm_model *svm_load_model(const char *model_file_name);
 int svm_get_svm_type(const struct svm_model *model);
 int svm_get_nr_class(const struct svm_model *model);
 void svm_get_labels(const struct svm_model *model, int *label);
-void svm_get_sv_indices(const struct svm_model *model, int *sv_indices);
-int svm_get_nr_sv(const struct svm_model *model);
 double svm_get_svr_probability(const struct svm_model *model);
 
 double svm_predict_values(const struct svm_model *model, const struct svm_node *x, double* dec_values);
@@ -96,6 +94,10 @@ const char *svm_check_parameter(const struct svm_problem *prob, const struct svm
 int svm_check_probability_model(const struct svm_model *model);
 
 void svm_set_print_string_function(void (*print_func)(const char *));
+
+// deprecated
+// this function will be removed in future release
+void svm_destroy_model(struct svm_model *model_ptr); 
 
 #ifdef __cplusplus
 }

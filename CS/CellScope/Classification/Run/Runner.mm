@@ -9,8 +9,11 @@
 #include "Classifier.h"
 #import "Runner.h"
 #import "Globals.h"
+#import "ScoresAndCentroids.h"
 
 @implementation Runner
+
+@synthesize managedObjectContext;
 
 - (cv::Mat)cvMatWithImage:(UIImage *)image
 {
@@ -41,40 +44,71 @@
     return cvMat;
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [self run];
+}
+
+- (void) runWithImage: (UIImage*) img {
+
+    NSDate *start = [NSDate date];
+    NSLog(@"Processing image");
+    cv::Mat converted_img = [self cvMatWithImage:img];
+    cv::Mat results = Classifier::runWithImage(converted_img);
+    NSLog(@"Possible TB candidates: %i", results.rows);
+    NSDate *end = [NSDate date];
+    NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
+    NSLog(@"Execution Time: %f", executionTime);
+    
+    // Save to Core Data
+    if (SAVE_TO_CORE_DATA) {
+        ScoresAndCentroids* imageData = (ScoresAndCentroids *)[NSEntityDescription insertNewObjectForEntityForName:@"ScoresAndCentroids" inManagedObjectContext:self.managedObjectContext];
+    
+        NSMutableArray* scores = [NSMutableArray array];
+        NSMutableArray* centroids = [NSMutableArray array];
+    
+        for (int i = 0; i < results.rows; i++) {
+            for (int j = 0; j < results.cols; j++) {
+                float val = results.at<float>(i, j);
+                NSNumber* numberVal = [NSNumber numberWithFloat: val];
+                if (j == 0) {
+                    [scores addObject: numberVal];
+                } else {
+                    [centroids addObject: numberVal];
+                }
+            }
+        }
+    
+        imageData.scores = [NSKeyedArchiver archivedDataWithRootObject:scores];
+        imageData.centroids = [NSKeyedArchiver archivedDataWithRootObject:centroids];
+        imageData.image_name = [[NSDate date] description];
+    
+        NSError *error;
+        if (![self.managedObjectContext save:&error]) {
+            NSLog(@"Failed to add new picture with error: %@", [error domain]);
+        }
+    }
+    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *) Picker {
+    [Picker dismissModalViewControllerAnimated:YES];
+}
+
+- (void)imagePickerController:(UIImagePickerController *) Picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage* image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    [Picker dismissModalViewControllerAnimated:YES];
+    [self runWithImage:image];
+}
 
 - (void) run {
-    
-    /////////////////////////////////
-    // Handle incorrect parameters //
-    /////////////////////////////////
-    
-    NSDate *start = [NSDate date];
     
     ///////////////////////
     // Choose the images //
     ///////////////////////
-    
-    // TODO: Let user choose images
-    NSMutableArray* images = [NSMutableArray arrayWithCapacity:1];
-    UIImage* img = [UIImage imageNamed:@"1350_Clay_Fluor_Yes.png"];
-    [images addObject:img];
-    int count = [images count];
-    
-    ////////////////////
-    // Run the images //
-    ////////////////////
-    
-    for (int i = 0; i < count; i++) {
-        NSLog(@"Processing image %d of %d", i, count);
-        UIImage* ui_img = [images objectAtIndex:i];
-        cv::Mat converted_img = [self cvMatWithImage:ui_img];
-        
-        cv::Mat results = Classifier::runWithImage(converted_img);
-    }
-    
-    NSDate *end = [NSDate date];
-    NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
-    NSLog(@"Execution Time: %f", executionTime);
+    picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentModalViewController:picker animated:YES];
     
 }
 
