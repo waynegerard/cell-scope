@@ -1,5 +1,4 @@
 #include "Region.h"
-#include "Contour.h"
 #include "Debug.h"
 #include <opencv2/imgproc/imgproc.hpp>
 using namespace cv;
@@ -30,7 +29,6 @@ namespace Region
 		float minIntensity = 1E6;
 		float maxIntensity = 0;
 		float meanIntensity = 0;
-		float count = 0;
 		for (int i = 0; i < filledImage.rows; i++) {
 		  for (int j = 0; j < filledImage.cols; j++) {
 		    int val = filledImage.at<unsigned char>(i, j);

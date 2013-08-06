@@ -7,186 +7,502 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC4BB20B17A092FC0012855D /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB1FD17A092FC0012855D /* BlobClass.cpp */; };
-		AC4BB20C17A092FC0012855D /* BlobClass.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB1FE17A092FC0012855D /* BlobClass.h */; };
-		AC4BB20D17A092FC0012855D /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB1FF17A092FC0012855D /* Classifier.cpp */; };
-		AC4BB20E17A092FC0012855D /* Classifier.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20017A092FC0012855D /* Classifier.h */; };
-		AC4BB20F17A092FC0012855D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20117A092FC0012855D /* Debug.cpp */; };
-		AC4BB21017A092FC0012855D /* Debug.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20217A092FC0012855D /* Debug.h */; };
-		AC4BB21117A092FC0012855D /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20317A092FC0012855D /* Features.cpp */; };
-		AC4BB21217A092FC0012855D /* Features.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20417A092FC0012855D /* Features.h */; };
-		AC4BB21317A092FC0012855D /* Globals.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20517A092FC0012855D /* Globals.h */; };
-		AC4BB21417A092FC0012855D /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20617A092FC0012855D /* ImageTools.cpp */; };
-		AC4BB21517A092FC0012855D /* ImageTools.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20717A092FC0012855D /* ImageTools.h */; };
-		AC4BB21617A092FC0012855D /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20817A092FC0012855D /* MatrixOperations.cpp */; };
-		AC4BB21717A092FC0012855D /* MatrixOperations.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB20917A092FC0012855D /* MatrixOperations.h */; };
-		AC4BB21817A092FC0012855D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB20A17A092FC0012855D /* Region.cpp */; };
-		AC4BB22D17A0991C0012855D /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22817A0991C0012855D /* svm-predict.c */; };
-		AC4BB22E17A0991C0012855D /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22917A0991C0012855D /* svm-scale.c */; };
-		AC4BB22F17A0991C0012855D /* svm-train.c in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22A17A0991C0012855D /* svm-train.c */; };
-		AC4BB23017A0991C0012855D /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC4BB22B17A0991C0012855D /* svm.cpp */; };
-		AC4BB23117A0991C0012855D /* svm.h in Headers */ = {isa = PBXBuildFile; fileRef = AC4BB22C17A0991C0012855D /* svm.h */; };
+		AC31AD6017B0722800FE52F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC31AD5F17B0722800FE52F5 /* Foundation.framework */; };
+		AC31AD6517B0722800FE52F5 /* Cellscope_Classifier.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */; };
+		AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.m in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */; };
+		AC31AD7C17B0724900FE52F5 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6D17B0724900FE52F5 /* BlobClass.cpp */; };
+		AC31AD7D17B0724900FE52F5 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6F17B0724900FE52F5 /* Classifier.cpp */; };
+		AC31AD7E17B0724900FE52F5 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7117B0724900FE52F5 /* Debug.cpp */; };
+		AC31AD7F17B0724900FE52F5 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7317B0724900FE52F5 /* Features.cpp */; };
+		AC31AD8017B0724900FE52F5 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7617B0724900FE52F5 /* ImageTools.cpp */; };
+		AC31AD8117B0724900FE52F5 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7817B0724900FE52F5 /* MatrixOperations.cpp */; };
+		AC31AD8217B0724900FE52F5 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7A17B0724900FE52F5 /* Region.cpp */; };
+		AC31ADBD17B0726F00FE52F5 /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC31AD9A17B0725800FE52F5 /* libopencv_core.a */; };
+		AC31ADBE17B0726F00FE52F5 /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC31ADB417B0725800FE52F5 /* libopencv_highgui.a */; };
+		AC31ADBF17B0726F00FE52F5 /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC31ADA217B0725800FE52F5 /* libopencv_imgproc.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		AC31AD9717B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82531135E7B1000F4D611;
+			remoteInfo = opencv_calib3d;
+		};
+		AC31AD9917B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC823A2135E767D00F4D611;
+			remoteInfo = opencv_core;
+		};
+		AC31AD9B17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC824DE135E794900F4D611;
+			remoteInfo = opencv_features2d;
+		};
+		AC31AD9D17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC8248C135E789300F4D611;
+			remoteInfo = opencv_flann;
+		};
+		AC31AD9F17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82617135E7F8B00F4D611;
+			remoteInfo = opencv_ts;
+		};
+		AC31ADA117B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82404135E77A600F4D611;
+			remoteInfo = opencv_imgproc;
+		};
+		AC31ADA317B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC8280A135E874800F4D611;
+			remoteInfo = opencv_legacy;
+		};
+		AC31ADA517B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82873135E889600F4D611;
+			remoteInfo = opencv_contrib;
+		};
+		AC31ADA717B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC8267D135E818000F4D611;
+			remoteInfo = opencv_ml;
+		};
+		AC31ADA917B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82571135E7BCA00F4D611;
+			remoteInfo = opencv_objdetect;
+		};
+		AC31ADAB17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82646135E80B400F4D611;
+			remoteInfo = opencv_video;
+		};
+		AC31ADAD17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC81FED135E743800F4D611;
+			remoteInfo = zlib;
+		};
+		AC31ADAF17B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC82068135E74F000F4D611;
+			remoteInfo = libjpeg;
+		};
+		AC31ADB117B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABC820F0135E754400F4D611;
+			remoteInfo = libpng;
+		};
+		AC31ADB317B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC81ADCE16F93E7000F5431B;
+			remoteInfo = opencv_highgui;
+		};
+		AC31ADB517B0725800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AB1D026316DA001D00E9AA4B;
+			remoteInfo = opencv_nonfree;
+		};
+		AC31ADB717B0726800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ABC823A1135E767D00F4D611;
+			remoteInfo = opencv_core;
+		};
+		AC31ADB917B0726800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ABC82403135E77A600F4D611;
+			remoteInfo = opencv_imgproc;
+		};
+		AC31ADBB17B0726800FE52F5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ABA029E41573DA5600BC966A;
+			remoteInfo = opencv_highgui;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		AC31AD5A17B0722800FE52F5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+				AC31AD6517B0722800FE52F5 /* Cellscope_Classifier.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		AC4BB1FD17A092FC0012855D /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../BlobClass.cpp; sourceTree = "<group>"; };
-		AC4BB1FE17A092FC0012855D /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../BlobClass.h; sourceTree = "<group>"; };
-		AC4BB1FF17A092FC0012855D /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Classifier.cpp; path = ../Classifier.cpp; sourceTree = "<group>"; };
-		AC4BB20017A092FC0012855D /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Classifier.h; path = ../Classifier.h; sourceTree = "<group>"; };
-		AC4BB20117A092FC0012855D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../Debug.cpp; sourceTree = "<group>"; };
-		AC4BB20217A092FC0012855D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../Debug.h; sourceTree = "<group>"; };
-		AC4BB20317A092FC0012855D /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Features.cpp; path = ../Features.cpp; sourceTree = "<group>"; };
-		AC4BB20417A092FC0012855D /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Features.h; path = ../Features.h; sourceTree = "<group>"; };
-		AC4BB20517A092FC0012855D /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = ../Globals.h; sourceTree = "<group>"; };
-		AC4BB20617A092FC0012855D /* ImageTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageTools.cpp; path = ../ImageTools.cpp; sourceTree = "<group>"; };
-		AC4BB20717A092FC0012855D /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = ../ImageTools.h; sourceTree = "<group>"; };
-		AC4BB20817A092FC0012855D /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatrixOperations.cpp; path = ../MatrixOperations.cpp; sourceTree = "<group>"; };
-		AC4BB20917A092FC0012855D /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = ../MatrixOperations.h; sourceTree = "<group>"; };
-		AC4BB20A17A092FC0012855D /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Region.cpp; path = ../Region.cpp; sourceTree = "<group>"; };
-		AC4BB22817A0991C0012855D /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-predict.c"; path = "../../LibSVM/svm-predict.c"; sourceTree = "<group>"; };
-		AC4BB22917A0991C0012855D /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-scale.c"; path = "../../LibSVM/svm-scale.c"; sourceTree = "<group>"; };
-		AC4BB22A17A0991C0012855D /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "svm-train.c"; path = "../../LibSVM/svm-train.c"; sourceTree = "<group>"; };
-		AC4BB22B17A0991C0012855D /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = svm.cpp; path = ../../LibSVM/svm.cpp; sourceTree = "<group>"; };
-		AC4BB22C17A0991C0012855D /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = svm.h; path = ../../LibSVM/svm.h; sourceTree = "<group>"; };
-		ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libCellScope-Classifier.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC31AD5C17B0722800FE52F5 /* libCellscope-Classifier.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCellscope-Classifier.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC31AD5F17B0722800FE52F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AC31AD6317B0722800FE52F5 /* Cellscope-Classifier-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cellscope-Classifier-Prefix.pch"; sourceTree = "<group>"; };
+		AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cellscope_Classifier.h; sourceTree = "<group>"; };
+		AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cellscope_Classifier.m; sourceTree = "<group>"; };
+		AC31AD6D17B0724900FE52F5 /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../../BlobClass.cpp; sourceTree = "<group>"; };
+		AC31AD6E17B0724900FE52F5 /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../../BlobClass.h; sourceTree = "<group>"; };
+		AC31AD6F17B0724900FE52F5 /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Classifier.cpp; path = ../../Classifier.cpp; sourceTree = "<group>"; };
+		AC31AD7017B0724900FE52F5 /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Classifier.h; path = ../../Classifier.h; sourceTree = "<group>"; };
+		AC31AD7117B0724900FE52F5 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../Debug.cpp; sourceTree = "<group>"; };
+		AC31AD7217B0724900FE52F5 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../Debug.h; sourceTree = "<group>"; };
+		AC31AD7317B0724900FE52F5 /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Features.cpp; path = ../../Features.cpp; sourceTree = "<group>"; };
+		AC31AD7417B0724900FE52F5 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Features.h; path = ../../Features.h; sourceTree = "<group>"; };
+		AC31AD7517B0724900FE52F5 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Globals.h; path = ../../Globals.h; sourceTree = "<group>"; };
+		AC31AD7617B0724900FE52F5 /* ImageTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageTools.cpp; path = ../../ImageTools.cpp; sourceTree = "<group>"; };
+		AC31AD7717B0724900FE52F5 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageTools.h; path = ../../ImageTools.h; sourceTree = "<group>"; };
+		AC31AD7817B0724900FE52F5 /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MatrixOperations.cpp; path = ../../MatrixOperations.cpp; sourceTree = "<group>"; };
+		AC31AD7917B0724900FE52F5 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MatrixOperations.h; path = ../../MatrixOperations.h; sourceTree = "<group>"; };
+		AC31AD7A17B0724900FE52F5 /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Region.cpp; path = ../../Region.cpp; sourceTree = "<group>"; };
+		AC31AD7B17B0724900FE52F5 /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Region.h; path = ../../Region.h; sourceTree = "<group>"; };
+		AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OpenCV-iOS.xcodeproj"; path = "../../../OpenCV-iOS/OpenCV-iOS/OpenCV-iOS.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		ACB29B64179F94B00001220C /* Frameworks */ = {
+		AC31AD5917B0722800FE52F5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC31ADBD17B0726F00FE52F5 /* libopencv_core.a in Frameworks */,
+				AC31ADBE17B0726F00FE52F5 /* libopencv_highgui.a in Frameworks */,
+				AC31ADBF17B0726F00FE52F5 /* libopencv_imgproc.a in Frameworks */,
+				AC31AD6017B0722800FE52F5 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		ACB29B5E179F94B00001220C = {
+		AC31AD5317B0722800FE52F5 = {
 			isa = PBXGroup;
 			children = (
-				AC4BB22817A0991C0012855D /* svm-predict.c */,
-				AC4BB22917A0991C0012855D /* svm-scale.c */,
-				AC4BB22A17A0991C0012855D /* svm-train.c */,
-				AC4BB22B17A0991C0012855D /* svm.cpp */,
-				AC4BB22C17A0991C0012855D /* svm.h */,
-				AC4BB1FD17A092FC0012855D /* BlobClass.cpp */,
-				AC4BB1FE17A092FC0012855D /* BlobClass.h */,
-				AC4BB1FF17A092FC0012855D /* Classifier.cpp */,
-				AC4BB20017A092FC0012855D /* Classifier.h */,
-				AC4BB20117A092FC0012855D /* Debug.cpp */,
-				AC4BB20217A092FC0012855D /* Debug.h */,
-				AC4BB20317A092FC0012855D /* Features.cpp */,
-				AC4BB20417A092FC0012855D /* Features.h */,
-				AC4BB20517A092FC0012855D /* Globals.h */,
-				AC4BB20617A092FC0012855D /* ImageTools.cpp */,
-				AC4BB20717A092FC0012855D /* ImageTools.h */,
-				AC4BB20817A092FC0012855D /* MatrixOperations.cpp */,
-				AC4BB20917A092FC0012855D /* MatrixOperations.h */,
-				AC4BB20A17A092FC0012855D /* Region.cpp */,
-				ACB29B68179F94B00001220C /* Products */,
+				AC31AD6117B0722800FE52F5 /* Cellscope-Classifier */,
+				AC31AD5E17B0722800FE52F5 /* Frameworks */,
+				AC31AD5D17B0722800FE52F5 /* Products */,
+				AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
-		ACB29B68179F94B00001220C /* Products */ = {
+		AC31AD5D17B0722800FE52F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */,
+				AC31AD5C17B0722800FE52F5 /* libCellscope-Classifier.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AC31AD5E17B0722800FE52F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AC31AD5F17B0722800FE52F5 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		AC31AD6117B0722800FE52F5 /* Cellscope-Classifier */ = {
+			isa = PBXGroup;
+			children = (
+				AC31AD6D17B0724900FE52F5 /* BlobClass.cpp */,
+				AC31AD6E17B0724900FE52F5 /* BlobClass.h */,
+				AC31AD6F17B0724900FE52F5 /* Classifier.cpp */,
+				AC31AD7017B0724900FE52F5 /* Classifier.h */,
+				AC31AD7117B0724900FE52F5 /* Debug.cpp */,
+				AC31AD7217B0724900FE52F5 /* Debug.h */,
+				AC31AD7317B0724900FE52F5 /* Features.cpp */,
+				AC31AD7417B0724900FE52F5 /* Features.h */,
+				AC31AD7517B0724900FE52F5 /* Globals.h */,
+				AC31AD7617B0724900FE52F5 /* ImageTools.cpp */,
+				AC31AD7717B0724900FE52F5 /* ImageTools.h */,
+				AC31AD7817B0724900FE52F5 /* MatrixOperations.cpp */,
+				AC31AD7917B0724900FE52F5 /* MatrixOperations.h */,
+				AC31AD7A17B0724900FE52F5 /* Region.cpp */,
+				AC31AD7B17B0724900FE52F5 /* Region.h */,
+				AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */,
+				AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */,
+				AC31AD6217B0722800FE52F5 /* Supporting Files */,
+			);
+			path = "Cellscope-Classifier";
+			sourceTree = "<group>";
+		};
+		AC31AD6217B0722800FE52F5 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				AC31AD6317B0722800FE52F5 /* Cellscope-Classifier-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AC31AD8417B0725700FE52F5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC31AD9817B0725800FE52F5 /* libopencv_calib3d.a */,
+				AC31AD9A17B0725800FE52F5 /* libopencv_core.a */,
+				AC31AD9C17B0725800FE52F5 /* libopencv_features2d.a */,
+				AC31AD9E17B0725800FE52F5 /* libopencv_flann.a */,
+				AC31ADA017B0725800FE52F5 /* libopencv_ts.a */,
+				AC31ADA217B0725800FE52F5 /* libopencv_imgproc.a */,
+				AC31ADA417B0725800FE52F5 /* libopencv_legacy.a */,
+				AC31ADA617B0725800FE52F5 /* libopencv_contrib.a */,
+				AC31ADA817B0725800FE52F5 /* libopencv_ml.a */,
+				AC31ADAA17B0725800FE52F5 /* libopencv_objdetect.a */,
+				AC31ADAC17B0725800FE52F5 /* libopencv_video.a */,
+				AC31ADAE17B0725800FE52F5 /* libzlib.a */,
+				AC31ADB017B0725800FE52F5 /* liblibjpeg.a */,
+				AC31ADB217B0725800FE52F5 /* liblibpng.a */,
+				AC31ADB417B0725800FE52F5 /* libopencv_highgui.a */,
+				AC31ADB617B0725800FE52F5 /* libopencv_nonfree.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
-/* Begin PBXHeadersBuildPhase section */
-		ACB29B65179F94B00001220C /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AC4BB20C17A092FC0012855D /* BlobClass.h in Headers */,
-				AC4BB20E17A092FC0012855D /* Classifier.h in Headers */,
-				AC4BB21017A092FC0012855D /* Debug.h in Headers */,
-				AC4BB21217A092FC0012855D /* Features.h in Headers */,
-				AC4BB21317A092FC0012855D /* Globals.h in Headers */,
-				AC4BB21517A092FC0012855D /* ImageTools.h in Headers */,
-				AC4BB21717A092FC0012855D /* MatrixOperations.h in Headers */,
-				AC4BB23117A0991C0012855D /* svm.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
 /* Begin PBXNativeTarget section */
-		ACB29B66179F94B00001220C /* CellScope-Classifier */ = {
+		AC31AD5B17B0722800FE52F5 /* Cellscope-Classifier */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ACB29B6B179F94B00001220C /* Build configuration list for PBXNativeTarget "CellScope-Classifier" */;
+			buildConfigurationList = AC31AD6A17B0722800FE52F5 /* Build configuration list for PBXNativeTarget "Cellscope-Classifier" */;
 			buildPhases = (
-				ACB29B63179F94B00001220C /* Sources */,
-				ACB29B64179F94B00001220C /* Frameworks */,
-				ACB29B65179F94B00001220C /* Headers */,
+				AC31AD5817B0722800FE52F5 /* Sources */,
+				AC31AD5917B0722800FE52F5 /* Frameworks */,
+				AC31AD5A17B0722800FE52F5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				AC31ADB817B0726800FE52F5 /* PBXTargetDependency */,
+				AC31ADBA17B0726800FE52F5 /* PBXTargetDependency */,
+				AC31ADBC17B0726800FE52F5 /* PBXTargetDependency */,
 			);
-			name = "CellScope-Classifier";
-			productName = "CellScope-Classifier";
-			productReference = ACB29B67179F94B00001220C /* libCellScope-Classifier.dylib */;
-			productType = "com.apple.product-type.library.dynamic";
+			name = "Cellscope-Classifier";
+			productName = "Cellscope-Classifier";
+			productReference = AC31AD5C17B0722800FE52F5 /* libCellscope-Classifier.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		ACB29B5F179F94B00001220C /* Project object */ = {
+		AC31AD5417B0722800FE52F5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = CellScope;
 			};
-			buildConfigurationList = ACB29B62179F94B00001220C /* Build configuration list for PBXProject "CellScope-Classifier" */;
+			buildConfigurationList = AC31AD5717B0722800FE52F5 /* Build configuration list for PBXProject "Cellscope-Classifier" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = ACB29B5E179F94B00001220C;
-			productRefGroup = ACB29B68179F94B00001220C /* Products */;
+			mainGroup = AC31AD5317B0722800FE52F5;
+			productRefGroup = AC31AD5D17B0722800FE52F5 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AC31AD8417B0725700FE52F5 /* Products */;
+					ProjectRef = AC31AD8317B0725700FE52F5 /* OpenCV-iOS.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
-				ACB29B66179F94B00001220C /* CellScope-Classifier */,
+				AC31AD5B17B0722800FE52F5 /* Cellscope-Classifier */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXReferenceProxy section */
+		AC31AD9817B0725800FE52F5 /* libopencv_calib3d.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_calib3d.a;
+			remoteRef = AC31AD9717B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31AD9A17B0725800FE52F5 /* libopencv_core.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_core.a;
+			remoteRef = AC31AD9917B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31AD9C17B0725800FE52F5 /* libopencv_features2d.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_features2d.a;
+			remoteRef = AC31AD9B17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31AD9E17B0725800FE52F5 /* libopencv_flann.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_flann.a;
+			remoteRef = AC31AD9D17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADA017B0725800FE52F5 /* libopencv_ts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_ts.a;
+			remoteRef = AC31AD9F17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADA217B0725800FE52F5 /* libopencv_imgproc.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_imgproc.a;
+			remoteRef = AC31ADA117B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADA417B0725800FE52F5 /* libopencv_legacy.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_legacy.a;
+			remoteRef = AC31ADA317B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADA617B0725800FE52F5 /* libopencv_contrib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_contrib.a;
+			remoteRef = AC31ADA517B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADA817B0725800FE52F5 /* libopencv_ml.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_ml.a;
+			remoteRef = AC31ADA717B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADAA17B0725800FE52F5 /* libopencv_objdetect.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_objdetect.a;
+			remoteRef = AC31ADA917B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADAC17B0725800FE52F5 /* libopencv_video.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_video.a;
+			remoteRef = AC31ADAB17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADAE17B0725800FE52F5 /* libzlib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzlib.a;
+			remoteRef = AC31ADAD17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADB017B0725800FE52F5 /* liblibjpeg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblibjpeg.a;
+			remoteRef = AC31ADAF17B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADB217B0725800FE52F5 /* liblibpng.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblibpng.a;
+			remoteRef = AC31ADB117B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADB417B0725800FE52F5 /* libopencv_highgui.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_highgui.a;
+			remoteRef = AC31ADB317B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		AC31ADB617B0725800FE52F5 /* libopencv_nonfree.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopencv_nonfree.a;
+			remoteRef = AC31ADB517B0725800FE52F5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
 /* Begin PBXSourcesBuildPhase section */
-		ACB29B63179F94B00001220C /* Sources */ = {
+		AC31AD5817B0722800FE52F5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC4BB20B17A092FC0012855D /* BlobClass.cpp in Sources */,
-				AC4BB20D17A092FC0012855D /* Classifier.cpp in Sources */,
-				AC4BB20F17A092FC0012855D /* Debug.cpp in Sources */,
-				AC4BB21117A092FC0012855D /* Features.cpp in Sources */,
-				AC4BB21417A092FC0012855D /* ImageTools.cpp in Sources */,
-				AC4BB21617A092FC0012855D /* MatrixOperations.cpp in Sources */,
-				AC4BB21817A092FC0012855D /* Region.cpp in Sources */,
-				AC4BB22D17A0991C0012855D /* svm-predict.c in Sources */,
-				AC4BB22E17A0991C0012855D /* svm-scale.c in Sources */,
-				AC4BB22F17A0991C0012855D /* svm-train.c in Sources */,
-				AC4BB23017A0991C0012855D /* svm.cpp in Sources */,
+				AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.m in Sources */,
+				AC31AD7C17B0724900FE52F5 /* BlobClass.cpp in Sources */,
+				AC31AD7D17B0724900FE52F5 /* Classifier.cpp in Sources */,
+				AC31AD7E17B0724900FE52F5 /* Debug.cpp in Sources */,
+				AC31AD7F17B0724900FE52F5 /* Features.cpp in Sources */,
+				AC31AD8017B0724900FE52F5 /* ImageTools.cpp in Sources */,
+				AC31AD8117B0724900FE52F5 /* MatrixOperations.cpp in Sources */,
+				AC31AD8217B0724900FE52F5 /* Region.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		AC31ADB817B0726800FE52F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = opencv_core;
+			targetProxy = AC31ADB717B0726800FE52F5 /* PBXContainerItemProxy */;
+		};
+		AC31ADBA17B0726800FE52F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = opencv_imgproc;
+			targetProxy = AC31ADB917B0726800FE52F5 /* PBXContainerItemProxy */;
+		};
+		AC31ADBC17B0726800FE52F5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = opencv_highgui;
+			targetProxy = AC31ADBB17B0726800FE52F5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		ACB29B69179F94B00001220C /* Debug */ = {
+		AC31AD6817B0722800FE52F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -195,33 +511,28 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
-				LIBRARY_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				HEADER_SEARCH_PATHS = "../../../../**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
-		ACB29B6A179F94B00001220C /* Release */ = {
+		AC31AD6917B0722800FE52F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -230,59 +541,62 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
-				LIBRARY_SEARCH_PATHS = "../../../OpenCV-iOS/opencv-svn/**";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SDKROOT = macosx;
+				HEADER_SEARCH_PATHS = "../../../../**";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		ACB29B6C179F94B00001220C /* Debug */ = {
+		AC31AD6B17B0722800FE52F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
+				DSTROOT = /tmp/Cellscope_Classifier.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cellscope-Classifier/Cellscope-Classifier-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
-		ACB29B6D179F94B00001220C /* Release */ = {
+		AC31AD6C17B0722800FE52F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				EXECUTABLE_PREFIX = lib;
+				DSTROOT = /tmp/Cellscope_Classifier.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Cellscope-Classifier/Cellscope-Classifier-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		ACB29B62179F94B00001220C /* Build configuration list for PBXProject "CellScope-Classifier" */ = {
+		AC31AD5717B0722800FE52F5 /* Build configuration list for PBXProject "Cellscope-Classifier" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACB29B69179F94B00001220C /* Debug */,
-				ACB29B6A179F94B00001220C /* Release */,
+				AC31AD6817B0722800FE52F5 /* Debug */,
+				AC31AD6917B0722800FE52F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ACB29B6B179F94B00001220C /* Build configuration list for PBXNativeTarget "CellScope-Classifier" */ = {
+		AC31AD6A17B0722800FE52F5 /* Build configuration list for PBXNativeTarget "Cellscope-Classifier" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACB29B6C179F94B00001220C /* Debug */,
-				ACB29B6D179F94B00001220C /* Release */,
+				AC31AD6B17B0722800FE52F5 /* Debug */,
+				AC31AD6C17B0722800FE52F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = ACB29B5F179F94B00001220C /* Project object */;
+	rootObject = AC31AD5417B0722800FE52F5 /* Project object */;
 }

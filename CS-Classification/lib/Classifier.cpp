@@ -67,10 +67,10 @@ namespace Classifier
                 cv::Mat binPatch = *new cv::Mat(Features::calculateBinarizedPatch(patch));
 				MatDict data;
 
-				data.insert(std::make_pair<const char*, cv::Mat>("row", rowMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("col", colMat));
-				data.insert(std::make_pair<const char*, cv::Mat>("patch", patch));
-				data.insert(std::make_pair<const char*, cv::Mat>("binPatch", binPatch));
+				data.insert(std::pair<const char*, cv::Mat>("row", rowMat));
+				data.insert(std::pair<const char*, cv::Mat>("col", colMat));
+				data.insert(std::pair<const char*, cv::Mat>("patch", patch));
+				data.insert(std::pair<const char*, cv::Mat>("binPatch", binPatch));
 				patchCount++;
 
 				stats.push_back(data);
@@ -126,14 +126,15 @@ namespace Classifier
     {
         
         // Load the SVM
-        svm_model *model;
+        svm_model *model = nullptr;
         Mat train_max;
         Mat train_min;
         if (DEBUG) {
-            *model = svm_load_model(MODEL_PATH);
+            *model = *svm_load_model(MODEL_PATH);
             train_max = loadCSV(TRAIN_MAX_PATH);
             train_min = loadCSV(TRAIN_MIN_PATH);
         } else {
+#if !DEBUG
             CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
                                                             CFSTR("model_out"), CFSTR("txt"),
                                                             NULL);
@@ -154,15 +155,14 @@ namespace Classifier
                                              max_path, sizeof(max_path));
             CFURLGetFileSystemRepresentation(min_url, true,
                                              min_path, sizeof(min_path));
-
             CFRelease(model_url);
             CFRelease(max_url);
             CFRelease(min_url);
             
-            *model = svm_load_model(model_path);
+            *model = *svm_load_model(model_path);
             train_max = loadCSV(max_path);
             train_min = loadCSV(min_path);
-            
+#endif            
         }
 
         // Combine the features
@@ -186,19 +186,7 @@ namespace Classifier
             {
 				cv::Mat rowMat = patch.find("row")->second;
 				cv::Mat colMat = patch.find("col")->second;
-				float patchrow = rowMat.at<float>(0,0);
-				float patchcol = colMat.at<float>(0,0);
-				bool is_float = geom.type() == CV_32F;
-				bool is_double = geom.type() == CV_64F;
 				float geom_val = geom.at<float>(i, 0);
-				double val = (double) geom_val;
-				bool debug = false;
-				if (geom_val < 0.01) {
-					debug = true;
-				}
-				if (debug) {
-					int x = 1;
-				}
                 featuresMatrix.at<double>(row, index) = (double) geom_val;
 				index++;
             }
@@ -288,7 +276,6 @@ namespace Classifier
         sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
         Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
 
-		int too_close = 0;
 		int too_low = 0;
 		index = 0;
 		cv::Mat scores_and_centers;

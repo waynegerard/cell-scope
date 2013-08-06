@@ -3,6 +3,7 @@
 #include "MatrixOperations.h"
 #include "Region.h"
 
+
 namespace Features 
 {
 
@@ -102,8 +103,6 @@ namespace Features
         cv::Mat preThresh = *new cv::Mat(rows, cols, CV_32F);
         cv::Mat junk = *new cv::Mat(rows, cols, CV_8UC1);
         
-		float init_val = origPatch.at<float>(0, 0);
-
         float maxVal = origPatch.at<float>((rows/2) - 1, (cols/2) - 1);
 
         for (int i = 0; i < rows; i++) {
@@ -200,8 +199,6 @@ namespace Features
 					std::vector<cv::Point>::const_iterator rit = contour.begin();
 					for (; rit != contour.end(); rit++) {
 						cv::Point pt = *rit;
-						bool is_float = binPatchNew.type() == CV_32F;
-						bool is_int = binPatchNew.type() == CV_8UC1;
 						binPatchNew.at<unsigned char>(pt.x, pt.y) = 0;
 					}
 				}
@@ -257,8 +254,8 @@ namespace Features
 			std::cout << "Calculating geometric features..." << std::endl;
             Mat geom = geometricFeatures(binPatch.clone(), patch.clone());
 			std::cout << "Done calculating geometric features" << std::endl;
-            p.insert(std::make_pair<const char*, cv::Mat>("geom", geom));
-            p.insert(std::make_pair<const char*, cv::Mat>("phi", huMoments));
+            p.insert(std::pair<const char*, cv::Mat>("geom", geom));
+            p.insert(std::pair<const char*, cv::Mat>("phi", huMoments));
 			patchedBlobs.push_back(p);
         }
 		std::cout << "Done calculating features" << std::endl;
