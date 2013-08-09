@@ -8,8 +8,9 @@
 
 #include "Classifier.h"
 #import "Runner.h"
-#import "Globals.h"
+#import "ClassifierGlobals.h"
 #import "ScoresAndCentroids.h"
+#import <CoreFoundation/CoreFoundation.h>
 
 @implementation Runner
 
@@ -50,10 +51,34 @@
 
 - (void) runWithImage: (UIImage*) img {
 
+    CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                                 CFSTR("model_out"), CFSTR("txt"),
+                                                 NULL);
+    CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                               CFSTR("train_max"), CFSTR("csv"),
+                                               NULL);
+    CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
+                                               CFSTR("train_min"), CFSTR("csv"),
+                                               NULL);
+    
+    UInt8 model_path[1024];
+    UInt8 max_path[1024];
+    UInt8 min_path[1024];
+    
+    CFURLGetFileSystemRepresentation(model_url, TRUE,
+                                     model_path, sizeof(model_path));
+    CFURLGetFileSystemRepresentation(max_url, TRUE,
+                                     max_path, sizeof(max_path));
+    CFURLGetFileSystemRepresentation(min_url, TRUE,
+                                     min_path, sizeof(min_path));
+    CFRelease(model_url);
+    CFRelease(max_url);
+    CFRelease(min_url);
+        
     NSDate *start = [NSDate date];
     NSLog(@"Processing image");
     cv::Mat converted_img = [self cvMatWithImage:img];
-    cv::Mat results = Classifier::runWithImage(converted_img);
+    cv::Mat results = Classifier::runWithImage(converted_img, (char*) model_path, (char*)max_path, (char*)min_path);
     NSLog(@"Possible TB candidates: %i", results.rows);
     NSDate *end = [NSDate date];
     NSTimeInterval executionTime = [end timeIntervalSinceDate:start];

@@ -51,7 +51,7 @@ namespace Classifier
         
         vector<cv::Point2d>::iterator it = centroids.begin();
         for (; it != centroids.end(); ++it) {
-			Point pt = *it;
+            cv::Point pt = *it;
 			int row = (int)pt.x;
             int col = (int)pt.y;
 			
@@ -122,7 +122,7 @@ namespace Classifier
         return returnMatrix;
     }
     
-    vector<double> classifyObjects(vector<MatDict > features)
+    vector<double> classifyObjects(vector<MatDict > features, const char* model_path, const char* max_path, const char* min_path)
     {
         
         // Load the SVM
@@ -134,35 +134,9 @@ namespace Classifier
             train_max = loadCSV(TRAIN_MAX_PATH);
             train_min = loadCSV(TRAIN_MIN_PATH);
         } else {
-#if !DEBUG
-            CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                            CFSTR("model_out"), CFSTR("txt"),
-                                                            NULL);
-            CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                         CFSTR("train_max"), CFSTR("csv"),
-                                                         NULL);
-            CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                         CFSTR("train_min"), CFSTR("csv"),
-                                                         NULL);
-            
-            char model_path[1024];
-            char max_path[1024];
-            char min_path[1024];
-            
-            CFURLGetFileSystemRepresentation(model_url, true,
-                                             model_path, sizeof(model_path));
-            CFURLGetFileSystemRepresentation(max_url, true,
-                                             max_path, sizeof(max_path));
-            CFURLGetFileSystemRepresentation(min_url, true,
-                                             min_path, sizeof(min_path));
-            CFRelease(model_url);
-            CFRelease(max_url);
-            CFRelease(min_url);
-            
-            *model = *svm_load_model(model_path);
+            model = svm_load_model(model_path);
             train_max = loadCSV(max_path);
             train_min = loadCSV(min_path);
-#endif            
         }
 
         // Combine the features
@@ -239,7 +213,7 @@ namespace Classifier
     { return l.first > r.first; };
 
     
-	cv::Mat runWithImage(const cv::Mat image)
+	cv::Mat runWithImage(const cv::Mat image, const char* model_path, const char* max_path, const char* min_path)
 	{
         cout << "Running with image\n";
 		if(!image.data) {
@@ -249,8 +223,6 @@ namespace Classifier
 
 		cv::Mat normalizedImage = initializeImage(image);
 		cv::Mat imageBw = objectIdentification(normalizedImage);
-		//Debug::print(imageBw, "imbw.txt");
-		//cv::Mat imageBw = Debug::loadMatrix("imbw.txt", normalizedImage.rows, normalizedImage.cols, CV_8UC1);
 
 		// Feature detection
 		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
@@ -261,7 +233,7 @@ namespace Classifier
 		Debug::printFeatures(features, "geom");
 
         // Classify Objects
-        vector<double> prob_results = classifyObjects(features);
+        vector<double> prob_results = classifyObjects(features, model_path, max_path, min_path);
 
         // Sort scores, keeping index
         vector<pair<double, int> > prob_results_with_index;

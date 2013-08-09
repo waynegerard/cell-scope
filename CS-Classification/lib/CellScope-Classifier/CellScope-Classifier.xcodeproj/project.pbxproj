@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC31AD6017B0722800FE52F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC31AD5F17B0722800FE52F5 /* Foundation.framework */; };
 		AC31AD6517B0722800FE52F5 /* Cellscope_Classifier.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */; };
-		AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.m in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */; };
+		AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.mm */; };
 		AC31AD7C17B0724900FE52F5 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6D17B0724900FE52F5 /* BlobClass.cpp */; };
 		AC31AD7D17B0724900FE52F5 /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD6F17B0724900FE52F5 /* Classifier.cpp */; };
 		AC31AD7E17B0724900FE52F5 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC31AD7117B0724900FE52F5 /* Debug.cpp */; };
@@ -173,10 +172,9 @@
 
 /* Begin PBXFileReference section */
 		AC31AD5C17B0722800FE52F5 /* libCellscope-Classifier.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libCellscope-Classifier.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC31AD5F17B0722800FE52F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		AC31AD6317B0722800FE52F5 /* Cellscope-Classifier-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cellscope-Classifier-Prefix.pch"; sourceTree = "<group>"; };
 		AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cellscope_Classifier.h; sourceTree = "<group>"; };
-		AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cellscope_Classifier.m; sourceTree = "<group>"; };
+		AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Cellscope_Classifier.mm; sourceTree = "<group>"; };
 		AC31AD6D17B0724900FE52F5 /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../../BlobClass.cpp; sourceTree = "<group>"; };
 		AC31AD6E17B0724900FE52F5 /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../../BlobClass.h; sourceTree = "<group>"; };
 		AC31AD6F17B0724900FE52F5 /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Classifier.cpp; path = ../../Classifier.cpp; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 				AC31ADBD17B0726F00FE52F5 /* libopencv_core.a in Frameworks */,
 				AC31ADBE17B0726F00FE52F5 /* libopencv_highgui.a in Frameworks */,
 				AC31ADBF17B0726F00FE52F5 /* libopencv_imgproc.a in Frameworks */,
-				AC31AD6017B0722800FE52F5 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,7 +228,6 @@
 		AC31AD5E17B0722800FE52F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AC31AD5F17B0722800FE52F5 /* Foundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -255,7 +251,7 @@
 				AC31AD7A17B0724900FE52F5 /* Region.cpp */,
 				AC31AD7B17B0724900FE52F5 /* Region.h */,
 				AC31AD6417B0722800FE52F5 /* Cellscope_Classifier.h */,
-				AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.m */,
+				AC31AD6617B0722800FE52F5 /* Cellscope_Classifier.mm */,
 				AC31AD6217B0722800FE52F5 /* Supporting Files */,
 			);
 			path = "Cellscope-Classifier";
@@ -467,7 +463,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.m in Sources */,
+				AC31AD6717B0722800FE52F5 /* Cellscope_Classifier.mm in Sources */,
 				AC31AD7C17B0724900FE52F5 /* BlobClass.cpp in Sources */,
 				AC31AD7D17B0724900FE52F5 /* Classifier.cpp in Sources */,
 				AC31AD7E17B0724900FE52F5 /* Debug.cpp in Sources */,
@@ -504,7 +500,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -522,7 +518,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../**";
+				HEADER_SEARCH_PATHS = "../../../**";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -534,7 +530,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
@@ -545,7 +541,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../**";
+				HEADER_SEARCH_PATHS = "../../../**";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -555,7 +551,10 @@
 		AC31AD6B17B0722800FE52F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				DSTROOT = /tmp/Cellscope_Classifier.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cellscope-Classifier/Cellscope-Classifier-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
@@ -567,7 +566,10 @@
 		AC31AD6C17B0722800FE52F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				DSTROOT = /tmp/Cellscope_Classifier.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Cellscope-Classifier/Cellscope-Classifier-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";

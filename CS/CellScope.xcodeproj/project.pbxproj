@@ -42,7 +42,7 @@
 		9B6BF0BD15E19ACD002834C5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6BF0BC15E19ACD002834C5 /* CoreGraphics.framework */; };
 		9B6BF0BF15E19ACD002834C5 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6BF0BE15E19ACD002834C5 /* CoreData.framework */; };
 		9B6BF0C515E19ACD002834C5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9B6BF0C315E19ACD002834C5 /* InfoPlist.strings */; };
-		9B6BF0C715E19ACD002834C5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B6BF0C615E19ACD002834C5 /* main.m */; };
+		9B6BF0C715E19ACD002834C5 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B6BF0C615E19ACD002834C5 /* main.mm */; };
 		9B6BF0CB15E19ACD002834C5 /* CSAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */; };
 		9B6BF0CE15E19ACD002834C5 /* CellScope.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B6BF0CC15E19ACD002834C5 /* CellScope.xcdatamodeld */; };
 		9B6BF0D615E19ACD002834C5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B6BF0D515E19ACD002834C5 /* SenTestingKit.framework */; };
@@ -69,27 +69,11 @@
 		9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */; };
 		9BF8133E15E1AB0700AC9B3F /* PictureListMainTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */; };
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
-		AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC024C5617013AAC0071DD14 /* DataInteractor.mm */; };
+		AC01A72E17B1C1EC006DD5DD /* libCellscope-Classifier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC01A71F17B1C14A006DD5DD /* libCellscope-Classifier.a */; };
+		AC01A73217B1C24E006DD5DD /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC01A73117B1C24E006DD5DD /* Runner.mm */; };
 		AC024C59170143880071DD14 /* white.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC024C58170143880071DD14 /* white.jpg */; };
-		AC0353A8178610AF001AE3FA /* lib in Resources */ = {isa = PBXBuildFile; fileRef = AC0353A7178610AF001AE3FA /* lib */; };
-		AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
-		AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF699179E52DB007FA438 /* BlobClass.cpp */; };
-		AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
-		AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF69D179E52DB007FA438 /* Features.cpp */; };
-		AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */; };
-		AC1CF6AD179E52DB007FA438 /* ImageTools.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */; };
-		AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */; };
-		AC1CF6AF179E52DB007FA438 /* MatrixOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */; };
-		AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A4179E52DB007FA438 /* Region.cpp */; };
-		AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC1CF6A4179E52DB007FA438 /* Region.cpp */; };
 		AC24EF3A1738742800B50B36 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC24EF391738742800B50B36 /* model_out.txt */; };
 		AC3B06A016F50EFA00A90983 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */; };
-		AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E748B179F3DA700BDC4EB /* Debug.cpp */; };
-		AC5E748E179F3DA700BDC4EB /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E748B179F3DA700BDC4EB /* Debug.cpp */; };
-		AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E749D179F3F3200BDC4EB /* Classifier.cpp */; };
-		AC5E74A0179F3F3200BDC4EB /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E749D179F3F3200BDC4EB /* Classifier.cpp */; };
-		AC5E74A2179F41F000BDC4EB /* LibSVM in Resources */ = {isa = PBXBuildFile; fileRef = AC5E74A1179F41F000BDC4EB /* LibSVM */; };
-		AC5E74A3179F41F000BDC4EB /* LibSVM in Resources */ = {isa = PBXBuildFile; fileRef = AC5E74A1179F41F000BDC4EB /* LibSVM */; };
 		AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A4179F421900BDC4EB /* svm-predict.c */; };
 		AC5E74AA179F421900BDC4EB /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A4179F421900BDC4EB /* svm-predict.c */; };
 		AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A5179F421900BDC4EB /* svm-scale.c */; };
@@ -100,15 +84,12 @@
 		AC5E74B0179F421900BDC4EB /* svm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A7179F421900BDC4EB /* svm.cpp */; };
 		AC5E74B4179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */; };
 		AC5E74B5179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */; };
-		ACA1287A16FEA72000E2D03A /* libopencv_highgui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1283C16FD241C00E2D03A /* libopencv_highgui.a */; };
-		ACA1287B16FEA72500E2D03A /* libopencv_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282216FD241C00E2D03A /* libopencv_core.a */; };
-		ACA1287C16FEA72A00E2D03A /* libopencv_imgproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ACA1282A16FD241C00E2D03A /* libopencv_imgproc.a */; };
 		ACAD722E16F6B58B00D557BC /* train_max.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722D16F6B58B00D557BC /* train_max.csv */; };
 		ACAD723016F6B59200D557BC /* train_min.csv in Resources */ = {isa = PBXBuildFile; fileRef = ACAD722F16F6B59200D557BC /* train_min.csv */; };
 		ACAD723216F6B59700D557BC /* 1350_Clay_Fluor_Yes.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */; };
 		ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
 		ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = ACC23A21176241C000C6BF9D /* algorithm_settings.plist */; };
-		ACFC05AF1698D13500411641 /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACFC05AE1698D13500411641 /* Runner.mm */; };
+		ACFC4B5417B4A90000DCE3B7 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACFC4B5317B4A90000DCE3B7 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,138 +100,19 @@
 			remoteGlobalIDString = 9B6BF0B315E19ACD002834C5;
 			remoteInfo = CellScope;
 		};
-		ACA1281F16FD241C00E2D03A /* PBXContainerItemProxy */ = {
+		AC01A71E17B1C14A006DD5DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
+			containerPortal = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = ABC82531135E7B1000F4D611;
-			remoteInfo = opencv_calib3d;
+			remoteGlobalIDString = AC31AD5C17B0722800FE52F5;
+			remoteInfo = "Cellscope-Classifier";
 		};
-		ACA1282116FD241C00E2D03A /* PBXContainerItemProxy */ = {
+		AC01A73317B1C372006DD5DD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC823A2135E767D00F4D611;
-			remoteInfo = opencv_core;
-		};
-		ACA1282316FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC824DE135E794900F4D611;
-			remoteInfo = opencv_features2d;
-		};
-		ACA1282516FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC8248C135E789300F4D611;
-			remoteInfo = opencv_flann;
-		};
-		ACA1282716FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82617135E7F8B00F4D611;
-			remoteInfo = opencv_ts;
-		};
-		ACA1282916FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82404135E77A600F4D611;
-			remoteInfo = opencv_imgproc;
-		};
-		ACA1282B16FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC8280A135E874800F4D611;
-			remoteInfo = opencv_legacy;
-		};
-		ACA1282D16FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82873135E889600F4D611;
-			remoteInfo = opencv_contrib;
-		};
-		ACA1282F16FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC8267D135E818000F4D611;
-			remoteInfo = opencv_ml;
-		};
-		ACA1283116FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82571135E7BCA00F4D611;
-			remoteInfo = opencv_objdetect;
-		};
-		ACA1283316FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82646135E80B400F4D611;
-			remoteInfo = opencv_video;
-		};
-		ACA1283516FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC81FED135E743800F4D611;
-			remoteInfo = zlib;
-		};
-		ACA1283716FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC82068135E74F000F4D611;
-			remoteInfo = libjpeg;
-		};
-		ACA1283916FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABC820F0135E754400F4D611;
-			remoteInfo = libpng;
-		};
-		ACA1283B16FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AC81ADCE16F93E7000F5431B;
-			remoteInfo = opencv_highgui;
-		};
-		ACA1283D16FD241C00E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AB1D026316DA001D00E9AA4B;
-			remoteInfo = opencv_nonfree;
-		};
-		ACA1287416FEA5A000E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
+			containerPortal = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = ABC823A1135E767D00F4D611;
-			remoteInfo = opencv_core;
-		};
-		ACA1287616FEA5A000E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = ABC82403135E77A600F4D611;
-			remoteInfo = opencv_imgproc;
-		};
-		ACA1287816FEA5A000E2D03A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = ABA029E41573DA5600BC966A;
-			remoteInfo = opencv_highgui;
+			remoteGlobalIDString = AC31AD5B17B0722800FE52F5;
+			remoteInfo = "Cellscope-Classifier";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -336,7 +198,7 @@
 		9B6BF0BE15E19ACD002834C5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CellScope-Info.plist"; sourceTree = "<group>"; };
 		9B6BF0C415E19ACD002834C5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		9B6BF0C615E19ACD002834C5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9B6BF0C615E19ACD002834C5 /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		9B6BF0C815E19ACD002834C5 /* CellScope-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CellScope-Prefix.pch"; sourceTree = "<group>"; };
 		9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CSAppDelegate.h; sourceTree = "<group>"; };
 		9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CSAppDelegate.mm; sourceTree = "<group>"; };
@@ -374,43 +236,25 @@
 		9BF8133D15E1AB0700AC9B3F /* PictureListMainTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListMainTable.m; sourceTree = "<group>"; };
 		9BF8134015E1B13500AC9B3F /* PictureListDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PictureListDetail.h; sourceTree = "<group>"; };
 		9BF8134115E1B13500AC9B3F /* PictureListDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PictureListDetail.m; sourceTree = "<group>"; };
-		AC024C5517013AAC0071DD14 /* DataInteractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataInteractor.h; path = Classification/Data/DataInteractor.h; sourceTree = "<group>"; };
-		AC024C5617013AAC0071DD14 /* DataInteractor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DataInteractor.mm; path = Classification/Data/DataInteractor.mm; sourceTree = "<group>"; };
+		AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Cellscope-Classifier.xcodeproj"; path = "/Users/wgerard/Dev/cell-scope/OpenCV-iOS/OpenCV-iOS/../../CS-Classification/lib/Cellscope-Classifier/Cellscope-Classifier.xcodeproj"; sourceTree = "<absolute>"; };
+		AC01A73017B1C24E006DD5DD /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = Classification/Run/Runner.h; sourceTree = "<group>"; };
+		AC01A73117B1C24E006DD5DD /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = Classification/Run/Runner.mm; sourceTree = "<group>"; };
+		AC01A73517B1C5BA006DD5DD /* ClassifierGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClassifierGlobals.h; path = Classification/ClassifierGlobals.h; sourceTree = "<group>"; };
 		AC024C58170143880071DD14 /* white.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = white.jpg; path = CellScope/resources/testing/white.jpg; sourceTree = "<group>"; };
-		AC0353A7178610AF001AE3FA /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = "../../CS-Classification/lib"; sourceTree = "<group>"; };
-		AC1CF699179E52DB007FA438 /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobClass.cpp; sourceTree = "<group>"; };
-		AC1CF69A179E52DB007FA438 /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobClass.h; sourceTree = "<group>"; };
-		AC1CF69D179E52DB007FA438 /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Features.cpp; sourceTree = "<group>"; };
-		AC1CF69E179E52DB007FA438 /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Features.h; sourceTree = "<group>"; };
-		AC1CF69F179E52DB007FA438 /* Globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Globals.h; sourceTree = "<group>"; };
-		AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageTools.cpp; sourceTree = "<group>"; };
-		AC1CF6A1179E52DB007FA438 /* ImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageTools.h; sourceTree = "<group>"; };
-		AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MatrixOperations.cpp; sourceTree = "<group>"; };
-		AC1CF6A3179E52DB007FA438 /* MatrixOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixOperations.h; sourceTree = "<group>"; };
-		AC1CF6A4179E52DB007FA438 /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Region.cpp; sourceTree = "<group>"; };
-		AC1CF6A5179E52DB007FA438 /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Region.h; sourceTree = "<group>"; };
 		AC24EF391738742800B50B36 /* model_out.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_out.txt; path = Resources/model_out.txt; sourceTree = "<group>"; };
 		AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		AC5E748B179F3DA700BDC4EB /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
-		AC5E748C179F3DA700BDC4EB /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
-		AC5E749D179F3F3200BDC4EB /* Classifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Classifier.cpp; sourceTree = "<group>"; };
-		AC5E749E179F3F3200BDC4EB /* Classifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Classifier.h; sourceTree = "<group>"; };
-		AC5E74A1179F41F000BDC4EB /* LibSVM */ = {isa = PBXFileReference; lastKnownFileType = folder; name = LibSVM; path = "../../CS-Classification/LibSVM"; sourceTree = "<group>"; };
 		AC5E74A4179F421900BDC4EB /* svm-predict.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-predict.c"; sourceTree = "<group>"; };
 		AC5E74A5179F421900BDC4EB /* svm-scale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-scale.c"; sourceTree = "<group>"; };
 		AC5E74A6179F421900BDC4EB /* svm-train.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "svm-train.c"; sourceTree = "<group>"; };
 		AC5E74A7179F421900BDC4EB /* svm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = svm.cpp; sourceTree = "<group>"; };
 		AC5E74A8179F421900BDC4EB /* svm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = svm.h; sourceTree = "<group>"; };
-		AC5E74B1179F50C600BDC4EB /* ClassifierGlobals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ClassifierGlobals.h; path = Classification/ClassifierGlobals.h; sourceTree = "<group>"; };
 		AC5E74B2179F525E00BDC4EB /* ScoresAndCentroids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoresAndCentroids.h; path = CellScope/ScoresAndCentroids.h; sourceTree = "<group>"; };
 		AC5E74B3179F525E00BDC4EB /* ScoresAndCentroids.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ScoresAndCentroids.m; path = CellScope/ScoresAndCentroids.m; sourceTree = "<group>"; };
-		ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "OpenCV-iOS.xcodeproj"; path = "../OpenCV-iOS/OpenCV-iOS/OpenCV-iOS.xcodeproj"; sourceTree = "<group>"; };
 		ACAD722D16F6B58B00D557BC /* train_max.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_max.csv; path = CellScope/resources/train_max.csv; sourceTree = "<group>"; };
 		ACAD722F16F6B59200D557BC /* train_min.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = train_min.csv; path = CellScope/resources/train_min.csv; sourceTree = "<group>"; };
 		ACAD723116F6B59700D557BC /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 1350_Clay_Fluor_Yes.png; path = CellScope/resources/testing/1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
 		ACC23A21176241C000C6BF9D /* algorithm_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = algorithm_settings.plist; path = ../Resources/algorithm_settings.plist; sourceTree = "<group>"; };
-		ACFC05AD1698D13500411641 /* Runner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Runner.h; path = Classification/Run/Runner.h; sourceTree = "<group>"; };
-		ACFC05AE1698D13500411641 /* Runner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Runner.mm; path = Classification/Run/Runner.mm; sourceTree = "<group>"; };
+		ACFC4B5317B4A90000DCE3B7 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,9 +262,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ACA1287C16FEA72A00E2D03A /* libopencv_imgproc.a in Frameworks */,
-				ACA1287B16FEA72500E2D03A /* libopencv_core.a in Frameworks */,
-				ACA1287A16FEA72000E2D03A /* libopencv_highgui.a in Frameworks */,
+				ACFC4B5417B4A90000DCE3B7 /* CoreFoundation.framework in Frameworks */,
+				AC01A72E17B1C1EC006DD5DD /* libCellscope-Classifier.a in Frameworks */,
 				9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */,
 				9B13455615E28E14009863DF /* ImageIO.framework in Frameworks */,
 				9B9109C015E1FD610067BB8D /* CoreImage.framework in Frameworks */,
@@ -563,6 +406,7 @@
 		9B6BF0A915E19ACD002834C5 = {
 			isa = PBXGroup;
 			children = (
+				AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */,
 				ACAD722A16F6B48B00D557BC /* Resources */,
 				AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */,
 				9B5632C615FAADD90035AEBC /* UIImage-categories */,
@@ -574,7 +418,6 @@
 				9B6BF0DC15E19ACD002834C5 /* CellScopeTests */,
 				9B6BF0B715E19ACD002834C5 /* Frameworks */,
 				9B6BF0B515E19ACD002834C5 /* Products */,
-				ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -590,6 +433,7 @@
 		9B6BF0B715E19ACD002834C5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				ACFC4B5317B4A90000DCE3B7 /* CoreFoundation.framework */,
 				9BE8B3DF15E52F29009B95F5 /* AssetsLibrary.framework */,
 				9B13455515E28E14009863DF /* ImageIO.framework */,
 				9B9109C315E1FDA90067BB8D /* CoreVideo.framework */,
@@ -608,7 +452,7 @@
 		9B6BF0C015E19ACD002834C5 /* CellScope */ = {
 			isa = PBXGroup;
 			children = (
-				AC0353A61786106D001AE3FA /* Classifier */,
+				AC01A72F17B1C22E006DD5DD /* Classifier */,
 				ACB705B216C2097900D7A384 /* LibSVM */,
 				9B6BF0C915E19ACD002834C5 /* CSAppDelegate.h */,
 				9B6BF0CA15E19ACD002834C5 /* CSAppDelegate.mm */,
@@ -634,7 +478,7 @@
 				ACC23A21176241C000C6BF9D /* algorithm_settings.plist */,
 				9B6BF0C215E19ACD002834C5 /* CellScope-Info.plist */,
 				9B6BF0C315E19ACD002834C5 /* InfoPlist.strings */,
-				9B6BF0C615E19ACD002834C5 /* main.m */,
+				9B6BF0C615E19ACD002834C5 /* main.mm */,
 				9B6BF0C815E19ACD002834C5 /* CellScope-Prefix.pch */,
 				9B6BF0FC15E19D1C002834C5 /* CellScopePhoneStoryboard.storyboard */,
 				9B6BF0FE15E19D2E002834C5 /* CellScopePadStoryboard.storyboard */,
@@ -688,56 +532,22 @@
 			path = CellScope/Images;
 			sourceTree = "<group>";
 		};
-		AC0353A61786106D001AE3FA /* Classifier */ = {
+		AC01A71B17B1C14A006DD5DD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AC5E74A1179F41F000BDC4EB /* LibSVM */,
-				AC1CF699179E52DB007FA438 /* BlobClass.cpp */,
-				AC1CF69A179E52DB007FA438 /* BlobClass.h */,
-				AC5E749D179F3F3200BDC4EB /* Classifier.cpp */,
-				AC5E749E179F3F3200BDC4EB /* Classifier.h */,
-				AC5E748B179F3DA700BDC4EB /* Debug.cpp */,
-				AC5E748C179F3DA700BDC4EB /* Debug.h */,
-				AC1CF69D179E52DB007FA438 /* Features.cpp */,
-				AC1CF69E179E52DB007FA438 /* Features.h */,
-				AC1CF69F179E52DB007FA438 /* Globals.h */,
-				AC1CF6A0179E52DB007FA438 /* ImageTools.cpp */,
-				AC1CF6A1179E52DB007FA438 /* ImageTools.h */,
-				AC1CF6A2179E52DB007FA438 /* MatrixOperations.cpp */,
-				AC1CF6A3179E52DB007FA438 /* MatrixOperations.h */,
-				AC1CF6A4179E52DB007FA438 /* Region.cpp */,
-				AC1CF6A5179E52DB007FA438 /* Region.h */,
-				AC024C5517013AAC0071DD14 /* DataInteractor.h */,
-				AC024C5617013AAC0071DD14 /* DataInteractor.mm */,
-				AC0353A7178610AF001AE3FA /* lib */,
-				ACFC05AD1698D13500411641 /* Runner.h */,
-				ACFC05AE1698D13500411641 /* Runner.mm */,
-				AC5E74B1179F50C600BDC4EB /* ClassifierGlobals.h */,
-			);
-			name = Classifier;
-			sourceTree = "<group>";
-		};
-		ACA1280C16FD241C00E2D03A /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ACA1282016FD241C00E2D03A /* libopencv_calib3d.a */,
-				ACA1282216FD241C00E2D03A /* libopencv_core.a */,
-				ACA1282416FD241C00E2D03A /* libopencv_features2d.a */,
-				ACA1282616FD241C00E2D03A /* libopencv_flann.a */,
-				ACA1282816FD241C00E2D03A /* libopencv_ts.a */,
-				ACA1282A16FD241C00E2D03A /* libopencv_imgproc.a */,
-				ACA1282C16FD241C00E2D03A /* libopencv_legacy.a */,
-				ACA1282E16FD241C00E2D03A /* libopencv_contrib.a */,
-				ACA1283016FD241C00E2D03A /* libopencv_ml.a */,
-				ACA1283216FD241C00E2D03A /* libopencv_objdetect.a */,
-				ACA1283416FD241C00E2D03A /* libopencv_video.a */,
-				ACA1283616FD241C00E2D03A /* libzlib.a */,
-				ACA1283816FD241C00E2D03A /* liblibjpeg.a */,
-				ACA1283A16FD241C00E2D03A /* liblibpng.a */,
-				ACA1283C16FD241C00E2D03A /* libopencv_highgui.a */,
-				ACA1283E16FD241C00E2D03A /* libopencv_nonfree.a */,
+				AC01A71F17B1C14A006DD5DD /* libCellscope-Classifier.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AC01A72F17B1C22E006DD5DD /* Classifier */ = {
+			isa = PBXGroup;
+			children = (
+				AC01A73517B1C5BA006DD5DD /* ClassifierGlobals.h */,
+				AC01A73017B1C24E006DD5DD /* Runner.h */,
+				AC01A73117B1C24E006DD5DD /* Runner.mm */,
+			);
+			name = Classifier;
 			sourceTree = "<group>";
 		};
 		ACAD722A16F6B48B00D557BC /* Resources */ = {
@@ -794,9 +604,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				ACA1287516FEA5A000E2D03A /* PBXTargetDependency */,
-				ACA1287716FEA5A000E2D03A /* PBXTargetDependency */,
-				ACA1287916FEA5A000E2D03A /* PBXTargetDependency */,
+				AC01A73417B1C372006DD5DD /* PBXTargetDependency */,
 			);
 			name = CellScope;
 			productName = CellScope;
@@ -843,8 +651,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = ACA1280C16FD241C00E2D03A /* Products */;
-					ProjectRef = ACA1280B16FD241C00E2D03A /* OpenCV-iOS.xcodeproj */;
+					ProductGroup = AC01A71B17B1C14A006DD5DD /* Products */;
+					ProjectRef = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -856,116 +664,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		ACA1282016FD241C00E2D03A /* libopencv_calib3d.a */ = {
+		AC01A71F17B1C14A006DD5DD /* libCellscope-Classifier.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libopencv_calib3d.a;
-			remoteRef = ACA1281F16FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282216FD241C00E2D03A /* libopencv_core.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_core.a;
-			remoteRef = ACA1282116FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282416FD241C00E2D03A /* libopencv_features2d.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_features2d.a;
-			remoteRef = ACA1282316FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282616FD241C00E2D03A /* libopencv_flann.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_flann.a;
-			remoteRef = ACA1282516FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282816FD241C00E2D03A /* libopencv_ts.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_ts.a;
-			remoteRef = ACA1282716FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282A16FD241C00E2D03A /* libopencv_imgproc.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_imgproc.a;
-			remoteRef = ACA1282916FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282C16FD241C00E2D03A /* libopencv_legacy.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_legacy.a;
-			remoteRef = ACA1282B16FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1282E16FD241C00E2D03A /* libopencv_contrib.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_contrib.a;
-			remoteRef = ACA1282D16FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283016FD241C00E2D03A /* libopencv_ml.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_ml.a;
-			remoteRef = ACA1282F16FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283216FD241C00E2D03A /* libopencv_objdetect.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_objdetect.a;
-			remoteRef = ACA1283116FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283416FD241C00E2D03A /* libopencv_video.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_video.a;
-			remoteRef = ACA1283316FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283616FD241C00E2D03A /* libzlib.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libzlib.a;
-			remoteRef = ACA1283516FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283816FD241C00E2D03A /* liblibjpeg.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = liblibjpeg.a;
-			remoteRef = ACA1283716FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283A16FD241C00E2D03A /* liblibpng.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = liblibpng.a;
-			remoteRef = ACA1283916FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283C16FD241C00E2D03A /* libopencv_highgui.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_highgui.a;
-			remoteRef = ACA1283B16FD241C00E2D03A /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACA1283E16FD241C00E2D03A /* libopencv_nonfree.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libopencv_nonfree.a;
-			remoteRef = ACA1283D16FD241C00E2D03A /* PBXContainerItemProxy */;
+			path = "libCellscope-Classifier.a";
+			remoteRef = AC01A71E17B1C14A006DD5DD /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -988,8 +691,6 @@
 				AC024C59170143880071DD14 /* white.jpg in Resources */,
 				AC24EF3A1738742800B50B36 /* model_out.txt in Resources */,
 				ACC23A22176241C000C6BF9D /* algorithm_settings.plist in Resources */,
-				AC0353A8178610AF001AE3FA /* lib in Resources */,
-				AC5E74A2179F41F000BDC4EB /* LibSVM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -999,7 +700,6 @@
 			files = (
 				9B6BF0E115E19ACD002834C5 /* InfoPlist.strings in Resources */,
 				ACC23A23176241C000C6BF9D /* algorithm_settings.plist in Resources */,
-				AC5E74A3179F41F000BDC4EB /* LibSVM in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1026,7 +726,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9B6BF0C715E19ACD002834C5 /* main.m in Sources */,
+				9B6BF0C715E19ACD002834C5 /* main.mm in Sources */,
 				9B6BF0CB15E19ACD002834C5 /* CSAppDelegate.mm in Sources */,
 				9B6BF0CE15E19ACD002834C5 /* CellScope.xcdatamodeld in Sources */,
 				9B6BF10215E19F2A002834C5 /* LoginViewController.m in Sources */,
@@ -1066,20 +766,12 @@
 				9B5632CD15FAADD90035AEBC /* UIImage+Alpha.m in Sources */,
 				9B5632CE15FAADD90035AEBC /* UIImage+Resize.m in Sources */,
 				9B5632CF15FAADD90035AEBC /* UIImage+RoundedCorner.m in Sources */,
-				ACFC05AF1698D13500411641 /* Runner.mm in Sources */,
-				AC024C5717013AAC0071DD14 /* DataInteractor.mm in Sources */,
-				AC1CF6A6179E52DB007FA438 /* BlobClass.cpp in Sources */,
-				AC1CF6AA179E52DB007FA438 /* Features.cpp in Sources */,
-				AC1CF6AC179E52DB007FA438 /* ImageTools.cpp in Sources */,
-				AC1CF6AE179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
-				AC1CF6B0179E52DB007FA438 /* Region.cpp in Sources */,
-				AC5E748D179F3DA700BDC4EB /* Debug.cpp in Sources */,
-				AC5E749F179F3F3200BDC4EB /* Classifier.cpp in Sources */,
 				AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */,
 				AC5E74AB179F421900BDC4EB /* svm-scale.c in Sources */,
 				AC5E74AD179F421900BDC4EB /* svm-train.c in Sources */,
 				AC5E74AF179F421900BDC4EB /* svm.cpp in Sources */,
 				AC5E74B4179F525E00BDC4EB /* ScoresAndCentroids.m in Sources */,
+				AC01A73217B1C24E006DD5DD /* Runner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1088,13 +780,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B6BF0E415E19ACD002834C5 /* CellScopeTests.m in Sources */,
-				AC1CF6A7179E52DB007FA438 /* BlobClass.cpp in Sources */,
-				AC1CF6AB179E52DB007FA438 /* Features.cpp in Sources */,
-				AC1CF6AD179E52DB007FA438 /* ImageTools.cpp in Sources */,
-				AC1CF6AF179E52DB007FA438 /* MatrixOperations.cpp in Sources */,
-				AC1CF6B1179E52DB007FA438 /* Region.cpp in Sources */,
-				AC5E748E179F3DA700BDC4EB /* Debug.cpp in Sources */,
-				AC5E74A0179F3F3200BDC4EB /* Classifier.cpp in Sources */,
 				AC5E74AA179F421900BDC4EB /* svm-predict.c in Sources */,
 				AC5E74AC179F421900BDC4EB /* svm-scale.c in Sources */,
 				AC5E74AE179F421900BDC4EB /* svm-train.c in Sources */,
@@ -1111,20 +796,10 @@
 			target = 9B6BF0B315E19ACD002834C5 /* CellScope */;
 			targetProxy = 9B6BF0DA15E19ACD002834C5 /* PBXContainerItemProxy */;
 		};
-		ACA1287516FEA5A000E2D03A /* PBXTargetDependency */ = {
+		AC01A73417B1C372006DD5DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = opencv_core;
-			targetProxy = ACA1287416FEA5A000E2D03A /* PBXContainerItemProxy */;
-		};
-		ACA1287716FEA5A000E2D03A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = opencv_imgproc;
-			targetProxy = ACA1287616FEA5A000E2D03A /* PBXContainerItemProxy */;
-		};
-		ACA1287916FEA5A000E2D03A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = opencv_highgui;
-			targetProxy = ACA1287816FEA5A000E2D03A /* PBXContainerItemProxy */;
+			name = "Cellscope-Classifier";
+			targetProxy = AC01A73317B1C372006DD5DD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1154,6 +829,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1167,12 +843,15 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				HEADER_SEARCH_PATHS = (
+					"../CS-Classification/**",
+					"../OpenCV-iOS/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1185,18 +864,22 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../OpenCV-iOS/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				HEADER_SEARCH_PATHS = (
+					"../CS-Classification/**",
+					"../OpenCV-iOS/**",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -1208,6 +891,7 @@
 		9B6BF0E815E19ACD002834C5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1217,7 +901,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1229,6 +913,7 @@
 		9B6BF0E915E19ACD002834C5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_CXX_LIBRARY = "compiler-default";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1237,7 +922,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CellScope/CellScope-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				INFOPLIST_FILE = "CellScope/CellScope-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
