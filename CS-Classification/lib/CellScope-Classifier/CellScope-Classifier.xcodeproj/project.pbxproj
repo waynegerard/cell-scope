@@ -595,6 +595,7 @@
 				AC31AD6C17B0722800FE52F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
