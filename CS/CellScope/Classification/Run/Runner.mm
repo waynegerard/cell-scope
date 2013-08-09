@@ -49,32 +49,21 @@
     [self run];
 }
 
-- (void) runWithImage: (UIImage*) img {
+- (char*) getFSRepresentation: (const char*) name {
+    CFURLRef url = CFBundleCopyResourceURL(CFBundleGetMainBundle(), name, CFSTR("txt"), NULL);
+    UInt8* path[1024];
+    CFURLGetFileSystemRepresentation(url, TRUE, *path, sizeof(path));
+    CFRelease(url);
+    return (char*)path;
 
-    CFURLRef model_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                                 CFSTR("model_out"), CFSTR("txt"),
-                                                 NULL);
-    CFURLRef max_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                               CFSTR("train_max"), CFSTR("csv"),
-                                               NULL);
-    CFURLRef min_url = CFBundleCopyResourceURL(CFBundleGetMainBundle(),
-                                               CFSTR("train_min"), CFSTR("csv"),
-                                               NULL);
+}
+
+- (void) runWithImage: (UIImage*) img {
+    char* model_path = [self getFSRepresentation:"model_out"];
+    char* max_path = [self getFSRepresentation:"train_max"];
+    char* min_path = [self getFSRepresentation:"train_min"];
+
     
-    UInt8 model_path[1024];
-    UInt8 max_path[1024];
-    UInt8 min_path[1024];
-    
-    CFURLGetFileSystemRepresentation(model_url, TRUE,
-                                     model_path, sizeof(model_path));
-    CFURLGetFileSystemRepresentation(max_url, TRUE,
-                                     max_path, sizeof(max_path));
-    CFURLGetFileSystemRepresentation(min_url, TRUE,
-                                     min_path, sizeof(min_path));
-    CFRelease(model_url);
-    CFRelease(max_url);
-    CFRelease(min_url);
-        
     NSDate *start = [NSDate date];
     NSLog(@"Processing image");
     cv::Mat converted_img = [self cvMatWithImage:img];
