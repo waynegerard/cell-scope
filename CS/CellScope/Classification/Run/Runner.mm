@@ -49,19 +49,17 @@
     [self run];
 }
 
-- (char*) getFSRepresentation: (const char*) name {
+- (char*) getFSRepresentation: (CFStringRef) name {
     CFURLRef url = CFBundleCopyResourceURL(CFBundleGetMainBundle(), name, CFSTR("txt"), NULL);
-    UInt8* path[1024];
-    CFURLGetFileSystemRepresentation(url, TRUE, *path, sizeof(path));
-    CFRelease(url);
+    UInt8* path = new UInt8[1024];
+    CFURLGetFileSystemRepresentation(url, TRUE, path, sizeof(path));
     return (char*)path;
-
 }
 
 - (void) runWithImage: (UIImage*) img {
-    char* model_path = [self getFSRepresentation:"model_out"];
-    char* max_path = [self getFSRepresentation:"train_max"];
-    char* min_path = [self getFSRepresentation:"train_min"];
+    char* model_path = [self getFSRepresentation:CFSTR("model_out")];
+    char* max_path = [self getFSRepresentation:CFSTR("train_max")];
+    char* min_path = [self getFSRepresentation:CFSTR("train_min")];
 
     
     NSDate *start = [NSDate date];

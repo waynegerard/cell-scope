@@ -71,6 +71,7 @@
 		9BF8134215E1B13500AC9B3F /* PictureListDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BF8134115E1B13500AC9B3F /* PictureListDetail.m */; };
 		AC01A73217B1C24E006DD5DD /* Runner.mm in Sources */ = {isa = PBXBuildFile; fileRef = AC01A73117B1C24E006DD5DD /* Runner.mm */; };
 		AC024C59170143880071DD14 /* white.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC024C58170143880071DD14 /* white.jpg */; };
+		AC07D1FB17B7FDC6007F5FEA /* libCellscope-Classifier.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC07D1C217B7FAF5007F5FEA /* libCellscope-Classifier.a */; };
 		AC24EF3A1738742800B50B36 /* model_out.txt in Resources */ = {isa = PBXBuildFile; fileRef = AC24EF391738742800B50B36 /* model_out.txt */; };
 		AC3B06A016F50EFA00A90983 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC3B069F16F50EFA00A90983 /* Default-568h@2x.png */; };
 		AC5E74A9179F421900BDC4EB /* svm-predict.c in Sources */ = {isa = PBXBuildFile; fileRef = AC5E74A4179F421900BDC4EB /* svm-predict.c */; };
@@ -98,6 +99,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9B6BF0B315E19ACD002834C5;
 			remoteInfo = CellScope;
+		};
+		AC07D1C117B7FAF5007F5FEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = AC31AD5C17B0722800FE52F5;
+			remoteInfo = "Cellscope-Classifier";
+		};
+		AC07D1F917B7FDB7007F5FEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = AC31AD5B17B0722800FE52F5;
+			remoteInfo = "Cellscope-Classifier";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -247,6 +262,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC07D1FB17B7FDC6007F5FEA /* libCellscope-Classifier.a in Frameworks */,
 				ACFC4B5417B4A90000DCE3B7 /* CoreFoundation.framework in Frameworks */,
 				9BE8B3E015E52F29009B95F5 /* AssetsLibrary.framework in Frameworks */,
 				9B13455615E28E14009863DF /* ImageIO.framework in Frameworks */,
@@ -526,6 +542,14 @@
 			name = Classifier;
 			sourceTree = "<group>";
 		};
+		AC07D1BE17B7FAF5007F5FEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC07D1C217B7FAF5007F5FEA /* libCellscope-Classifier.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ACAD722A16F6B48B00D557BC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -580,6 +604,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AC07D1FA17B7FDB7007F5FEA /* PBXTargetDependency */,
 			);
 			name = CellScope;
 			productName = CellScope;
@@ -624,6 +649,12 @@
 			mainGroup = 9B6BF0A915E19ACD002834C5;
 			productRefGroup = 9B6BF0B515E19ACD002834C5 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AC07D1BE17B7FAF5007F5FEA /* Products */;
+					ProjectRef = AC01A71A17B1C14A006DD5DD /* Cellscope-Classifier.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9B6BF0B315E19ACD002834C5 /* CellScope */,
@@ -631,6 +662,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AC07D1C217B7FAF5007F5FEA /* libCellscope-Classifier.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libCellscope-Classifier.a";
+			remoteRef = AC07D1C117B7FAF5007F5FEA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9B6BF0B215E19ACD002834C5 /* Resources */ = {
@@ -754,6 +795,11 @@
 			isa = PBXTargetDependency;
 			target = 9B6BF0B315E19ACD002834C5 /* CellScope */;
 			targetProxy = 9B6BF0DA15E19ACD002834C5 /* PBXContainerItemProxy */;
+		};
+		AC07D1FA17B7FDB7007F5FEA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Cellscope-Classifier";
+			targetProxy = AC07D1F917B7FDB7007F5FEA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
