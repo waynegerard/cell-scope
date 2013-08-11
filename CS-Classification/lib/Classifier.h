@@ -6,18 +6,6 @@
 
 namespace Classifier 
 {
-	#include "BlobClass.h"
-#include "Classifier.h"
-#include "Features.h"
-#include "ImageTools.h"
-#include "MatrixOperations.h"
-#include <fstream>
-
-#include "Debug.h"
-
-
-namespace Classifier 
-{
 
 	/**
 		Initializes an image by both pulling out a single channel and normalizing,
@@ -40,7 +28,7 @@ namespace Classifier
 		@param original The original image
 		@return         Returns a vector of features found in the image
 	*/
-	vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original);
+    std::vector<MatDict > featureDetection(cv::Mat imageBw, cv::Mat original);
 
 	/**
 	  Loads a CSV file into an openCV matrix
@@ -66,12 +54,22 @@ namespace Classifier
 	  @param min_path   The string path to the train_min file (assumed to be a CSV)
 	  @return           Returns the vector of probabilities, one for each feature
 	*/
-    vector<double> classifyObjects(vector<MatDict > features, const char* model_path, const char* max_path, const char* min_path);
+    std::vector<double> classifyObjects(std::vector<MatDict > features, const char* model_path, const char* max_path, const char* min_path);
 
 	/**
 		Runs the matrix. Calculates scores and centroids that pass the low-confidence filter.
 		@param img The image to run
 	*/
 	cv::Mat runWithImage(const cv::Mat image, const char* model_path, const char* min_path, const char* max_path);
+    
+    /**
+        Filters out probability results that are too close, or not significant enough
+        @param prob_results    The probability results from classifyObjects
+        @param features        Features found from feature detection
+        @param normalizedImage The normalized image
+        @return                Returns scores and centers from significant results
+     */
+    cv::Mat filterProbabilities(std::vector<double> prob_results, std::vector<MatDict > features, cv::Mat normalizedImage);
+
 }
 #endif

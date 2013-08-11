@@ -213,29 +213,9 @@ namespace Classifier
     { return l.first > r.first; };
 
     
-	cv::Mat runWithImage(const cv::Mat image, const char* model_path, const char* max_path, const char* min_path)
-	{
-        std::cout << "Running with image\n";
-		if(!image.data) {
-            std::cout << "Image has no data! Returning.\n";
-			return cv::Mat::zeros(1,1,CV_8UC1);
-		}
-
-		cv::Mat normalizedImage = initializeImage(image);
-		cv::Mat imageBw = objectIdentification(normalizedImage);
-
-		// Feature detection
-		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
-		
-        Debug::printFeatures(features, "phi");
-		Debug::printFeatures(features, "origPatch");
-		Debug::printFeatures(features, "binPatch");
-		Debug::printFeatures(features, "geom");
-
-        // Classify Objects
-        vector<double> prob_results = classifyObjects(features, model_path, max_path, min_path);
-
-        // Sort scores, keeping index
+    cv::Mat filterProbabilities(vector<double> prob_results, vector<MatDict > features, cv::Mat normalizedImage)
+    {
+        cv::Mat scores_and_centers;
         vector<std::pair<double, int> > prob_results_with_index;
         vector<double>::iterator it = prob_results.begin();
         int index = 0;
@@ -247,29 +227,28 @@ namespace Classifier
         
         sort(prob_results_with_index.begin(), prob_results_with_index.end(), comparator);
         Debug::printPairVector(prob_results_with_index, "dvtest_sorted.txt");
-
+        
 		int too_low = 0;
 		index = 0;
-		cv::Mat scores_and_centers;
 		vector<pair<double, int> >::const_iterator pit = prob_results_with_index.begin();
-
+        
 		float max_distance = pow(pow(normalizedImage.rows, 2.0) + pow(normalizedImage.cols, 2.0), 0.5);
 		for (; pit != prob_results_with_index.end(); pit++) {
 			pair<double, int> score_with_index = *pit;
 			double score = score_with_index.first;
 			int score_index = score_with_index.second;
-
+            
 			if (score > 1E-6) {
 				MatDict feature = features[score_index];
 				cv::Mat rowMat = feature.find("row")->second;
 				cv::Mat colMat = feature.find("col")->second;
 				int row = (int) rowMat.at<float>(0, 0);
 				int col = (int) colMat.at<float>(0, 0);
-
+                
 				float min_distance = max_distance;
 				int min_index = 0;
 				int counter = 0;
-
+                
 				vector<MatDict >::const_iterator fit = features.begin();
 				for (; fit != features.end(); fit++) {
 					MatDict other_feature = *fit;
@@ -278,7 +257,7 @@ namespace Classifier
 					cv::Mat other_col_mat = other_feature.find("col")->second;
 					int other_row = (int) other_row_mat.at<float>(0, 0);
 					int other_col = (int) other_col_mat.at<float>(0, 0);
-
+                    
 					if (other_row != row || other_col != col) {
 						float distance = pow(pow(row - other_row, 2.0) + pow(col - other_col, 2.0), 0.5);
 						if (distance < min_distance) {
@@ -288,7 +267,7 @@ namespace Classifier
 					}
 					counter++;
 				}
-
+                
 				float too_close = 0.75 * PATCH_SIZE;
 				if (min_distance <= too_close) {
 					MatDict feature = features[min_index];
@@ -312,6 +291,29 @@ namespace Classifier
 			index++;
 		} 
         
-		return scores_and_centers;
+        return scores_and_centers;
+    }
+    
+	cv::Mat runWithImage(const cv::Mat image, const char* model_path, const char* max_path, const char* min_path)
+	{
+        std::cout << "Running with image\n";
+		if(!image.data) {
+            std::cout << "Image has no data! Returning.\n";
+			return cv::Mat::zeros(1,1,CV_8UC1);
+		}
+
+		cv::Mat normalizedImage = initializeImage(image);
+		cv::Mat imageBw = objectIdentification(normalizedImage);
+
+		// Feature detection
+		vector<MatDict > features = featureDetection(imageBw, normalizedImage);
+		
+        // Classify Objects
+        vector<double> prob_results = classifyObjects(features, model_path, max_path, min_path);
+
+        // Sort scores, keeping index
+        cv::Mat scores_and_centers = filterProbabilities(prob_results, features, normalizedImage);
+        
+        return scores_and_centers;
 	}
 }

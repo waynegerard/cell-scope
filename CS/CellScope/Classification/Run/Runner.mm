@@ -49,23 +49,24 @@
     [self run];
 }
 
-- (char*) getFSRepresentation: (CFStringRef) name {
-    CFURLRef url = CFBundleCopyResourceURL(CFBundleGetMainBundle(), name, CFSTR("txt"), NULL);
-    UInt8* path = new UInt8[1024];
-    CFURLGetFileSystemRepresentation(url, TRUE, path, sizeof(path));
+- (char*) getFSRepresentation: (CFStringRef) name withExtension: (CFStringRef) ext {
+    CFURLRef url = CFBundleCopyResourceURL(CFBundleGetMainBundle(), name, ext, NULL);
+    UInt8 *path;
+    path = (UInt8*) malloc(1024 * sizeof(UInt8));
+    CFURLGetFileSystemRepresentation(url, TRUE, path, 1024 * sizeof(UInt8));
     return (char*)path;
 }
 
 - (void) runWithImage: (UIImage*) img {
-    char* model_path = [self getFSRepresentation:CFSTR("model_out")];
-    char* max_path = [self getFSRepresentation:CFSTR("train_max")];
-    char* min_path = [self getFSRepresentation:CFSTR("train_min")];
+    char* model_path = [self getFSRepresentation:CFSTR("model_out") withExtension:CFSTR("txt")];
+    char* max_path = [self getFSRepresentation:CFSTR("train_max") withExtension:CFSTR("csv")];
+    char* min_path = [self getFSRepresentation:CFSTR("train_min") withExtension:CFSTR("csv")];
 
     
     NSDate *start = [NSDate date];
     NSLog(@"Processing image");
     cv::Mat converted_img = [self cvMatWithImage:img];
-    cv::Mat results = Classifier::runWithImage(converted_img, (char*) model_path, (char*)max_path, (char*)min_path);
+    cv::Mat results = Classifier::runWithImage(converted_img, model_path, max_path, min_path);
     NSLog(@"Possible TB candidates: %i", results.rows);
     NSDate *end = [NSDate date];
     NSTimeInterval executionTime = [end timeIntervalSinceDate:start];
