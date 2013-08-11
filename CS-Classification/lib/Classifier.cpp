@@ -215,9 +215,9 @@ namespace Classifier
     
 	cv::Mat runWithImage(const cv::Mat image, const char* model_path, const char* max_path, const char* min_path)
 	{
-        cout << "Running with image\n";
+        std::cout << "Running with image\n";
 		if(!image.data) {
-            cout << "Image has no data! Returning.\n";
+            std::cout << "Image has no data! Returning.\n";
 			return cv::Mat::zeros(1,1,CV_8UC1);
 		}
 
@@ -236,7 +236,7 @@ namespace Classifier
         vector<double> prob_results = classifyObjects(features, model_path, max_path, min_path);
 
         // Sort scores, keeping index
-        vector<pair<double, int> > prob_results_with_index;
+        vector<std::pair<double, int> > prob_results_with_index;
         vector<double>::iterator it = prob_results.begin();
         int index = 0;
         for (; it != prob_results.end(); it++)
