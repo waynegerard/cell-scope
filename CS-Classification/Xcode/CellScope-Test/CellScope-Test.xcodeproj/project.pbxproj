@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		AC39DAA21779427700845E8D /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DA9E1779427700845E8D /* Features.cpp */; };
-		AC39DAA61779428300845E8D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA41779428300845E8D /* Debug.cpp */; };
 		AC39DAA917794CD000845E8D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA717794CD000845E8D /* Region.cpp */; };
+		AC5D74C517B9C36C00C81F2D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5D74C317B9C36C00C81F2D /* Debug.cpp */; };
 		AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC7F487D179BA1700017CE9D /* BlobClass.cpp */; };
 		ACADFF0A17694E2F0072908F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF0917694E2F0072908F /* main.cpp */; };
 		ACADFF2517694E5A0072908F /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1517694E5A0072908F /* Classifier.cpp */; };
@@ -39,10 +39,11 @@
 /* Begin PBXFileReference section */
 		AC39DA9E1779427700845E8D /* Features.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Features.cpp; path = ../../lib/Features.cpp; sourceTree = "<group>"; };
 		AC39DA9F1779427700845E8D /* Features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Features.h; path = ../../lib/Features.h; sourceTree = "<group>"; };
-		AC39DAA41779428300845E8D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../Debug/Debug.cpp; sourceTree = "<group>"; };
-		AC39DAA51779428300845E8D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../Debug/Debug.h; sourceTree = "<group>"; };
 		AC39DAA717794CD000845E8D /* Region.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Region.cpp; path = ../../lib/Region.cpp; sourceTree = "<group>"; };
 		AC39DAA817794CD000845E8D /* Region.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Region.h; path = ../../lib/Region.h; sourceTree = "<group>"; };
+		AC5D74C317B9C36C00C81F2D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../lib/Debug.cpp; sourceTree = "<group>"; };
+		AC5D74C417B9C36C00C81F2D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../lib/Debug.h; sourceTree = "<group>"; };
+		AC5D74C617BAFD8100C81F2D /* spheres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spheres.png; path = ../../../Debug/spheres.png; sourceTree = "<group>"; };
 		AC7F487D179BA1700017CE9D /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../../lib/BlobClass.cpp; sourceTree = "<group>"; };
 		AC7F487E179BA1700017CE9D /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../../lib/BlobClass.h; sourceTree = "<group>"; };
 		AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
@@ -104,6 +105,7 @@
 		ACADFF0817694E2F0072908F /* CellScope-Test */ = {
 			isa = PBXGroup;
 			children = (
+				AC5D74C617BAFD8100C81F2D /* spheres.png */,
 				AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */,
 				ACADFF0917694E2F0072908F /* main.cpp */,
 			);
@@ -113,13 +115,13 @@
 		ACADFF1217694E3D0072908F /* CS-Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				AC5D74C317B9C36C00C81F2D /* Debug.cpp */,
+				AC5D74C417B9C36C00C81F2D /* Debug.h */,
 				ACEAA211178BA40E006D5BE2 /* LibSVM */,
 				AC7F487D179BA1700017CE9D /* BlobClass.cpp */,
 				AC7F487E179BA1700017CE9D /* BlobClass.h */,
 				AC39DAA717794CD000845E8D /* Region.cpp */,
 				AC39DAA817794CD000845E8D /* Region.h */,
-				AC39DAA41779428300845E8D /* Debug.cpp */,
-				AC39DAA51779428300845E8D /* Debug.h */,
 				AC39DA9E1779427700845E8D /* Features.cpp */,
 				AC39DA9F1779427700845E8D /* Features.h */,
 				ACADFFCC176973930072908F /* svm.h */,
@@ -201,13 +203,13 @@
 				ACADFF2817694E5A0072908F /* ImageTools.cpp in Sources */,
 				ACADFF2917694E5A0072908F /* MatrixOperations.cpp in Sources */,
 				AC39DAA21779427700845E8D /* Features.cpp in Sources */,
-				AC39DAA61779428300845E8D /* Debug.cpp in Sources */,
 				AC39DAA917794CD000845E8D /* Region.cpp in Sources */,
 				ACEAA216178BA41A006D5BE2 /* svm-predict.c in Sources */,
 				ACEAA217178BA41A006D5BE2 /* svm-scale.c in Sources */,
 				ACEAA218178BA41A006D5BE2 /* svm-train.c in Sources */,
 				ACEAA219178BA41A006D5BE2 /* svm.cpp in Sources */,
 				AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */,
+				AC5D74C517B9C36C00C81F2D /* Debug.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

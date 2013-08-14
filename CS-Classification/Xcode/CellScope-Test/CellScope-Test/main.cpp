@@ -17,10 +17,11 @@ using namespace std;
 int main(int argc, const char * argv[])
 {
     Mat image;
-    string image_path = "/Users/wgerard/Dev/cell-scope/CS-Classification/Xcode/CellScope-Test/1350_Clay_Fluor_Yes.png";
+    string image_path = "/Users/wgerard/Dev/cell-scope/CS-Classification/Xcode/CellScope-Test/spheres.png";
+    //string image_path = "/Users/wgerard/Dev/cell-scope/CS-Classification/Xcode/CellScope-Test/1350_Clay_Fluor_Yes.png";
     image = imread(image_path, CV_LOAD_IMAGE_GRAYSCALE);
     cout << "Starting\n";
-    Classifier::runWithImage(image);
+    Classifier::runWithImage(image, NULL, NULL, NULL);
     cout << "Finished\n";
     return 0;
 }

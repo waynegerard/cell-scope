@@ -6,7 +6,7 @@
 #include <fstream>
 
 #include "Debug.h"
-
+#include <time.h>
 
 namespace Classifier 
 {
@@ -126,7 +126,7 @@ namespace Classifier
     {
         
         // Load the SVM
-        svm_model *model = nullptr;
+        svm_model *model;
         Mat train_max;
         Mat train_min;
         if (DEBUG) {
@@ -301,7 +301,28 @@ namespace Classifier
             std::cout << "Image has no data! Returning.\n";
 			return cv::Mat::zeros(1,1,CV_8UC1);
 		}
-
+        
+        /** Start DEBUG code */
+        cv::Mat thresholdImage;
+        cv::threshold(image, thresholdImage, 254, 1, CV_THRESH_BINARY_INV);
+        ContourContainerType contours;
+        cv::findContours(thresholdImage, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+        clock_t t;
+        t = clock();
+        std::vector<cv::Point2d> centroids = MatrixOperations::findWeightedCentroids(contours, thresholdImage, image);
+        t = clock() - t;
+        printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
+        std::vector<cv::Point2d>::iterator it = centroids.begin();
+        
+        for (; it != centroids.end(); it++) {
+            cv::Point2d pt = *it;
+            cout << "Point (x,y): " << pt.x << "," << pt.y << std::endl;
+        }
+        
+        return cv::Mat(1,1,CV_8UC1);
+        
+        /** end DEBUG code */
+        
 		cv::Mat normalizedImage = initializeImage(image);
 		cv::Mat imageBw = objectIdentification(normalizedImage);
 

@@ -43,6 +43,29 @@ namespace MatrixOperations
 			double weightedYSum = 0;
 			int pixelCount = 0;
 
+            cv::Mat nonZero;
+            cv::findNonZero(filledImage, nonZero);
+            for (int i = 0; i < nonZero.rows; i++) {
+                cv::Point pt = nonZero.at<cv::Point>(i, 0);
+                int row = pt.y;
+                int col = pt.x;
+                
+                double original_val = 0;
+                if (originalImage.type() == CV_8UC1) {
+                    original_val = (double)originalImage.at<uchar>(row, col);
+                } else if (originalImage.type() == CV_64F) {
+                    original_val = originalImage.at<double>(row,col);
+                } else if (originalImage.type() == CV_32F) {
+                    original_val = (double)originalImage.at<float>(row, col);
+                }
+
+                pixelCount++;
+                sumRegion += original_val;
+                weightedXSum += ((double)row * original_val);
+                weightedYSum += ((double)col * original_val);
+            }
+             
+            /**
 			for (int j = 0; j < filledImage.rows; j++)
 			{
 				for (int k = 0; k < filledImage.cols; k++)
@@ -66,6 +89,8 @@ namespace MatrixOperations
 					}
 				}
 			}
+             */
+            
 
 			double xbar = weightedXSum / sumRegion;
 			double ybar = weightedYSum / sumRegion;

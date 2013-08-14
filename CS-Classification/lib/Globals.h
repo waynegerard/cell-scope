@@ -4,7 +4,7 @@
 #include <opencv2/opencv.hpp>
 #include <stdlib.h>
 
-#define DEBUG 0
+#define DEBUG 1
 #define PATCH_SIZE 24
 
 #if __APPLE__
