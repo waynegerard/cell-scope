@@ -64,34 +64,13 @@ namespace MatrixOperations
                 weightedXSum += ((double)row * original_val);
                 weightedYSum += ((double)col * original_val);
             }
-             
-            /**
-			for (int j = 0; j < filledImage.rows; j++)
-			{
-				for (int k = 0; k < filledImage.cols; k++)
-				{
-					int val = filledImage.at<uchar>(j, k);
-					if (val != 0)
-					{
-						double original_val = 0;
-						if (originalImage.type() == CV_8UC1) {
-							original_val = (double)originalImage.at<uchar>(j, k);
-						} else if (originalImage.type() == CV_64F) {
-							original_val = originalImage.at<double>(j,k);
-						} else if (originalImage.type() == CV_32F) {
-							original_val = (double)originalImage.at<float>(j, k);
-						}
-
-						pixelCount++;
-						sumRegion += original_val;
-					    weightedXSum += ((double)j * original_val);
-						weightedYSum += ((double)k * original_val);
-					}
-				}
-			}
-             */
             
-
+            std::cout << "xsum: " << weightedXSum << std::endl;
+            std::cout << "ysum: " << weightedYSum << std::endl;
+            std::cout << "sumRegion: " << sumRegion << std::endl;
+            std::cout << "xbar: " << xbar << std::endl;
+            std::cout << "ybar: " << ybar << std::endl;
+            
 			double xbar = weightedXSum / sumRegion;
 			double ybar = weightedYSum / sumRegion;
 			cv::Point2d new_pt = cv::Point2d(xbar, ybar);
