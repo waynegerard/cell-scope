@@ -65,16 +65,17 @@ namespace MatrixOperations
                 weightedYSum += ((double)col * original_val);
             }
             
+			double xbar = weightedXSum / sumRegion;
+			double ybar = weightedYSum / sumRegion;
+			cv::Point2d new_pt = cv::Point2d(xbar, ybar);
+			pts.push_back(new_pt);
+            
             std::cout << "xsum: " << weightedXSum << std::endl;
             std::cout << "ysum: " << weightedYSum << std::endl;
             std::cout << "sumRegion: " << sumRegion << std::endl;
             std::cout << "xbar: " << xbar << std::endl;
             std::cout << "ybar: " << ybar << std::endl;
-            
-			double xbar = weightedXSum / sumRegion;
-			double ybar = weightedYSum / sumRegion;
-			cv::Point2d new_pt = cv::Point2d(xbar, ybar);
-			pts.push_back(new_pt);
+
         }
         
         

@@ -304,14 +304,17 @@ namespace Classifier
         
         /** Start DEBUG code */
         cv::Mat thresholdImage;
-        cv::threshold(image, thresholdImage, 254, 1, CV_THRESH_BINARY_INV);
+        cv::threshold(image, thresholdImage, 255, 1, CV_THRESH_BINARY_INV);
         ContourContainerType contours;
-        cv::findContours(thresholdImage, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
-        clock_t t;
-        t = clock();
+        
+        cv::Mat result;
+        int type = cv::MORPH_RECT;
+		cv::Mat element = getStructuringElement(type, cv::Size(3,3));
+		cv::morphologyEx(thresholdImage, result, cv::MORPH_OPEN, element);
+        
+        cv::findContours(result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         std::vector<cv::Point2d> centroids = MatrixOperations::findWeightedCentroids(contours, thresholdImage, image);
-        t = clock() - t;
-        printf ("It took me %d clicks (%f seconds).\n",t,((float)t)/CLOCKS_PER_SEC);
+
         std::vector<cv::Point2d>::iterator it = centroids.begin();
         
         for (; it != centroids.end(); it++) {
