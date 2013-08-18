@@ -5,8 +5,9 @@
 #include "MatrixOperations.h"
 #include <fstream>
 
+#import "BlobResult.h"
+
 #include "Debug.h"
-#include <time.h>
 
 namespace Classifier 
 {
@@ -304,15 +305,16 @@ namespace Classifier
         
         /** Start DEBUG code */
         cv::Mat thresholdImage;
-        cv::threshold(image, thresholdImage, 255, 1, CV_THRESH_BINARY_INV);
+        cv::threshold(image, thresholdImage, 254, 1, CV_THRESH_BINARY_INV);
         ContourContainerType contours;
         
-        cv::Mat result;
-        int type = cv::MORPH_RECT;
-		cv::Mat element = getStructuringElement(type, cv::Size(3,3));
-		cv::morphologyEx(thresholdImage, result, cv::MORPH_OPEN, element);
+        // object that will contain blobs of inputImage
+        CBlobResult blobs;
+        IplImage copy = image;
+        IplImage* newImg = &copy;
+        blobs = CBlobResult(newImg, NULL, 255);
         
-        cv::findContours(result, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        cv::findContours(thresholdImage, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         std::vector<cv::Point2d> centroids = MatrixOperations::findWeightedCentroids(contours, thresholdImage, image);
 
         std::vector<cv::Point2d>::iterator it = centroids.begin();

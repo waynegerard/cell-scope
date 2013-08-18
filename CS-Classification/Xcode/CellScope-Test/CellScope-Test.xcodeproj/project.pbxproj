@@ -10,6 +10,12 @@
 		AC39DAA21779427700845E8D /* Features.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DA9E1779427700845E8D /* Features.cpp */; };
 		AC39DAA917794CD000845E8D /* Region.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC39DAA717794CD000845E8D /* Region.cpp */; };
 		AC5D74C517B9C36C00C81F2D /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC5D74C317B9C36C00C81F2D /* Debug.cpp */; };
+		AC79423B17C0339D0056E7D3 /* blob.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79422E17C0339D0056E7D3 /* blob.cpp */; };
+		AC79423C17C0339D0056E7D3 /* BlobContour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79423017C0339D0056E7D3 /* BlobContour.cpp */; };
+		AC79423D17C0339D0056E7D3 /* BlobOperators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79423317C0339D0056E7D3 /* BlobOperators.cpp */; };
+		AC79423E17C0339D0056E7D3 /* BlobProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79423517C0339D0056E7D3 /* BlobProperties.cpp */; };
+		AC79423F17C0339D0056E7D3 /* BlobResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79423717C0339D0056E7D3 /* BlobResult.cpp */; };
+		AC79424017C0339D0056E7D3 /* ComponentLabeling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC79423917C0339D0056E7D3 /* ComponentLabeling.cpp */; };
 		AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AC7F487D179BA1700017CE9D /* BlobClass.cpp */; };
 		ACADFF0A17694E2F0072908F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF0917694E2F0072908F /* main.cpp */; };
 		ACADFF2517694E5A0072908F /* Classifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ACADFF1517694E5A0072908F /* Classifier.cpp */; };
@@ -44,6 +50,19 @@
 		AC5D74C317B9C36C00C81F2D /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Debug.cpp; path = ../../lib/Debug.cpp; sourceTree = "<group>"; };
 		AC5D74C417B9C36C00C81F2D /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Debug.h; path = ../../lib/Debug.h; sourceTree = "<group>"; };
 		AC5D74C617BAFD8100C81F2D /* spheres.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spheres.png; path = ../../../Debug/spheres.png; sourceTree = "<group>"; };
+		AC79422E17C0339D0056E7D3 /* blob.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = blob.cpp; sourceTree = "<group>"; };
+		AC79422F17C0339D0056E7D3 /* blob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blob.h; sourceTree = "<group>"; };
+		AC79423017C0339D0056E7D3 /* BlobContour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobContour.cpp; sourceTree = "<group>"; };
+		AC79423117C0339D0056E7D3 /* BlobContour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobContour.h; sourceTree = "<group>"; };
+		AC79423217C0339D0056E7D3 /* BlobLibraryConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobLibraryConfiguration.h; sourceTree = "<group>"; };
+		AC79423317C0339D0056E7D3 /* BlobOperators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobOperators.cpp; sourceTree = "<group>"; };
+		AC79423417C0339D0056E7D3 /* BlobOperators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobOperators.h; sourceTree = "<group>"; };
+		AC79423517C0339D0056E7D3 /* BlobProperties.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobProperties.cpp; sourceTree = "<group>"; };
+		AC79423617C0339D0056E7D3 /* BlobProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobProperties.h; sourceTree = "<group>"; };
+		AC79423717C0339D0056E7D3 /* BlobResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlobResult.cpp; sourceTree = "<group>"; };
+		AC79423817C0339D0056E7D3 /* BlobResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlobResult.h; sourceTree = "<group>"; };
+		AC79423917C0339D0056E7D3 /* ComponentLabeling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComponentLabeling.cpp; sourceTree = "<group>"; };
+		AC79423A17C0339D0056E7D3 /* ComponentLabeling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComponentLabeling.h; sourceTree = "<group>"; };
 		AC7F487D179BA1700017CE9D /* BlobClass.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlobClass.cpp; path = ../../lib/BlobClass.cpp; sourceTree = "<group>"; };
 		AC7F487E179BA1700017CE9D /* BlobClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlobClass.h; path = ../../lib/BlobClass.h; sourceTree = "<group>"; };
 		AC8D8935176FD59E00A1661A /* 1350_Clay_Fluor_Yes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1350_Clay_Fluor_Yes.png; sourceTree = "<group>"; };
@@ -81,6 +100,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AC79422D17C033720056E7D3 /* CvBlobs */ = {
+			isa = PBXGroup;
+			children = (
+				AC79422E17C0339D0056E7D3 /* blob.cpp */,
+				AC79422F17C0339D0056E7D3 /* blob.h */,
+				AC79423017C0339D0056E7D3 /* BlobContour.cpp */,
+				AC79423117C0339D0056E7D3 /* BlobContour.h */,
+				AC79423217C0339D0056E7D3 /* BlobLibraryConfiguration.h */,
+				AC79423317C0339D0056E7D3 /* BlobOperators.cpp */,
+				AC79423417C0339D0056E7D3 /* BlobOperators.h */,
+				AC79423517C0339D0056E7D3 /* BlobProperties.cpp */,
+				AC79423617C0339D0056E7D3 /* BlobProperties.h */,
+				AC79423717C0339D0056E7D3 /* BlobResult.cpp */,
+				AC79423817C0339D0056E7D3 /* BlobResult.h */,
+				AC79423917C0339D0056E7D3 /* ComponentLabeling.cpp */,
+				AC79423A17C0339D0056E7D3 /* ComponentLabeling.h */,
+			);
+			name = CvBlobs;
+			sourceTree = "<group>";
+		};
 		ACADFEFD17694E2E0072908F = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +154,7 @@
 		ACADFF1217694E3D0072908F /* CS-Classifier */ = {
 			isa = PBXGroup;
 			children = (
+				AC79422D17C033720056E7D3 /* CvBlobs */,
 				AC5D74C317B9C36C00C81F2D /* Debug.cpp */,
 				AC5D74C417B9C36C00C81F2D /* Debug.h */,
 				ACEAA211178BA40E006D5BE2 /* LibSVM */,
@@ -210,6 +250,12 @@
 				ACEAA219178BA41A006D5BE2 /* svm.cpp in Sources */,
 				AC7F487F179BA1700017CE9D /* BlobClass.cpp in Sources */,
 				AC5D74C517B9C36C00C81F2D /* Debug.cpp in Sources */,
+				AC79423B17C0339D0056E7D3 /* blob.cpp in Sources */,
+				AC79423C17C0339D0056E7D3 /* BlobContour.cpp in Sources */,
+				AC79423D17C0339D0056E7D3 /* BlobOperators.cpp in Sources */,
+				AC79423E17C0339D0056E7D3 /* BlobProperties.cpp in Sources */,
+				AC79423F17C0339D0056E7D3 /* BlobResult.cpp in Sources */,
+				AC79424017C0339D0056E7D3 /* ComponentLabeling.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
